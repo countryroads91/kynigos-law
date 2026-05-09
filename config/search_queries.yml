@@ -1,0 +1,25 @@
+# Search terms are configurable so the ledger is reproducible.
+# The runner uses these query strings with an API-backed provider when available.
+search:
+  provider: brave
+  queries:
+    - 'site:.com Washington DC dentist "board certified"'
+    - 'site:.com Washington DC dentist "board-certified"'
+    - 'Washington DC dentist "Diplomate" "American Board"'
+    - 'Washington DC dentist "board eligible"'
+    - 'Washington DC dentist "candidate for board certification"'
+    - 'Washington DC dentist "specialist"'
+    - 'Washington DC dentist "specializes in"'
+    - 'Washington DC dentist "MSD" OR "MScD" OR "MDSc" OR "PhD"'
+    - 'Washington DC dentist "Fellow"'
+  max_results_per_query: 10
+
+# Optional known public URLs. These are fetched even when no search API key is set.
+seed_urls: []
+
+fetch:
+  user_agent: 'DentalClaimLedger/0.1 (+public credential claim research; contact: configure@example.org)'
+  timeout_seconds: 15
+  delay_seconds: 1.0
+  respect_robots_txt: true
+  allowed_schemes: ['http', 'https']
