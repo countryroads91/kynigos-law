@@ -364,7 +364,7 @@ h1, h2, h3, h4, h5, h6 {
   transition: color 200ms;
 }
 .nav-links a:hover { color: var(--color-espresso); }
-.nav-cta {
+.nav-links a.nav-cta {
   font-family: var(--font-sans);
   font-size: 12px;
   font-weight: 600;
@@ -378,7 +378,7 @@ h1, h2, h3, h4, h5, h6 {
   text-decoration: none;
   transition: background 200ms;
 }
-.nav-cta:hover { background: var(--color-oxblood-hover); }
+.nav-links a.nav-cta:hover { background: var(--color-oxblood-hover); color: var(--color-parchment); }
 
 /* ─── Footer ─── */
 .footer {
