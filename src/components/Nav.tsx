@@ -11,9 +11,8 @@ export default function Nav() {
         <Link href="/practice-areas/landlord-tenant">Landlord-Tenant</Link>
         <Link href="/practice-areas/capital-markets">Capital Markets</Link>
         <Link href="/practice-areas/contract-review">Contract Review</Link>
-        <Link href="/about">About</Link>
         <Link href="/contact" className="nav-cta">
-          Book Consultation
+          Book A Free Consultation
         </Link>
       </div>
     </nav>

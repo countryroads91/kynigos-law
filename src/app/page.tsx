@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import HeadlineReel from "@/components/HeadlineReel";
+
+export const metadata: Metadata = {
+  title: { absolute: "Home | Kynigos Law Firm PLLC" },
+};
 
 const reelWords = [
   "divorce",
@@ -38,10 +43,7 @@ export default function Home() {
 
       <div className="cta-row">
         <Link href="/contact" className="btn-primary">
-          Schedule a Consultation
-        </Link>
-        <Link href="/about" className="btn-secondary">
-          How It Works
+          Book A Free Consultation
         </Link>
       </div>
     </section>

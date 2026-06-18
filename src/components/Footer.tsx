@@ -39,9 +39,6 @@ export default function Footer() {
             <h4>Firm</h4>
             <ul className="footer-links">
               <li>
-                <Link href="/about">About</Link>
-              </li>
-              <li>
                 <Link href="/blog">White Papers</Link>
               </li>
               <li>
@@ -56,7 +53,7 @@ export default function Footer() {
                 <a href="tel:+13045491058">(304) 549-1058</a>
               </li>
               <li>
-                <a href="mailto:bayan@kynigos.law">bayan@kynigos.law</a>
+                <a href="mailto:info@kynigos.law">info@kynigos.law</a>
               </li>
             </ul>
           </div>
