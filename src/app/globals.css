@@ -99,6 +99,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ─── Hero (v2 emulation) ─── */
 .hero {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -121,23 +122,60 @@ h1, h2, h3, h4, h5, h6 {
 .hero > *:nth-child(4) { animation-delay: 460ms; }
 .hero > *:nth-child(5) { animation-delay: 580ms; }
 
-.kicker {
-  font-family: var(--font-sans);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-  margin-bottom: 32px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
+/* Spearhead mark — draws itself in, then fills (see fork-b1-mark.html) */
+.hero-spear {
+  position: absolute;
+  top: 50%;
+  right: 6%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  user-select: none;
+  /* opt out of the .hero > * fade-up; the paths run their own draw */
+  opacity: 1;
+  animation: none;
+  z-index: 0;
 }
-.kicker::before {
-  content: "";
-  width: 40px;
-  height: 1px;
-  background: var(--color-muted);
+.hero-spear svg {
+  display: block;
+  height: clamp(260px, 46vh, 460px);
+  width: auto;
+}
+.spear-draw {
+  fill: none;
+  stroke: var(--color-oxblood);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+  stroke-dasharray: 800;
+  stroke-dashoffset: 800;
+  animation: drawSpear 2.4s ease forwards 0.4s;
+}
+.spear-draw-base {
+  animation-delay: 1s;
+}
+.spear-fill {
+  fill: var(--color-oxblood);
+  opacity: 0;
+  animation: fillSpear 0.9s ease forwards 2.5s;
+}
+@keyframes drawSpear {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes fillSpear {
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spear-draw {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  .spear-fill {
+    animation: none;
+    opacity: 1;
+  }
 }
 
 .headline-block { margin-bottom: 32px; }
@@ -173,24 +211,6 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.15;
   letter-spacing: -0.01em;
 }
-.reel-window::before,
-.reel-window::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 28px;
-  z-index: 2;
-  pointer-events: none;
-}
-.reel-window::before {
-  top: 0;
-  background: linear-gradient(to bottom, var(--color-parchment), transparent);
-}
-.reel-window::after {
-  bottom: 0;
-  background: linear-gradient(to top, var(--color-parchment), transparent);
-}
 .reel-track {
   display: flex;
   flex-direction: column;
@@ -206,7 +226,7 @@ h1, h2, h3, h4, h5, h6 {
 .reel-item > span {
   display: inline-block;
   text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--color-oxblood) 30%, transparent);
+  text-decoration-color: var(--color-oxblood);
   text-decoration-thickness: 2px;
   text-underline-offset: 6px;
   text-decoration-skip-ink: none;
@@ -444,6 +464,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ─── Responsive ─── */
+@media (max-width: 1024px) {
+  .hero-spear { display: none; }
+}
 @media (max-width: 900px) {
   .hero { padding: 100px 24px 100px; }
   .nav { padding: 16px 24px; }
