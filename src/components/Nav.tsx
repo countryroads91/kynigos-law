@@ -79,6 +79,22 @@ export default function Nav() {
     };
   }, [mobileOpen]);
 
+  // Close the mobile menu when the viewport grows past the mobile breakpoint.
+  // CSS hides .nav-burger and .nav-mobile at >=901px, but without this the
+  // mobileOpen state would stay true and keep the body scroll locked on
+  // desktop after a rotate/resize, with no visible control to release it.
+  useEffect(() => {
+    const mql = window.matchMedia("(min-width: 901px)");
+    const onChange = () => {
+      if (mql.matches) {
+        setMobileOpen(false);
+        setMobileSection(null);
+      }
+    };
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
+
   function closeAll() {
     setOpen(null);
     setMobileOpen(false);
