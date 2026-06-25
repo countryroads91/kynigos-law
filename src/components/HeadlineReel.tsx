@@ -43,7 +43,12 @@ export default function HeadlineReel({
 
   function getItemHeight(): number {
     const first = itemsRef.current[0];
-    return first ? first.offsetHeight : 0;
+    // Sub-pixel precise. offsetHeight rounds to an integer (e.g. 41 for a
+    // 41.39px item), so parking at -(index * 41) drifts 0.39px per index away
+    // from the true item top. That gap reveals a sliver of the previous word —
+    // and its underline — above the current word. getBoundingClientRect keeps
+    // the fractional height so each word parks exactly on its item boundary.
+    return first ? first.getBoundingClientRect().height : 0;
   }
 
   function spin() {

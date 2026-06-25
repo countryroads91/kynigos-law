@@ -204,7 +204,11 @@ h1, h2, h3, h4, h5, h6 {
 .reel-window {
   position: relative;
   overflow: hidden;
-  height: 1.15em;
+  /* Taller than the 1.15 line-height so the underline (6px below the
+     baseline) clears the clip boundary. At 1.15em the underline sat right at
+     each item's bottom edge, so the previous word's underline bled into the
+     top of the window. The extra room keeps neighbors fully clipped. */
+  height: 1.5em;
   font-family: var(--font-display);
   font-weight: 600;
   font-size: clamp(36px, 5vw + 8px, 64px);
@@ -216,7 +220,8 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
 }
 .reel-item {
-  height: 1.15em;
+  /* Must match .reel-window height — the spin math measures this box. */
+  height: 1.5em;
   display: flex;
   align-items: center;
   color: var(--color-oxblood);
