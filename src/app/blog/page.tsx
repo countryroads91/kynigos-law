@@ -2,29 +2,25 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "White Papers & Writing",
+  title: "Blog",
   description:
-    "Academic writing on the economics of legal services—principal-agent problems, adverse selection, behavioral contract theory, moral hazard in legal opinion letters.",
+    "Notes on legal strategy, fee structure, and the economics of representation from Kynigos Law Firm in Washington, DC.",
 };
 
-export default function BlogIndex() {
+export default function BlogPage() {
   return (
     <section className="hero">
-      <div className="kicker">Writing</div>
-      <h1 className="headline-line">White Papers &amp; Essays</h1>
-      <p className="subhead">
-        Economic theory, applied to legal services.
-      </p>
+      <div className="kicker">Blog</div>
+      <h1 className="headline-line">Notes from the firm.</h1>
+      <p className="subhead">Shorter takes on strategy, fees, and the law.</p>
       <p className="lede">
-        Five white papers in the series so far: principal-agent problem and
-        hourly billing; the market for lemons and credence goods; behavioral
-        contract theory and the physician non-compete; moral hazard and the
-        legal opinion letter; and asymmetric attrition in staged flat-fee
-        billing. Index and reading interface coming soon.
+        First posts are on the way. For the long-form work—the economics of
+        legal services and the case for outcome-aligned fees—see the white
+        papers.
       </p>
       <div className="cta-row">
-        <Link href="/contact" className="btn-primary">
-          Schedule a Consultation
+        <Link href="/white-papers" className="btn-primary">
+          Read the White Papers
         </Link>
         <Link href="/" className="btn-secondary">
           Back to Home
