@@ -1,31 +1,32 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { posts, formatDate } from "@/content/posts";
 
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Notes on legal strategy, fee structure, and the economics of representation from Kynigos Law Firm in Washington, DC.",
+    "The economics of legal fees in plain language—principal-agent theory, behavioral economics, and why flat fees align your lawyer's incentives with your outcome.",
 };
 
-export default function BlogPage() {
+export default function BlogIndex() {
   return (
     <section className="hero">
       <div className="kicker">Blog</div>
       <h1 className="headline-line">Notes from the firm.</h1>
-      <p className="subhead">Shorter takes on strategy, fees, and the law.</p>
-      <p className="lede">
-        First posts are on the way. For the long-form work—the economics of
-        legal services and the case for outcome-aligned fees—see the white
-        papers.
-      </p>
-      <div className="cta-row">
-        <Link href="/white-papers" className="btn-primary">
-          Read the White Papers
-        </Link>
-        <Link href="/" className="btn-secondary">
-          Back to Home
-        </Link>
-      </div>
+      <p className="subhead">The economics of legal fees, in plain language.</p>
+      <ul className="post-list">
+        {posts.map((post) => (
+          <li key={post.slug}>
+            <Link href={`/blog/${post.slug}`} className="post-link">
+              <span className="post-meta">
+                {post.category} · {formatDate(post.date)}
+              </span>
+              <span className="post-title">{post.title}</span>
+              <span className="post-dek">{post.dek}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
