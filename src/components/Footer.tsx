@@ -39,7 +39,13 @@ export default function Footer() {
             <h4>Firm</h4>
             <ul className="footer-links">
               <li>
-                <Link href="/blog">White Papers</Link>
+                <Link href="/how-it-works">How it Works</Link>
+              </li>
+              <li>
+                <Link href="/white-papers">White Papers</Link>
+              </li>
+              <li>
+                <Link href="/blog">Blog</Link>
               </li>
               <li>
                 <Link href="/contact">Contact</Link>

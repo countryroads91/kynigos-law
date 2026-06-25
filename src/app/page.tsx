@@ -48,8 +48,9 @@ export default function Home() {
       </div>
 
       <p className="subhead">
-        Calculated. Zealous. Invested. Aligned with your outcome—not for
-        billable hours.
+        <span className="subhead-line">Calculated. Zealous. Invested.</span>
+        <span className="subhead-line">Aligned with your outcome.</span>
+        <span className="subhead-line">Not for feeding the clock.</span>
       </p>
 
       <p className="lede">
