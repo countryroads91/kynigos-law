@@ -35,3 +35,22 @@ I founded Kynigos Law Firm on a principle that came directly from this experienc
 When your attorney's fee is fixed, every unnecessary motion is a cost your attorney bears, not you. Every hour spent on marginal research is an hour that reduces your attorney's effective rate, not an hour that inflates your bill. The incentive structure flips: your attorney is now rewarded for efficiency, strategic thinking, and early resolution.
 
 Economists have a name for this. They call it solving the *principal-agent problem*. I just call it practicing law the way it should be practiced.
+
+And this preference is not unique to me. When legal consumers are surveyed about how they want to pay, they consistently favor flat, predictable pricing:
+
+<div class="stat-row">
+  <div class="stat-card">
+    <div class="number">71%</div>
+    <div class="label">of clients would prefer a flat fee<br>for their entire case</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">51%</div>
+    <div class="label">would prefer flat fees<br>for individual tasks</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">34%</div>
+    <div class="label">growth in flat-fee<br>legal work since 2016</div>
+  </div>
+</div>
+
+<p class="redline-caption">Source: Clio, 2024 Legal Trends Report.</p>
