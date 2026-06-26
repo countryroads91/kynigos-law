@@ -39,12 +39,12 @@ export default function Home() {
       </div>
 
       <div className="headline-block" id="hero-headline">
-        <div className="headline-line">Your</div>
         <div className="reel-row">
+          <span className="headline-line">Your</span>
           <HeadlineReel words={reelWords} />
-          <span className="headline-line">attorney</span>
         </div>
-        <div className="headline-line">should have skin in the game.</div>
+        <div className="headline-line">attorney should have</div>
+        <div className="headline-line">skin in the game.</div>
       </div>
 
       <p className="subhead">
