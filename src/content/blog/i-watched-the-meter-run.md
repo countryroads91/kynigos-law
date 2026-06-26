@@ -22,6 +22,10 @@ After my divorce was finalized, I ran the numbers the way I would run them for a
 
 And here is what I kept coming back to: **the longer my case lasted, the more money my attorney made.** Not because she was padding hours. Not because she was acting unethically. Simply because the fee structure rewarded duration over resolution. Every additional month of negotiation, every hearing, every exchange of discovery—each one was revenue for her and cost for me.
 
+<figure class="figure">
+  <img src="/blog/i-watched-the-meter-run/cumulative-cost.png" alt="Cumulative cost comparison: hourly vs flat fee" />
+</figure>
+
 Hourly billing produces an accelerating cost trajectory. As a case moves through discovery, depositions, motions practice, and trial preparation, the hours compound. Under a flat fee, the client knows the cost from day one. Under hourly billing, the cost is unknowable until the case is over—and by then, it is too late to do anything about it.
 
 ## Why I Built a Different Kind of Firm

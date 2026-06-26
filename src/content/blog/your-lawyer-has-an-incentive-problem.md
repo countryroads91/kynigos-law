@@ -20,6 +20,10 @@ Stanford's A. Mitchell Polinsky and Berkeley's Daniel Rubinfeld published an inf
 
 Under a flat fee, the incentive reverses: the attorney earns the same amount regardless of hours invested, so efficiency is rewarded. A contingency fee ties compensation to the outcome and can create similar alignment—though in domestic-relations matters, where contingency fees are ethically prohibited, the flat fee is the alignment mechanism.
 
+<figure class="figure">
+  <img src="/blog/your-lawyer-has-an-incentive-problem/incentive-comparison.png" alt="Incentive comparison: hourly vs flat fee" />
+</figure>
+
 The ABA's own Commission on Billable Hours reached a damning conclusion after two years of investigation: many of the legal profession's most pressing problems converge at the billable hour. Associates at large firms are evaluated on hours billed, not on outcomes achieved. Billing targets of 1,800 to 2,100 hours per year are standard. An associate who resolves cases quickly and efficiently is, in economic terms, punished for doing good work.
 
 ## The Divorce Escalation Machine
@@ -27,6 +31,10 @@ The ABA's own Commission on Billable Hours reached a damning conclusion after tw
 Game theorists have shown that the problem is even worse when both attorneys bill hourly. Geoffrey Miller showed in 1987 that under hourly fees, attorneys on both sides have rational incentives to reject reasonable settlements—because continuing the case generates more revenue for both of them. This is a Nash equilibrium: neither attorney can unilaterally change their behavior without losing income, even though both clients would benefit from earlier resolution.
 
 In a contested divorce, this creates what economists describe as a mutually reinforcing escalation. Your attorney files a motion. The opposing attorney responds. Your attorney files a reply. Each filing is billable. Each response is billable. The case escalates not because the issues demand it, but because the fee structure rewards it.
+
+<figure class="figure">
+  <img src="/blog/your-lawyer-has-an-incentive-problem/moral-hazard-spectrum.png" alt="Moral hazard spectrum by fee structure" />
+</figure>
 
 ## The Fix Is Not Complicated
 

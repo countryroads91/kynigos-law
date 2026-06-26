@@ -932,6 +932,23 @@ h1, h2, h3, h4, h5, h6 {
     flex-wrap: wrap;
   }
 }
+.blog-prose .figure {
+  margin: 36px 0;
+  text-align: center;
+}
+.blog-prose .figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid var(--color-divider);
+}
+.blog-prose .figure figcaption {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--color-umber);
+  margin-top: 8px;
+  font-style: italic;
+}
 .blog-cta {
   margin: 56px 0 40px;
   padding: 32px;

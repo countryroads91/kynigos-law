@@ -14,11 +14,27 @@ In 2013, researchers Anandi Mani, Sendhil Mullainathan, and colleagues published
 
 During divorce, clients experience financial stress, emotional trauma, sleep disruption, and social dislocation simultaneously. The cognitive impairment is not metaphorical. It is measurable, reproducible, and documented in peer-reviewed research.
 
+<figure class="figure">
+  <img src="/blog/why-divorce-makes-you-bad-at-math/cognitive-tax.png" alt="Cognitive performance under financial stress" />
+</figure>
+
 This is the person being asked to evaluate whether a $6,000 deposition is worth it. This is the person reading a 14-page motion and trying to determine whether the legal arguments are sound. This is the person making the most consequential financial decisions of their life while operating at a significant cognitive deficit.
 
 ## The Trap Has Five Layers
 
 Cognitive impairment is only the first layer. Behavioral economics has identified at least four additional biases that compound during divorce—each one exploited, intentionally or not, by the hourly billing model.
+
+<div class="cascade-figure">
+  <div class="fig-title">The Decision-Making Cascade</div>
+  <div class="fig-subtitle">How cognitive biases compound during divorce—and why hourly billing exploits every one.</div>
+  <ol class="pattern-list">
+    <li><strong>Cognitive impairment.</strong> Financial and emotional stress strips roughly 13 to 14 IQ points at the moment of decision.</li>
+    <li><strong>Loss aversion.</strong> Losing the house, the savings, or time with the kids feels about twice as intense as an equivalent gain.</li>
+    <li><strong>Sunk cost fallacy.</strong> "I've spent $20,000 already—I can't settle for less than that now."</li>
+    <li><strong>Information asymmetry.</strong> Legal work is a credence good; you cannot tell which motions were actually necessary, even after the fact.</li>
+    <li><strong>Anchoring.</strong> The initial retainer sets the reference point against which every later invoice quietly gets judged.</li>
+  </ol>
+</div>
 
 **Loss aversion** is the most powerful. Kahneman and Tversky demonstrated that people experience losses roughly twice as intensely as equivalent gains. In divorce, both spouses perceive themselves as losing—losing the house, losing time with children, losing retirement assets. This triggers risk-seeking behavior: a willingness to spend $50,000 in legal fees to avoid a $30,000 loss in settlement. The math doesn't work, but the psychology is overpowering.
 
