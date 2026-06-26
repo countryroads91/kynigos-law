@@ -554,6 +554,384 @@ h1, h2, h3, h4, h5, h6 {
     -webkit-overflow-scrolling: touch;
   }
 }
+
+/* ---- Original post figures (raw HTML embedded in the post body) ---- */
+.blog-prose .pullquote {
+  border-left: 3px solid var(--color-oxblood);
+  padding: 20px 24px;
+  margin: 36px 0;
+  background: var(--color-linen);
+  border-radius: 0 8px 8px 0;
+}
+.blog-prose .pullquote p {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--color-espresso);
+  line-height: 1.4;
+  margin: 0 0 8px;
+}
+.blog-prose .pullquote .attr {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-umber);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.blog-prose .redline-figure,
+.blog-prose .timeline-figure,
+.blog-prose .cognitive-figure {
+  margin: 36px 0;
+  padding: 28px 24px;
+  background: var(--color-linen);
+  border-radius: 8px;
+}
+.blog-prose .fig-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-espresso);
+  margin-bottom: 4px;
+}
+.blog-prose .fig-subtitle {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--color-umber);
+  margin-bottom: 20px;
+}
+.blog-prose .redline-pair {
+  background: var(--color-warm-white);
+  border: 1px solid var(--color-divider);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+}
+.blog-prose .redline-pair .pair-label {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-umber);
+  margin-bottom: 8px;
+}
+.blog-prose .redline-pair .pair-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.blog-prose .redline-pair .pair-row + .pair-row {
+  margin-top: 8px;
+}
+.blog-prose .redline-pair .pair-tag {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+.blog-prose .redline-pair .pair-tag.mine {
+  background: #2d4a3e;
+  color: #fff;
+}
+.blog-prose .redline-pair .pair-tag.sent {
+  background: var(--color-oxblood);
+  color: #fff;
+}
+.blog-prose .redline-pair .pair-tag.what {
+  background: var(--color-umber);
+  color: #fff;
+}
+.blog-prose .redline-pair .pair-text {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-espresso);
+  margin: 0;
+}
+.blog-prose .redline-caption,
+.blog-prose .cognitive-caption {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--color-umber);
+  margin-top: 16px;
+  text-align: center;
+  font-style: italic;
+}
+.blog-prose .timeline-row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-divider);
+}
+.blog-prose .timeline-row:last-child {
+  border-bottom: none;
+}
+.blog-prose .timeline-date {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-oxblood);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  min-width: 60px;
+  margin-top: 2px;
+}
+.blog-prose .timeline-body {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--color-espresso);
+  flex: 1;
+  margin: 0;
+}
+.blog-prose .timeline-bill {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  color: var(--color-umber);
+  white-space: nowrap;
+  margin-top: 2px;
+}
+.blog-prose .bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  height: 200px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid var(--color-divider);
+  position: relative;
+}
+.blog-prose .bar-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  justify-content: flex-end;
+}
+.blog-prose .bar {
+  width: 60%;
+  border-radius: 4px 4px 0 0;
+  position: relative;
+}
+.blog-prose .bar-value {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.blog-prose .bar-label {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-sans);
+  font-size: 10px;
+  text-align: center;
+  color: var(--color-umber);
+  white-space: nowrap;
+}
+.blog-prose .bar.baseline {
+  background: #2d4a3e;
+  height: 100%;
+}
+.blog-prose .bar.baseline .bar-value {
+  color: #2d4a3e;
+}
+.blog-prose .bar.sleep {
+  background: #6b5d50;
+  height: 88%;
+}
+.blog-prose .bar.sleep .bar-value {
+  color: #6b5d50;
+}
+.blog-prose .bar.financial {
+  background: var(--color-oxblood);
+  height: 86%;
+}
+.blog-prose .bar.financial .bar-value {
+  color: var(--color-oxblood);
+}
+.blog-prose .bar.divorce {
+  background: var(--color-oxblood-hover);
+  height: 82%;
+}
+.blog-prose .bar.divorce .bar-value {
+  color: var(--color-oxblood-hover);
+}
+.blog-prose .cognitive-caption {
+  margin-top: 40px;
+}
+.blog-prose .stat-row {
+  display: flex;
+  gap: 16px;
+  margin: 36px 0;
+}
+.blog-prose .stat-card {
+  flex: 1;
+  background: var(--color-linen);
+  border: 1px solid var(--color-divider);
+  border-radius: 8px;
+  padding: 20px 16px;
+  text-align: center;
+}
+.blog-prose .stat-card .number {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--color-oxblood);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.blog-prose .stat-card .label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-umber);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.blog-prose .confession-card {
+  margin: 40px 0;
+  padding: 36px 28px;
+  background: var(--color-espresso);
+  border-radius: 10px;
+  text-align: center;
+  color: var(--color-parchment);
+}
+.blog-prose .confession-card .confession-label {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: 14px;
+}
+.blog-prose .confession-card .confession-number {
+  font-family: var(--font-display);
+  font-size: 52px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+.blog-prose .confession-card .confession-caption {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-style: italic;
+  color: var(--color-parchment);
+  max-width: 440px;
+  margin: 0 auto;
+  line-height: 1.4;
+}
+.blog-prose .pattern-list {
+  counter-reset: step;
+  list-style: none;
+  padding: 24px 28px;
+  margin: 24px 0 28px;
+  background: var(--color-linen);
+  border-radius: 8px;
+  border-left: 3px solid var(--color-oxblood);
+}
+.blog-prose .pattern-list li {
+  counter-increment: step;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 1.55;
+  padding: 10px 0 10px 46px;
+  position: relative;
+  border-bottom: 1px solid var(--color-divider);
+  margin: 0;
+}
+.blog-prose .pattern-list li:last-child {
+  border-bottom: none;
+}
+.blog-prose .pattern-list li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 10px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-oxblood);
+  background: var(--color-warm-white);
+  border: 1px solid var(--color-oxblood);
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.blog-prose .rigged-list {
+  margin: 36px 0;
+  padding: 28px 24px;
+  background: var(--color-linen);
+  border-radius: 8px;
+  border-left: 3px solid var(--color-oxblood);
+}
+.blog-prose .rigged-list .list-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-espresso);
+  margin-bottom: 16px;
+}
+.blog-prose .rigged-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.blog-prose .rigged-list li {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-espresso);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--color-divider);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 0;
+}
+.blog-prose .rigged-list li:last-child {
+  border-bottom: none;
+}
+.blog-prose .rigged-list li .bullet {
+  color: var(--color-oxblood);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+@media (max-width: 600px) {
+  .blog-prose .stat-row {
+    flex-direction: column;
+  }
+  .blog-prose .redline-pair .pair-row {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .blog-prose .confession-card .confession-number {
+    font-size: 42px;
+  }
+  .blog-prose .timeline-row {
+    flex-wrap: wrap;
+  }
+}
 .blog-cta {
   margin: 56px 0 40px;
   padding: 32px;

@@ -47,10 +47,37 @@ export default function WhitePapersPage() {
         </div>
       </div>
 
+      <div className="paper-feature">
+        <div className="paper-feature-body">
+          <div className="paper-tag">Paper 02 · Information Economics</div>
+          <h2 className="paper-title">The Market for Lemons</h2>
+          <p className="paper-sub">
+            Flat fees as a quality signal in the market for legal services.
+          </p>
+          <p className="paper-desc">
+            George Akerlof's 1970 "market for lemons" showed how hidden quality
+            can collapse a market: when buyers can't tell good from bad, the
+            price falls to the level of the bad and the good exits. Legal
+            services are a textbook case—a credence good the client cannot
+            evaluate even after delivery. This paper applies the lemons model to
+            legal fees and argues that a flat fee is a credible quality signal:
+            a lawyer who fixes the price before the work commits to the
+            efficiency the hourly model has every reason to avoid.
+          </p>
+        </div>
+        <div className="paper-gate">
+          <div className="gate-label">Download the paper</div>
+          <WhitePaperGate
+            paper="The Market for Lemons"
+            file="/white-papers/market-for-lemons.pdf"
+            fileName="Kynigos-Market-for-Lemons.pdf"
+          />
+        </div>
+      </div>
+
       <p className="paper-more">
-        More papers in the series—the market for lemons and flat fees as a
-        quality signal, behavioral contract theory and the non-compete trap, and
-        moral hazard in the legal opinion letter—are in production.
+        More papers in the series—behavioral contract theory and the non-compete
+        trap, and moral hazard in the legal opinion letter—are in production.
       </p>
     </section>
   );
