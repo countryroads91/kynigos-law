@@ -32,12 +32,15 @@ What the firm had to do was simple: drop the letter onto firm letterhead, have t
 
 It was wrong. Not unrecognizable; the structure was mine, the exhibits were mine, the topics were mine. But substantive arguments I had written had been removed, framing I had carefully chosen had been reversed, and the quantitative detail that made the letter persuasive had been replaced with vague adjectives. Had it gone out in that form, it would not have been merely weaker. It would have affirmatively helped the other side. Here is what 3.5 hours of "drafting" actually produced:
 
-| What my draft established | What the firm's version did |
+**What 3.5 hours removed from my letter**
+*Four items from the annotated blackline I prepared on December 10.*
+
+| Issue | The firm's draft |
 |---|---|
-| **Historical fund flows.** The parties had routinely distributed funds *from business accounts into joint accounts*—a one-way flow that directly undercut the other side's narrative. | Said funds moved "between personal, joint, and business-related accounts in both directions." Handed opposing counsel room to spin the reversal as ordinary course. A gift. |
-| **The brokerage tracing.** Quantified precisely: $707K gross out of the joint account, $269K back in, $438K net marital contribution, $122K premarital balance as of August 2019. | Said the net marital contribution was "materially lower" and the premarital balance was "six-figure." Vague. The numbers were the argument. The numbers were gone. |
-| **Dissipation.** Distinguished my own insurer-authorized, medically necessary procedure from the opposing party's roughly $100,000 in elective cosmetic spending funded with marital assets—a D.C. Code § 16-910 dissipation argument. | Collapsed both into generic "medical costs." Let the implied equivalence stand. The dissipation argument was erased. |
-| **Litigation deterrent.** Flagged federal tax compliance exposure—the single most effective deterrent in the letter, because claiming a seven-figure business transfer as an "inheritance" has obvious tax implications if contested at trial. | Removed the tax angle entirely. Left only a generic "expensive for both parties" line. The teeth were gone. |
+| **Historical fund flows.** My draft made clear the parties had routinely distributed funds *from business accounts into joint accounts*—a one-way flow that directly undercut the other side's narrative. | Said funds moved "between personal, joint, and business-related accounts in both directions." Handed opposing counsel room to spin the reversal as ordinary course. A gift. |
+| **The brokerage tracing.** My draft quantified precisely: $707K gross out of the joint account, $269K back in, $438K net marital contribution, $122K premarital balance as of August 2019. | Said the net marital contribution was "materially lower" and the premarital balance was "six-figure." Vague. The numbers were the argument. The numbers were gone. |
+| **Dissipation.** My draft distinguished my own insurer-authorized, medically necessary procedure from the opposing party's roughly $100,000 in elective cosmetic spending funded with marital assets. A D.C. Code § 16-910 dissipation argument. | Collapsed both into generic "medical costs." Let the implied equivalence stand. The dissipation argument was erased. |
+| **Litigation deterrent.** My draft flagged federal tax compliance exposure. The single most effective deterrent in the letter, because claiming a seven-figure business transfer as an "inheritance" has obvious tax implications if contested at trial. | Removed the tax angle entirely. Left only a generic "expensive for both parties" line. The teeth were gone. |
 
 *Each one I had written. Each one the firm deleted. Each one I had to restore.*
 
@@ -62,7 +65,10 @@ In January, opposing counsel sent another letter. I drafted the response myself:
 
 I have the blackline. Every change was synonymous phrasing. No argument was added. No analysis was introduced. No fact was changed. The structure, the numbers, the counter-offer: all mine. The firm's "drafting" was, almost literally, a thesaurus pass. The associate billed 1.80 hours on it. The partner added 0.70 hours of "review and revise." A letter I had already written, drafted end-to-end with exhibits attached, generated roughly **$1,000** in combined partner and associate time. Here are four of the changes they charged me for:
 
-| My draft | What the firm sent |
+**$1,000 of "drafting"**
+*My draft vs. the version the firm charged me to send.*
+
+| My draft | Sent |
 |---|---|
 | "More importantly, the premise of reimbursement assumes available equity. There is not." | "More fundamentally, the reimbursement premise assumes the existence of positive realizable equity. There is none." |
 | "factually unsupported and legally untenable" | "unsupported by the facts" |
@@ -81,20 +87,23 @@ When the framework for settlement was verbally accepted in late January, I offer
 
 I agreed in reliance on that estimate, and I said so explicitly on the call. I was sensitive to cost overruns, and the reason I was willing to let her firm handle the MSA was the two-to-three-hour quote. Here is what "two to three hours" actually produced, across three invoices:
 
+**The MSA timeline**
+*Every billed entry, in order, against a 2–3 hour quote.*
+
 | Date | Entry | Billed |
 |---|---|---|
-| Jan 30 | Associate begins MSA draft. | 0.80 hrs / $292 |
-| Feb 2 | Associate drafts MSA. Partner reviews and revises. | 4.40 hrs / $1,816 |
-| Feb 2 (PM) | *After* 5.20 hours were already billed, the partner emails me requesting basic information: property addresses, bank accounts, health insurance, vehicle details. I respond within two hours. | — |
-| Feb 3 | Associate edits MSA per client information. | 0.50 hrs / $183 |
-| Feb 4–9 | Partner reviews, revises, finalizes. Clean draft sent to opposing counsel. | 1.00 hrs / $515 |
+| 1/30 | Associate begins MSA draft. | 0.80 hrs / $292 |
+| 2/2 | Associate drafts MSA. Partner reviews and revises. | 4.40 hrs / $1,816 |
+| 2/2 PM | *After* 5.20 hours were already billed, the partner emails me requesting basic information: property addresses, bank accounts, health insurance, vehicle details. I respond within two hours. | — |
+| 2/3 | Associate edits MSA per client information. | 0.50 hrs / $183 |
+| 2/4–2/9 | Partner reviews, revises, finalizes. Clean draft sent to opposing counsel. | 1.00 hrs / $515 |
 | **Subtotal through February** | Draft delivered to me still required substantial client-side corrections. | **6.70 hrs / $2,806** |
-| Mar 4 | Associate bills for "Edits to MSA based on opposing party proposal." *See Example Four.* | 1.00 hrs / $365 |
-| Mar 21–22 | I prepare a comprehensive redline and revised exhibits over two weeks. Send to firm on 3/22. | — |
-| Mar 24 | Associate reviews my redline: "everything looks great to me as is." | 0.30 hrs / $110 |
+| 3/4 | Associate bills for "Edits to MSA based on opposing party proposal." *See Example Four.* | 1.00 hrs / $365 |
+| 3/21–3/22 | I prepare a comprehensive redline and revised exhibits over the course of two weeks. Send to firm on 3/22. | — |
+| 3/24 | Associate reviews my redline: "I reviewed the latest draft of the MSA and Exhibit 1 that you sent over and everything looks great to me as is." | 0.30 hrs / $110 |
 | **Total MSA billing** | Across three invoices, for an uncontested settlement agreement. | **8.00 hrs / $3,281** |
 
-**Quoted: two to three hours. Billed: 8.00 hours, across three invoices. The price of a "cost-efficient" draft: $3,281.**
+**2–3 hrs** quoted for MSA drafting · **8.00 hrs** actually billed across three invoices · **$3,281**, the cost of a "cost-efficient" draft.
 
 Two things to notice. First: on **February 2 alone**, the associate and partner billed a combined 4.40 hours on the MSA, exceeding the high end of the entire two-to-three-hour estimate in a single day. Second: the partner's eventual explanation for the overage was that the firm had to request additional information from me mid-draft. But the information request went out *after* the firm had already billed 5.20 hours. The information cannot explain the overage. The quote had been blown past before the email was sent.
 
@@ -112,7 +121,7 @@ Two days later, on March 6, I emailed the partner: "Please don't revise yet. I'm
 
 No reference to the March 4 edits. No mention of any prior work product. No document. No deliverable. The entry sits on the invoice as though it were a completed piece of work, attached to a document the client ultimately drafted himself.
 
-And then, in the billing dispute that followed, the partner asked me to accept that entry as legitimate—a full month after the signed MSA was finalized, with the signed version being mine, and with no document of hers anywhere in the record.
+And then, in the billing dispute that followed, the partner asked me to accept that entry as legitimate. A full month after the signed MSA was finalized. With the signed version being mine. With no document of hers in the record. That is not a misunderstanding. That is shameless.
 
 ## The Psychological Tax
 
@@ -122,7 +131,19 @@ Think about what that requires. You have to confront the person who holds your c
 
 So you are trapped. Disputing the charges risks blowing up the engagement. You stay quiet. You pay the invoice. And your mental bandwidth—the cognitive resource you need most for your actual case—is consumed by managing a hostile relationship with the person who is supposed to be on your side.
 
-Research published in *Science* confirms it. Financial stress alone reduces cognitive function by roughly thirteen to fourteen IQ points—comparable to losing a full night's sleep (Mani et al., 2013). Add custody anxiety, housing uncertainty, and the constant drain of watching your retainer evaporate, and you are operating at a profound deficit at the exact moment the system demands your sharpest judgment. You should be thinking about winning. Instead, you are thinking about whether you can afford to question your own attorney's invoice.
+**Cognitive impairment at the moment of decision**
+*Effective IQ reduction under stress conditions (Mani et al., 2013).*
+
+| Condition | Effective IQ |
+|---|---|
+| Baseline | 100 |
+| Sleep deprived | −12 pts |
+| Financial stress | −14 pts |
+| Divorce client | −18 pts\* |
+
+\* Estimated from combined stressor literature. Source: Mani et al., Science (2013).
+
+Research published in *Science* confirms it. Financial stress alone reduces cognitive function by thirteen to fourteen IQ points, comparable to losing a full night's sleep. Add custody anxiety, housing uncertainty, and the constant drain of watching your retainer evaporate, and you are operating at a profound deficit at the exact moment the system demands your sharpest judgment. You should be thinking about winning. Instead, you are thinking about whether you can afford to question your own attorney's invoice.
 
 I pushed back anyway. Here is what happened.
 
@@ -134,9 +155,9 @@ The response came six days later. The partner agreed to write off the December l
 
 That last point deserves to be restated. The partner's defense of the MSA overrun was, in substance: I quoted you my time. The associate's time is different. You were never entitled to the quote I gave you, because the person doing the work is cheaper per hour and slower in aggregate—which makes her more profitable to the firm and more expensive for you.
 
-I replied the following day. I accepted her benchmarks where I could, and added a fourth issue: the phantom March 4 entry. The firm agreed. Documented line by line, the write-off came to **$2,952.75.**
+I replied the following day. I accepted her benchmarks where I could, and added a fourth issue: the phantom March 4 entry. The final requested adjustment, documented line by line, was **$2,952.75**.
 
-> **$2,952.75** conceded by the firm—roughly 20% of the total billed on the matter, erased across three billing issues, three invoices, and five months of work.
+> **Fees conceded by the firm: $2,952.75** — approximately 20% of total fees on the matter, erased across three billing issues, three invoices, and five months of work.
 
 A write-off of that size is not goodwill. It is a firm agreeing, on its own letterhead, that nearly $3,000 of what it billed me was not earned—and that figure excludes the MSA overrun entirely, the single largest item in dispute, which the firm refused to touch. Even with the biggest dispute set aside, they conceded nearly $3,000. The same work. The same invoices. The same attorneys. It is the entire thesis of this post, conceded by the firm that produced the bills.
 
@@ -160,17 +181,19 @@ How the hourly model works against you:
 
 - The retainer locks you in before you have seen a single work product.
 - The billing cycle runs 30 to 60 days behind the work. You do not know what you owe until long after the money is gone.
-- The incentives reward billing, not results. Hours get manufactured—rephrasing your own drafts, padding billing descriptions—because every hour is revenue.
+- The incentives reward billing, not results. Attorneys fabricate work—rephrasing your own drafts, padding billing descriptions—because every hour is revenue.
 - Associates are not cost centers. They are profit centers. Work pushed to an associate generates revenue for the partner at the associate's markup, regardless of whether the work is competent.
 - Attorneys are actively resistant to technology that would make them more efficient, because efficiency reduces billable hours.
-- Oral estimates are unenforceable. A two-hour quote can become an eight-hour bill, and the retainer agreement is all that governs.
+- Oral estimates are unenforceable. A two-hour quote can become a ten-hour bill, and the retainer agreement is all that governs.
 - Even correcting the firm's own mistakes gets billed back to you.
 - Work that produces no deliverable—an hour of "edits" no one ever sees again—is billed the same as work that does.
 - The psychological cost of disputing a bill—the risk of being dropped mid-case—keeps you silent.
 - And if you do dispute, the system only corrects for clients who could replace their own lawyer.
 
-That is why I built Kynigos. In family matters, every fee is flat—no retainer to drain, no billing cycle to hide behind. The price is agreed before the work begins, and if I underestimate the work, I absorb the cost, not you. Because efficiency is how I protect my own economics, I embrace the tools—including AI—that hourly attorneys have every incentive to avoid.
+That is why I built Kynigos. Every fee is flat. No retainer to drain. No billing cycle to hide behind. The price is agreed before the work begins, and if I underestimate the work, I absorb the cost, not you. Because efficiency is how I protect my own economics, I embrace the tools—including AI—that hourly attorneys have every incentive to avoid.
 
 Your lawyer and you should be on the same side of every dollar. Under hourly billing, you are structurally on opposite sides. That is the problem Kynigos was built to solve.
 
 > Every attorney claims to be zealous. The question is whether the fee structure proves it.
+
+*Dollar figures and billing entries described above are drawn from invoices, email correspondence, and contemporaneous records in the author's files.*

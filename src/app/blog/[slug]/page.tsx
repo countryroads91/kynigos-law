@@ -62,9 +62,13 @@ export default async function BlogPostPage({
       <aside className="blog-cta">
         <div className="blog-cta-label">Read the full analysis</div>
         <p>
-          This piece draws on <em>Misaligned Incentives</em>, our white paper on
-          the economics of legal fees—formal models, empirical data, and full
-          citations.
+          {post.ctaText ?? (
+            <>
+              This piece draws on <em>Misaligned Incentives</em>, our white paper
+              on the economics of legal fees—formal models, empirical data, and
+              full citations.
+            </>
+          )}
         </p>
         <Link href="/white-papers" className="btn-primary">
           Get the White Paper
