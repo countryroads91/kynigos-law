@@ -491,6 +491,69 @@ h1, h2, h3, h4, h5, h6 {
   border-top: 1px solid var(--color-divider);
   margin: 40px 0;
 }
+.blog-prose .table-wrap,
+.blog-prose table {
+  margin: 32px 0;
+}
+.blog-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: 14.5px;
+  line-height: 1.5;
+  background: var(--color-warm-white);
+  border: 1px solid var(--color-divider);
+}
+.blog-prose thead th {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-umber);
+  text-align: left;
+  background: var(--color-linen);
+  border-bottom: 1px solid var(--color-divider);
+  padding: 11px 14px;
+  vertical-align: bottom;
+}
+.blog-prose tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--color-divider);
+  color: var(--color-espresso);
+  vertical-align: top;
+}
+.blog-prose tbody tr:last-child td {
+  border-bottom: none;
+}
+.blog-prose tbody tr:nth-child(even) td {
+  background: var(--color-parchment);
+}
+.blog-prose table strong {
+  color: var(--color-oxblood);
+}
+/* Comparison tables (2 columns) get a fixed 50/50 layout so neither side
+   collapses to one word per line; the 3-column timeline (which has a third
+   header cell) keeps its natural content-based sizing. */
+.blog-prose table:not(:has(thead th:nth-child(3))) {
+  table-layout: fixed;
+}
+.blog-prose thead tr:not(:has(th:nth-child(3))) th,
+.blog-prose tbody tr:not(:has(td:nth-child(3))) td {
+  width: 50%;
+}
+/* Right-align the trailing "billed" column when present. */
+.blog-prose tbody td:last-child,
+.blog-prose thead th:last-child {
+  white-space: nowrap;
+}
+@media (max-width: 640px) {
+  .blog-prose table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
 .blog-cta {
   margin: 56px 0 40px;
   padding: 32px;

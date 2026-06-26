@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import fs from "node:fs";
 import path from "node:path";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { posts, getPost, formatDate } from "@/content/posts";
 
 export function generateStaticParams() {
@@ -55,7 +56,7 @@ export default async function BlogPostPage({
       </div>
 
       <div className="blog-prose">
-        <ReactMarkdown>{body}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
       </div>
 
       <aside className="blog-cta">

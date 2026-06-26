@@ -12,6 +12,17 @@ export type Post = {
 // Newest first.
 export const posts: Post[] = [
   {
+    slug: "i-have-been-the-client",
+    title: "I Have Been the Client",
+    dek: "I paid the retainers. I watched the meter run. I watched a white-shoe firm mangle my own drafts, bill me for the damage, then bill me again to fix what they broke. Then I pushed back—and the firm wrote off nearly $3,000.",
+    description:
+      "A DC attorney's documented, first-person account of being billed by the hour through his own divorce—four examples with dates and numbers—and why he built Kynigos Law Firm on flat fees.",
+    author: "Bayan Misaghi, Esq.",
+    authorTitle: "Managing Partner",
+    date: "2026-06-26",
+    category: "Personal · Why Kynigos Exists",
+  },
+  {
     slug: "i-watched-the-meter-run",
     title: "I Watched the Meter Run",
     dek: "What my own divorce taught me about the economics of hourly billing—and why I built a firm that refuses to do it.",
