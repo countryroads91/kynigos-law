@@ -1,10 +1,23 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { POST } from "./route";
 
-// Ensure no real email is ever sent from tests, even if the shell has keys.
+const { sendMock } = vi.hoisted(() => ({ sendMock: vi.fn() }));
+
+vi.mock("resend", () => ({
+  Resend: class {
+    emails = { send: sendMock };
+  },
+}));
+
 beforeEach(() => {
-  delete process.env.RESEND_API_KEY;
-  delete process.env.LEAD_NOTIFY_EMAIL;
+  vi.stubEnv("RESEND_API_KEY", "test-key");
+  vi.stubEnv("LEAD_NOTIFY_EMAIL", "notify@example.com");
+  sendMock.mockReset();
+  sendMock.mockResolvedValue({ data: { id: "test" } });
+});
+
+afterEach(() => {
+  vi.unstubAllEnvs();
 });
 
 function post(body: unknown) {
@@ -24,10 +37,27 @@ const valid = {
 };
 
 describe("POST /api/lead", () => {
-  it("accepts a valid lead", async () => {
+  it("accepts a valid lead and sends the notification email", async () => {
     const res = await post(valid);
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true });
+    expect(sendMock).toHaveBeenCalledOnce();
+    expect(sendMock.mock.calls[0][0].replyTo).toBe(valid.email);
+  });
+
+  it("still returns 200 when the email send fails (download is the deliverable)", async () => {
+    sendMock.mockRejectedValue(new Error("resend down"));
+    const res = await post(valid);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ ok: true });
+  });
+
+  it("still returns 200 when email env vars are not configured", async () => {
+    vi.stubEnv("RESEND_API_KEY", "");
+    vi.stubEnv("LEAD_NOTIFY_EMAIL", "");
+    const res = await post(valid);
+    expect(res.status).toBe(200);
+    expect(sendMock).not.toHaveBeenCalled();
   });
 
   it("rejects an invalid email", async () => {
@@ -44,6 +74,12 @@ describe("POST /api/lead", () => {
   it("defaults a missing paper title rather than failing", async () => {
     const res = await post({ ...valid, paper: undefined });
     expect(res.status).toBe(200);
+  });
+
+  it("neutralizes control characters in name before the subject line", async () => {
+    const res = await post({ ...valid, name: "Test\r\nInjected" });
+    expect(res.status).toBe(200);
+    expect(sendMock.mock.calls[0][0].subject).not.toMatch(/[\r\n]/);
   });
 
   it("rejects malformed JSON with a 400", async () => {

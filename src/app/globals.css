@@ -1066,17 +1066,35 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif);
   font-size: 16px; /* >=16px prevents iOS zoom on focus */
   color: var(--color-espresso);
-  background: var(--color-parchment);
+  background: var(--color-warm-white);
   border: 1px solid var(--color-divider);
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 11px 12px;
-  transition: border-color 200ms ease;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
 }
 .gate-field input:focus,
 .gate-field select:focus,
 .gate-field textarea:focus {
   outline: none;
   border-color: var(--color-oxblood);
+}
+/* Visible ring for keyboard users per design system §11/§13. */
+.gate-field input:focus-visible,
+.gate-field select:focus-visible,
+.gate-field textarea:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-oxblood) 35%, transparent);
+}
+/* Unselected state reads as a placeholder, not a committed value. */
+.gate-field select:invalid {
+  color: var(--color-muted);
+}
+/* Honeypot: visually removed for humans, present for bots. */
+.gate-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 .gate-field select {
   appearance: none;
@@ -1092,12 +1110,20 @@ h1, h2, h3, h4, h5, h6 {
   min-height: 120px;
 }
 .contact-form {
+  position: relative; /* containing block for the off-screen honeypot */
   width: 100%;
   max-width: 560px;
   margin-bottom: 40px;
 }
 .gate-note a {
   color: var(--color-oxblood);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+.gate-note a:hover {
+  color: var(--color-oxblood-hover);
+  text-decoration-thickness: 2px;
 }
 .gate-form .btn-primary {
   margin-top: 4px;
@@ -1180,6 +1206,14 @@ h1, h2, h3, h4, h5, h6 {
 .btn-secondary:hover {
   background: var(--color-oxblood);
   color: var(--color-parchment);
+}
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.btn-primary:disabled:hover {
+  background: var(--color-oxblood);
+  transform: none;
 }
 
 /* ─── Marquee ticker ─── */

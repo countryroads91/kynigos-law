@@ -11,6 +11,7 @@ export default function ContactForm() {
   const [phone, setPhone] = useState("");
   const [jurisdiction, setJurisdiction] = useState("");
   const [message, setMessage] = useState("");
+  const [company, setCompany] = useState(""); // honeypot—hidden from real users
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
 
@@ -18,14 +19,21 @@ export default function ContactForm() {
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (outsideDC) return;
+    if (outsideDC || status === "submitting") return;
     setStatus("submitting");
     setError("");
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone, jurisdiction, message }),
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          jurisdiction,
+          message,
+          company,
+        }),
       });
       const data = (await res.json().catch(() => ({}))) as {
         ok?: boolean;
@@ -45,7 +53,7 @@ export default function ContactForm() {
 
   if (status === "done") {
     return (
-      <div className="gate-done">
+      <div className="gate-done" role="status">
         <p>
           Thanks, {name.split(" ")[0] || "there"}. Your message is on its way.
           We respond within one business day.
@@ -64,6 +72,7 @@ export default function ContactForm() {
           type="text"
           required
           minLength={2}
+          maxLength={120}
           value={name}
           onChange={(e) => setName(e.target.value)}
           autoComplete="name"
@@ -87,9 +96,22 @@ export default function ContactForm() {
           id={`${uid}-phone`}
           name="phone"
           type="tel"
+          maxLength={40}
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           autoComplete="tel"
+        />
+      </div>
+      <div className="gate-honeypot" aria-hidden="true">
+        <label htmlFor={`${uid}-company`}>Company</label>
+        <input
+          id={`${uid}-company`}
+          name="company"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={company}
+          onChange={(e) => setCompany(e.target.value)}
         />
       </div>
       <div className="gate-field">
@@ -123,6 +145,7 @@ export default function ContactForm() {
           name="message"
           required
           rows={5}
+          maxLength={5000}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
