@@ -24,10 +24,6 @@ export default function CapitalMarketsPage() {
         Partners (Verus securitization platform, SFR/CRE lending), LendingOne,
         Rocade Capital. Inactive Series 7 and 63.
       </p>
-      <p className="lede">
-        Full page in progress—institutional pricing, scope templates, and
-        approved-counsel onboarding materials are coming.
-      </p>
       <div className="cta-row">
         <Link href="/contact" className="btn-primary">
           Schedule a Consultation

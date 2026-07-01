@@ -72,7 +72,7 @@ export default function ContactPage() {
             Email
           </div>
           <a
-            href="mailto:info@kynigos.law"
+            href="mailto:bayan@kynigos.law"
             style={{
               fontFamily: "var(--font-display)",
               fontSize: 20,
@@ -81,7 +81,7 @@ export default function ContactPage() {
               textDecoration: "none",
             }}
           >
-            info@kynigos.law
+            bayan@kynigos.law
           </a>
         </div>
         <div>

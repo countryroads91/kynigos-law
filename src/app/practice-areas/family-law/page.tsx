@@ -21,10 +21,6 @@ export default function FamilyLawPage() {
         engagement priced at a defined flat fee or a hybrid fixed-plus-success
         model. You know the cost before any work begins.
       </p>
-      <p className="lede">
-        Full page in progress—pricing tables, scope documents, and the
-        PriceComparison calculator are coming.
-      </p>
       <div className="cta-row">
         <Link href="/contact" className="btn-primary">
           Schedule a Consultation

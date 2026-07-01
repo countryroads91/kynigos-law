@@ -59,7 +59,7 @@ export default function Footer() {
                 <a href="tel:+13045491058">(304) 549-1058</a>
               </li>
               <li>
-                <a href="mailto:info@kynigos.law">info@kynigos.law</a>
+                <a href="mailto:bayan@kynigos.law">bayan@kynigos.law</a>
               </li>
             </ul>
           </div>

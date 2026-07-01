@@ -22,13 +22,12 @@ export default function ContractReviewPage() {
         confirm receipt and begin work.
       </p>
       <p className="lede">
-        Full product page in progress—Stripe checkout, scope detail,
-        PriceComparison calculator, and the post-purchase intake flow are
-        coming.
+        Online checkout is coming soon. Until then, book a free
+        consultation and we will take your contract directly.
       </p>
       <div className="cta-row">
         <Link href="/contact" className="btn-primary">
-          Get Notified at Launch
+          Book A Free Consultation
         </Link>
         <Link href="/" className="btn-secondary">
           Back to Home
