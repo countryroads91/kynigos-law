@@ -45,14 +45,18 @@ export default function Nav() {
   const navRef = useRef<HTMLElement | null>(null);
   const hoverCapable = useRef(false);
   const pathname = usePathname();
+  const [prevPathname, setPrevPathname] = useState(pathname);
 
   // Safety net: whatever caused the route to change (link tap, back button,
   // programmatic navigation), never leave the menu or its scroll lock behind.
-  useEffect(() => {
+  // State is adjusted during render (not in an effect) per React's
+  // "adjusting state when props change" pattern.
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
     setOpen(null);
     setMobileOpen(false);
     setMobileSection(null);
-  }, [pathname]);
+  }
 
   useEffect(() => {
     hoverCapable.current = window.matchMedia(
