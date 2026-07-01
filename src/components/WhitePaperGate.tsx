@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 
 type Props = {
   paper: string;
@@ -11,6 +11,9 @@ type Props = {
 type Status = "idle" | "submitting" | "done" | "error";
 
 export default function WhitePaperGate({ paper, file, fileName }: Props) {
+  // Two gates render on the same page; hardcoded ids collided, so the second
+  // form's labels focused the first form's inputs.
+  const uid = useId();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
@@ -69,9 +72,9 @@ export default function WhitePaperGate({ paper, file, fileName }: Props) {
   return (
     <form className="gate-form" onSubmit={onSubmit} noValidate>
       <div className="gate-field">
-        <label htmlFor="gate-name">Name</label>
+        <label htmlFor={`${uid}-name`}>Name</label>
         <input
-          id="gate-name"
+          id={`${uid}-name`}
           name="name"
           type="text"
           required
@@ -81,9 +84,9 @@ export default function WhitePaperGate({ paper, file, fileName }: Props) {
         />
       </div>
       <div className="gate-field">
-        <label htmlFor="gate-email">Email</label>
+        <label htmlFor={`${uid}-email`}>Email</label>
         <input
-          id="gate-email"
+          id={`${uid}-email`}
           name="email"
           type="email"
           required
