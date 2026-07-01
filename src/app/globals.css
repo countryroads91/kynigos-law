@@ -1060,9 +1060,11 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase;
   color: var(--color-umber);
 }
-.gate-field input {
+.gate-field input,
+.gate-field select,
+.gate-field textarea {
   font-family: var(--font-serif);
-  font-size: 16px;
+  font-size: 16px; /* >=16px prevents iOS zoom on focus */
   color: var(--color-espresso);
   background: var(--color-parchment);
   border: 1px solid var(--color-divider);
@@ -1070,9 +1072,32 @@ h1, h2, h3, h4, h5, h6 {
   padding: 11px 12px;
   transition: border-color 200ms ease;
 }
-.gate-field input:focus {
+.gate-field input:focus,
+.gate-field select:focus,
+.gate-field textarea:focus {
   outline: none;
   border-color: var(--color-oxblood);
+}
+.gate-field select {
+  appearance: none;
+  -webkit-appearance: none;
+  /* Umber chevron per design system §13 */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%235C4F42' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+.gate-field textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+.contact-form {
+  width: 100%;
+  max-width: 560px;
+  margin-bottom: 40px;
+}
+.gate-note a {
+  color: var(--color-oxblood);
 }
 .gate-form .btn-primary {
   margin-top: 4px;

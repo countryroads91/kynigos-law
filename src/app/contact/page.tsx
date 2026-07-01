@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import ContactForm from "@/components/ContactForm";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -110,6 +111,10 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
+      <div className="kicker" style={{ marginTop: 8 }}>
+        Or Write to Us
+      </div>
+      <ContactForm />
       <div className="cta-row">
         <Link href="/" className="btn-secondary">
           Back to Home
