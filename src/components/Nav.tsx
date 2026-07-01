@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 type MenuItem = { label: string; href: string };
@@ -43,6 +44,15 @@ export default function Nav() {
   const [mobileSection, setMobileSection] = useState<number | null>(null);
   const navRef = useRef<HTMLElement | null>(null);
   const hoverCapable = useRef(false);
+  const pathname = usePathname();
+
+  // Safety net: whatever caused the route to change (link tap, back button,
+  // programmatic navigation), never leave the menu or its scroll lock behind.
+  useEffect(() => {
+    setOpen(null);
+    setMobileOpen(false);
+    setMobileSection(null);
+  }, [pathname]);
 
   useEffect(() => {
     hoverCapable.current = window.matchMedia(

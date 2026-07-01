@@ -1225,6 +1225,10 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase;
   color: var(--color-espresso);
   text-decoration: none;
+  /* Above .nav-mobile (z-index 99) so the brand stays visible and tappable
+     while the mobile menu panel is open. */
+  position: relative;
+  z-index: 101;
 }
 .nav-links {
   display: flex;
@@ -1353,12 +1357,17 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
   justify-content: center;
   gap: 5px;
-  width: 40px;
-  height: 40px;
-  padding: 8px;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
   background: none;
   border: none;
   cursor: pointer;
+  /* Above .nav-mobile (z-index 99). The full-screen panel is a later sibling
+     inside the .nav stacking context; without this the panel paints over the
+     button and taps on the X land on the panel, so the menu can never close. */
+  position: relative;
+  z-index: 101;
 }
 .nav-burger span {
   display: block;
@@ -1381,7 +1390,7 @@ h1, h2, h3, h4, h5, h6 {
   inset: 0;
   z-index: 99;
   background: var(--color-parchment);
-  padding: 96px 24px 40px;
+  padding: 96px 24px calc(40px + env(safe-area-inset-bottom));
   overflow-y: auto;
   display: flex;
   flex-direction: column;
