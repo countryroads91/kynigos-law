@@ -7,6 +7,12 @@ type LeadBody = { name?: string; email?: string; paper?: string };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// Strip control characters so user input cannot forge log lines or reach the
+// email subject header un-neutralized.
+function clean(value: string): string {
+  return value.replace(/[\r\n\t\x00-\x1f]+/g, " ").trim();
+}
+
 export async function POST(req: Request) {
   let body: LeadBody;
   try {
@@ -18,9 +24,9 @@ export async function POST(req: Request) {
     );
   }
 
-  const name = (body.name ?? "").trim();
+  const name = clean(body.name ?? "");
   const email = (body.email ?? "").trim();
-  const paper = (body.paper ?? "white paper").trim().slice(0, 120);
+  const paper = clean(body.paper ?? "white paper").slice(0, 120);
 
   if (name.length < 2 || name.length > 120 || !EMAIL_RE.test(email)) {
     return NextResponse.json(

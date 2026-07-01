@@ -8,13 +8,10 @@ export const metadata: Metadata = {
 
 const reelWords = [
   "divorce",
-  "employment",
-  "contracts",
-  "real estate",
+  "custody",
+  "eviction",
+  "contract",
   "capital markets",
-  "business",
-  "finance",
-  "M&A",
 ];
 
 export default function Home() {

@@ -22,10 +22,6 @@ export default function LandlordTenantPage() {
         fee plus a success-based component—incentives aligned with outcomes,
         not with the courtroom calendar.
       </p>
-      <p className="lede">
-        Full page in progress—scope, fee schedule, and intake checklist
-        coming.
-      </p>
       <div className="cta-row">
         <Link href="/contact" className="btn-primary">
           Schedule a Consultation
