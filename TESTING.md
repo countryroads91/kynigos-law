@@ -13,7 +13,7 @@ npm test          # vitest run (single pass, CI mode)
 npx vitest        # watch mode
 ```
 
-CI runs `npm test` on every push and pull request (`.github/workflows/test.yml`).
+CI runs a typecheck (`npx tsc --noEmit`) and `npm test` on every push to main and every pull request (`.github/workflows/test.yml`).
 
 ## Test layers
 
