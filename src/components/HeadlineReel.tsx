@@ -1,6 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+function subscribeReducedMotion(callback: () => void) {
+  const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mql.addEventListener("change", callback);
+  return () => mql.removeEventListener("change", callback);
+}
+
+function getReducedMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
 
 type Props = {
   words: string[];
@@ -18,28 +28,14 @@ export default function HeadlineReel({
   const indexRef = useRef(0);
   const spinningRef = useRef(false);
   const frameRef = useRef<number | null>(null);
-  const [reduced, setReduced] = useState(false);
+  const reduced = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotion,
+    () => false, // server snapshot: assume motion until the client knows better
+  );
   const [isSpinning, setIsSpinning] = useState(false);
 
   const tripled = [...words, ...words, ...words];
-
-  useEffect(() => {
-    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(mql.matches);
-    const onChange = () => setReduced(mql.matches);
-    mql.addEventListener("change", onChange);
-    return () => mql.removeEventListener("change", onChange);
-  }, []);
-
-  useEffect(() => {
-    if (reduced) return;
-    const id = window.setInterval(spin, intervalMs);
-    return () => {
-      window.clearInterval(id);
-      if (frameRef.current != null) cancelAnimationFrame(frameRef.current);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reduced, intervalMs, spinDurationMs]);
 
   function getItemHeight(): number {
     const first = itemsRef.current[0];
@@ -94,6 +90,16 @@ export default function HeadlineReel({
     };
     frameRef.current = requestAnimationFrame(animate);
   }
+
+  useEffect(() => {
+    if (reduced) return;
+    const id = window.setInterval(spin, intervalMs);
+    return () => {
+      window.clearInterval(id);
+      if (frameRef.current != null) cancelAnimationFrame(frameRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reduced, intervalMs, spinDurationMs]);
 
   return (
     <div className="reel-container">

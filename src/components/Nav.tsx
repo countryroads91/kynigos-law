@@ -43,6 +43,7 @@ export default function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSection, setMobileSection] = useState<number | null>(null);
   const navRef = useRef<HTMLElement | null>(null);
+  const burgerRef = useRef<HTMLButtonElement | null>(null);
   const hoverCapable = useRef(false);
   const pathname = usePathname();
   const [prevPathname, setPrevPathname] = useState(pathname);
@@ -75,6 +76,7 @@ export default function Nav() {
       if (e.key === "Escape") {
         setOpen(null);
         setMobileOpen(false);
+        setMobileSection(null);
       }
     }
     document.addEventListener("mousedown", onPointerDown);
@@ -90,6 +92,36 @@ export default function Nav() {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  // Trap Tab focus inside the nav while the full-screen mobile menu is open
+  // (design system §16); return focus to the burger when it closes.
+  useEffect(() => {
+    if (!mobileOpen) return;
+    function onTrapKey(e: KeyboardEvent) {
+      if (e.key !== "Tab" || !navRef.current) return;
+      const focusables = Array.from(
+        navRef.current.querySelectorAll<HTMLElement>(
+          "a[href], button:not([disabled])",
+        ),
+      ).filter((el) => el.offsetParent !== null);
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement;
+      if (e.shiftKey && (active === first || !navRef.current.contains(active))) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+    document.addEventListener("keydown", onTrapKey);
+    return () => {
+      document.removeEventListener("keydown", onTrapKey);
+      burgerRef.current?.focus();
     };
   }, [mobileOpen]);
 
@@ -179,6 +211,7 @@ export default function Nav() {
 
       <button
         type="button"
+        ref={burgerRef}
         className="nav-burger"
         aria-label={mobileOpen ? "Close menu" : "Open menu"}
         aria-expanded={mobileOpen}

@@ -3,6 +3,15 @@
 All notable changes to the Kynigos Law Firm site are documented here.
 Versions follow a 4-digit MAJOR.MINOR.PATCH.MICRO format.
 
+## [0.2.1.0] - 2026-07-01
+
+### Fixed
+- Keyboard and screen-reader users can no longer Tab out of the open mobile menu into hidden page content; closing the menu returns focus to the menu button, and Escape now fully resets the menu.
+- Cleared all pre-existing lint errors (typographic quotes in the white-papers copy; modernized the headline reel's reduced-motion handling).
+
+### Added
+- Component regression tests (8 new, 33 total): the mobile-menu close-on-navigation fix, Escape/focus behavior, the contact form's DC jurisdiction gate and submit states, and the white-paper form id fix are now locked in by tests.
+
 ## [0.2.0.0] - 2026-07-01
 
 ### Added
