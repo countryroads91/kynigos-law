@@ -31,8 +31,8 @@ export default function WhitePapersPage() {
           <p className="paper-desc">
             When you hire an attorney who bills by the hour, you create a
             classic principal-agent problem: your lawyer has information you
-            don't and an incentive to bill hours you may not need. This paper
-            lays out the formal economics—from Stephen Ross's 1973 framing
+            don&rsquo;t and an incentive to bill hours you may not need. This paper
+            lays out the formal economics—from Stephen Ross&rsquo;s 1973 framing
             through modern game-theoretic models—and shows why a flat fee
             realigns the relationship.
           </p>
@@ -55,8 +55,8 @@ export default function WhitePapersPage() {
             Flat fees as a quality signal in the market for legal services.
           </p>
           <p className="paper-desc">
-            George Akerlof's 1970 "market for lemons" showed how hidden quality
-            can collapse a market: when buyers can't tell good from bad, the
+            George Akerlof&rsquo;s 1970 &ldquo;market for lemons&rdquo; showed how hidden quality
+            can collapse a market: when buyers can&rsquo;t tell good from bad, the
             price falls to the level of the bad and the good exits. Legal
             services are a textbook case—a credence good the client cannot
             evaluate even after delivery. This paper applies the lemons model to
