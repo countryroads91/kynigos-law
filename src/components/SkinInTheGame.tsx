@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SpearMark from "@/components/SpearMark";
 
 const arenas = [
   {
@@ -27,10 +28,11 @@ const arenas = [
 export default function SkinInTheGame() {
   return (
     <section
-      className="skin"
+      className="skin band-marked"
       id="skin-in-the-game"
       aria-labelledby="skin-heading"
     >
+      <SpearMark className="band-mark" />
       <div className="skin-inner">
         <div className="kicker">Skin in the Game</div>
         <h2 className="section-heading" id="skin-heading">
@@ -44,7 +46,7 @@ export default function SkinInTheGame() {
 
         <div className="skin-grid">
           {arenas.map((a) => (
-            <article className="skin-card" key={a.num}>
+            <article className="skin-card" key={a.num} data-reveal>
               <span className="skin-num">{a.num}</span>
               <h3 className="skin-title">{a.title}</h3>
               <dl className="skin-blocks">

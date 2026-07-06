@@ -1,9 +1,9 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { getPost, formatDate } from "@/content/posts";
 import { getPaper } from "@/content/papers";
 
 // Three voices, one system: a personal essay, a firm publication, and the
-// research underneath—each visibly its own content type, never a flat grid.
+// research underneathâ€”each visibly its own content type, never a flat grid.
 export default function FeaturedInsights() {
   const essay = getPost("i-have-been-the-client");
   const publication = getPost("your-lawyer-has-an-incentive-problem");
@@ -27,9 +27,9 @@ export default function FeaturedInsights() {
       <div className="card-grid card-grid--wide">
         <Link
           href={`/blog/${essay.slug}`}
-          className="insight-card insight-card--essay"
+          className="insight-card insight-card--essay" data-reveal
         >
-          <span className="insight-label">Personal Essay · Why Kynigos Exists</span>
+          <span className="insight-label">Personal Essay Â· Why Kynigos Exists</span>
           <h3 className="insight-title">{essay.title}</h3>
           <p className="insight-dek">{essay.dek}</p>
           <div className="insight-meta">
@@ -40,7 +40,7 @@ export default function FeaturedInsights() {
         </Link>
         <Link
           href={`/blog/${publication.slug}`}
-          className="insight-card insight-card--publication"
+          className="insight-card insight-card--publication" data-reveal
         >
           <span className="insight-label">Kynigos Publication</span>
           <h3 className="insight-title">{publication.title}</h3>
@@ -54,7 +54,7 @@ export default function FeaturedInsights() {
             <span>{publication.readingTime}</span>
           </div>
         </Link>
-        <Link href="/white-papers" className="insight-card insight-card--paper">
+        <Link href="/white-papers" className="insight-card insight-card--paper" data-reveal>
           <span className="insight-label">White Paper</span>
           <h3 className="insight-title">{paper.title}</h3>
           <p className="insight-dek">{paper.sub}</p>

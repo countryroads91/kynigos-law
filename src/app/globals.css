@@ -2975,3 +2975,548 @@ a.menu-child-link.is-active {
   .first-move-actions { flex-direction: column; align-items: stretch; }
   .first-move-actions .gate-note { max-width: none; }
 }
+
+/* â”€â”€â”€ Scroll reveal (design system Â§11) â”€â”€â”€
+   Hidden state is gated on html.js (set by the inline script in layout.tsx)
+   AND motion preference, so content is never invisible without JavaScript or
+   for reduced-motion users. Reveals animate via fadeUp keyframes rather than
+   transitions so each element's own hover transitions are untouched. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal]:not(.is-visible) {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  html.js [data-reveal].is-visible {
+    animation: fadeUp 480ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  /* Stagger siblings that reveal together (Â§11: 80â€“100ms apart). */
+  html.js [data-reveal].is-visible:nth-child(2) { animation-delay: 90ms; }
+  html.js [data-reveal].is-visible:nth-child(3) { animation-delay: 180ms; }
+  html.js [data-reveal].is-visible:nth-child(4) { animation-delay: 270ms; }
+  html.js [data-reveal].is-visible:nth-child(5) { animation-delay: 360ms; }
+}
+
+/* â”€â”€â”€ Band watermark â”€â”€â”€
+   An oversized spearhead fragment layered behind band sections. Plain logo
+   usage at whisper opacityâ€”decorative depth, not redaction (Â§12 scope). */
+.band-marked {
+  position: relative;
+  overflow: hidden;
+}
+.band-mark {
+  position: absolute;
+  top: 50%;
+  right: -3%;
+  height: 165%;
+  width: auto;
+  transform: translateY(-50%) rotate(10deg);
+  fill: var(--color-oxblood);
+  opacity: 0.05;
+  pointer-events: none;
+  user-select: none;
+}
+/* The watermark sits behind the band's content column. */
+.band-marked > *:not(.band-mark) {
+  position: relative;
+  z-index: 1;
+}
+
+/* â”€â”€â”€ Practice-areas hero index chips â”€â”€â”€ */
+.pa-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 36px;
+}
+.pa-index-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 9px;
+  padding: 11px 16px;
+  background: var(--color-warm-white);
+  border: 1px solid var(--color-divider);
+  border-radius: 2px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--color-espresso);
+  text-decoration: none;
+  transition:
+    border-color 100ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    color 100ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.pa-index-num {
+  font-size: 10.5px;
+  color: var(--color-oxblood);
+  letter-spacing: 0.12em;
+}
+.pa-index-link:hover {
+  border-color: var(--color-oxblood);
+  color: var(--color-oxblood);
+  transform: translateY(-1px);
+}
+
+/* â”€â”€â”€ Practice directory (grouped accordion) â”€â”€â”€ */
+.process--directory {
+  padding-top: 24px;
+}
+.pa-group {
+  padding: 44px 0 4px;
+  scroll-margin-top: 96px;
+}
+.pa-group-head {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 28px;
+  align-items: start;
+  margin-bottom: 26px;
+}
+/* Oversized editorial numeralâ€”outlined where supported, tinted otherwise. */
+.pa-group-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(48px, 6vw, 76px);
+  line-height: 0.9;
+  color: color-mix(in srgb, var(--color-oxblood) 22%, transparent);
+}
+@supports (-webkit-text-stroke: 1px black) {
+  .pa-group-num {
+    color: transparent;
+    -webkit-text-stroke: 1.2px
+      color-mix(in srgb, var(--color-oxblood) 50%, transparent);
+  }
+}
+.pa-group-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(26px, 3vw, 36px);
+  line-height: 1.1;
+  color: var(--color-espresso);
+  margin: 0 0 10px;
+}
+.pa-group-lede {
+  font-family: var(--font-serif);
+  font-size: 16.5px;
+  line-height: 1.65;
+  color: var(--color-umber);
+  max-width: 640px;
+  margin: 0;
+}
+.pa-flagship {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-oxblood);
+  text-decoration: none;
+}
+.pa-flagship:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.pa-arrow {
+  display: inline-block;
+  transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.pa-flagship:hover .pa-arrow,
+.pa-panel-link:hover .pa-arrow {
+  transform: translateX(4px);
+}
+
+.pa-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--color-divider);
+}
+.pa-item {
+  border-bottom: 1px solid var(--color-divider);
+}
+.pa-item-heading {
+  margin: 0;
+}
+.pa-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 19px 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 2px;
+}
+.pa-trigger-name {
+  font-family: var(--font-display);
+  font-size: clamp(19px, 2vw, 22px);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-espresso);
+  transition: color 100ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.pa-trigger:hover .pa-trigger-name {
+  color: var(--color-oxblood);
+}
+.pa-trigger-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+.fee-badge {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-espresso);
+  background: var(--color-linen);
+  border-radius: 2px;
+  padding: 6px 9px;
+  white-space: nowrap;
+}
+.pa-chevron {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--color-umber);
+  transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.pa-trigger[aria-expanded="true"] .pa-chevron {
+  transform: rotate(180deg);
+}
+.pa-panel-inner {
+  padding: 2px 4px 26px;
+  max-width: 70ch;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pa-panel-inner,
+  .games-panel-inner {
+    animation: fadeUp 280ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+}
+.pa-panel-body {
+  font-family: var(--font-serif);
+  font-size: 15.5px;
+  line-height: 1.65;
+  color: var(--color-umber);
+  margin: 0 0 16px;
+}
+.pa-panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 26px;
+}
+.pa-panel-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-oxblood);
+  text-decoration: none;
+}
+.pa-panel-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* â”€â”€â”€ Fee-design module â”€â”€â”€ */
+.fee-design {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin: 4px 0 36px;
+}
+.fee-shape {
+  background: var(--color-warm-white);
+  border: 1px solid var(--color-divider);
+  border-top: 2px solid var(--color-oxblood);
+  border-radius: 0 0 8px 8px;
+  padding: 22px 20px;
+  box-shadow: 0 2px 8px rgba(28, 25, 23, 0.04);
+  transition:
+    transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.fee-shape:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(28, 25, 23, 0.08);
+}
+.fee-shape-label {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--color-espresso);
+  margin: 0 0 10px;
+}
+.fee-shape-short {
+  font-family: var(--font-serif);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--color-umber);
+  margin: 0 0 14px;
+}
+.fee-shape-when {
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--color-umber);
+  border-top: 1px solid var(--color-divider);
+  padding-top: 12px;
+  margin: 0;
+}
+.fee-shape-when-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-oxblood);
+  margin-bottom: 5px;
+}
+
+/* â”€â”€â”€ Homepage practice index (editorial rows) â”€â”€â”€ */
+.practice-index {
+  border-top: 1px solid var(--color-divider);
+  margin-bottom: 36px;
+}
+.practice-row {
+  display: grid;
+  grid-template-columns: 96px 1fr 40px;
+  align-items: center;
+  gap: 22px;
+  padding: 26px 6px;
+  border-bottom: 1px solid var(--color-divider);
+  text-decoration: none;
+  transition: background 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.practice-row:hover {
+  background: color-mix(in srgb, var(--color-linen) 55%, transparent);
+}
+.practice-row-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(30px, 3.4vw, 46px);
+  line-height: 1;
+  color: color-mix(in srgb, var(--color-oxblood) 24%, transparent);
+}
+@supports (-webkit-text-stroke: 1px black) {
+  .practice-row-num {
+    color: transparent;
+    -webkit-text-stroke: 1.1px
+      color-mix(in srgb, var(--color-oxblood) 52%, transparent);
+  }
+}
+.practice-row-name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.6vw, 29px);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--color-espresso);
+  margin-bottom: 7px;
+  transition: color 100ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.practice-row:hover .practice-row-name {
+  color: var(--color-oxblood);
+}
+.practice-row-services {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  color: var(--color-umber);
+}
+.practice-row-arrow {
+  justify-self: end;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--color-oxblood);
+  transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.practice-row:hover .practice-row-arrow {
+  transform: translateX(6px);
+}
+
+/* â”€â”€â”€ Interactive fee-shape board (How It Works) â”€â”€â”€ */
+.games-board--interactive .games-item {
+  background: var(--color-warm-white);
+  border: 1px solid var(--color-divider);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(28, 25, 23, 0.04);
+  transition:
+    box-shadow 200ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.games-board--interactive .games-item.is-open,
+.games-board--interactive .games-item:hover {
+  border-color: color-mix(in srgb, var(--color-oxblood) 30%, var(--color-divider));
+  box-shadow: 0 4px 16px rgba(28, 25, 23, 0.08);
+}
+/* The row itself becomes the disclosure buttonâ€”strip its standalone chrome. */
+.games-board--interactive .games-row--trigger {
+  width: 100%;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  padding: 0;
+}
+.games-board--interactive .games-cell {
+  display: block;
+}
+.games-bucket-name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--color-espresso);
+  transition: color 100ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.games-row--trigger:hover .games-bucket-name {
+  color: var(--color-oxblood);
+}
+.games-text {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--color-umber);
+}
+.games-cell .games-fee {
+  display: block;
+}
+.games-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-oxblood);
+}
+.games-cue .pa-chevron {
+  width: 16px;
+  height: 16px;
+  color: var(--color-oxblood);
+}
+.games-item.is-open .games-cue .pa-chevron {
+  transform: rotate(180deg);
+}
+.games-panel {
+  border-top: 1px solid var(--color-divider);
+  background: var(--color-parchment);
+}
+.games-panel-inner {
+  padding: 26px 24px 30px;
+}
+.games-panel-title {
+  font-family: var(--font-display);
+  font-size: clamp(21px, 2.2vw, 26px);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-espresso);
+  margin: 6px 0 20px;
+}
+.games-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  margin: 0;
+}
+.games-panel-block dt {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-oxblood);
+  margin-bottom: 7px;
+}
+.games-panel-block dd {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--color-umber);
+}
+
+/* â”€â”€â”€ Directory + index responsive â”€â”€â”€ */
+@media (max-width: 900px) {
+  .fee-design {
+    grid-template-columns: 1fr 1fr;
+  }
+  .games-panel-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .pa-group-head {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .pa-group-num {
+    font-size: 40px;
+  }
+}
+@media (max-width: 640px) {
+  .fee-design {
+    grid-template-columns: 1fr;
+  }
+  .games-panel-grid {
+    grid-template-columns: 1fr;
+  }
+  .practice-row {
+    grid-template-columns: 52px 1fr 26px;
+    gap: 14px;
+    padding: 20px 2px;
+  }
+  .practice-row-num {
+    font-size: 26px;
+  }
+  .practice-row-name {
+    font-size: 20px;
+  }
+  .practice-row-services {
+    font-size: 11.5px;
+  }
+  .pa-trigger {
+    flex-wrap: wrap;
+    row-gap: 10px;
+    padding: 16px 2px;
+  }
+  .pa-trigger-name {
+    flex-basis: 100%;
+  }
+  .pa-trigger-meta {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .pa-index-link {
+    padding: 9px 12px;
+    font-size: 12px;
+  }
+  .band-mark {
+    right: -18%;
+  }
+}
+
