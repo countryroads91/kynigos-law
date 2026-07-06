@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   description:
     "Flat-fee and contingency representation from a finance-trained attorney. Washington, DC. Family law, landlord-tenant, capital markets, and contract review—priced by outcome, not hours.",
   applicationName: "Kynigos Law Firm",
-  authors: [{ name: "Bayan Misaghi, Esq." }],
+  authors: [{ name: "Kynigos Law Firm, PLLC" }],
   keywords: [
     "Washington DC attorney",
     "flat fee lawyer",
@@ -53,11 +53,34 @@ export const metadata: Metadata = {
     locale: "en_US",
     title: "Kynigos Law Firm",
     description: "Flat-fee and contingency representation. Washington, DC.",
+    images: [{ url: "/og-image.png", width: 2400, height: 1260 }],
   },
   robots: {
     index: true,
     follow: true,
   },
+};
+
+// Organization structured data—only claims supported by page content.
+const legalServiceJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LegalService",
+  name: "Kynigos Law Firm, PLLC",
+  url: "https://kynigos.law",
+  telephone: "+1-304-549-1058",
+  email: "info@kynigos.law",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Washington",
+    addressRegion: "DC",
+    addressCountry: "US",
+  },
+  areaServed: "District of Columbia",
+  founder: {
+    "@type": "Person",
+    name: "Bayan Misaghi",
+  },
+  priceRange: "Flat fee and contingency",
 };
 
 export default function RootLayout({
@@ -72,6 +95,12 @@ export default function RootLayout({
       className={`${playfair.variable} ${sourceSerif.variable} ${dmSans.variable}`}
     >
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(legalServiceJsonLd),
+          }}
+        />
         <Nav />
         <main>{children}</main>
         <Footer />

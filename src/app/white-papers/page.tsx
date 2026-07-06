@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import WhitePaperGate from "@/components/WhitePaperGate";
+import { papers, type Paper } from "@/content/papers";
+import { getPost, formatDate } from "@/content/posts";
 
 export const metadata: Metadata = {
   title: "White Papers",
@@ -7,9 +10,27 @@ export const metadata: Metadata = {
     "Formal economic analysis of legal fees—the principal-agent problem and the case against hourly billing. Download the Kynigos Law Firm white paper series.",
 };
 
+function jsonLd(paper: Paper) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Report",
+    name: paper.title,
+    description: paper.description,
+    datePublished: paper.date,
+    author: { "@type": "Organization", name: "Kynigos Law Firm, PLLC" },
+    publisher: { "@type": "Organization", name: "Kynigos Law Firm, PLLC" },
+  };
+}
+
 export default function WhitePapersPage() {
   return (
-    <section className="hero">
+    <section className="hero hero--page">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(papers.map(jsonLd)),
+        }}
+      />
       <div className="kicker">White Papers</div>
       <h1 className="headline-line">The economics, in full.</h1>
       <p className="subhead">The billing model is the argument, not a footnote.</p>
@@ -21,59 +42,42 @@ export default function WhitePapersPage() {
         and industrial organization.
       </p>
 
-      <div className="paper-feature">
-        <div className="paper-feature-body">
-          <div className="paper-tag">Paper 01 · Principal-Agent Theory</div>
-          <h2 className="paper-title">Misaligned Incentives</h2>
-          <p className="paper-sub">
-            The principal-agent problem and the case against hourly billing.
-          </p>
-          <p className="paper-desc">
-            When you hire an attorney who bills by the hour, you create a
-            classic principal-agent problem: your lawyer has information you
-            don&rsquo;t and an incentive to bill hours you may not need. This paper
-            lays out the formal economics—from Stephen Ross&rsquo;s 1973 framing
-            through modern game-theoretic models—and shows why a flat fee
-            realigns the relationship.
-          </p>
-        </div>
-        <div className="paper-gate">
-          <div className="gate-label">Download the paper</div>
-          <WhitePaperGate
-            paper="Misaligned Incentives"
-            file="/white-papers/misaligned-incentives.pdf"
-            fileName="Kynigos-Misaligned-Incentives.pdf"
-          />
-        </div>
-      </div>
-
-      <div className="paper-feature">
-        <div className="paper-feature-body">
-          <div className="paper-tag">Paper 02 · Information Economics</div>
-          <h2 className="paper-title">The Market for Lemons</h2>
-          <p className="paper-sub">
-            Flat fees as a quality signal in the market for legal services.
-          </p>
-          <p className="paper-desc">
-            George Akerlof&rsquo;s 1970 &ldquo;market for lemons&rdquo; showed how hidden quality
-            can collapse a market: when buyers can&rsquo;t tell good from bad, the
-            price falls to the level of the bad and the good exits. Legal
-            services are a textbook case—a credence good the client cannot
-            evaluate even after delivery. This paper applies the lemons model to
-            legal fees and argues that a flat fee is a credible quality signal:
-            a lawyer who fixes the price before the work commits to the
-            efficiency the hourly model has every reason to avoid.
-          </p>
-        </div>
-        <div className="paper-gate">
-          <div className="gate-label">Download the paper</div>
-          <WhitePaperGate
-            paper="The Market for Lemons"
-            file="/white-papers/market-for-lemons.pdf"
-            fileName="Kynigos-Market-for-Lemons.pdf"
-          />
-        </div>
-      </div>
+      {papers.map((paper) => {
+        const relatedPosts = paper.relatedPosts
+          .map((slug) => getPost(slug))
+          .filter((post) => post !== undefined);
+        return (
+          <div className="paper-feature" key={paper.slug}>
+            <div className="paper-feature-body">
+              <div className="paper-tag">{paper.tag}</div>
+              <h2 className="paper-title">{paper.title}</h2>
+              <p className="paper-sub">{paper.sub}</p>
+              <span className="eyebrow">Executive Summary</span>
+              <p className="paper-desc">{paper.summary}</p>
+              <div className="insight-meta">
+                <span className="insight-author">{paper.author}</span>
+                <span>{formatDate(paper.date)}</span>
+                <span>{paper.readingTime}</span>
+                <span>{paper.topics.join(" · ")}</span>
+              </div>
+              {relatedPosts.map((post) => (
+                <p className="insight-relation" key={post.slug}>
+                  Introduced in the Kynigos publication{" "}
+                  <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+                </p>
+              ))}
+            </div>
+            <div className="paper-gate">
+              <div className="gate-label">Download the paper</div>
+              <WhitePaperGate
+                paper={paper.title}
+                file={paper.file}
+                fileName={paper.fileName}
+              />
+            </div>
+          </div>
+        );
+      })}
 
       <p className="paper-more">
         More papers in the series—behavioral contract theory and the non-compete
