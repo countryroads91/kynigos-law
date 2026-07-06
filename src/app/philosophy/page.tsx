@@ -7,33 +7,6 @@ export const metadata: Metadata = {
     "The Kynigos philosophy: every fee is structured so the firm has something to lose, something to prove, or something to earn—and every stage must re-earn the next.",
 };
 
-const career = [
-  {
-    org: "Goldman Sachs",
-    role: "Where the decade in structured credit began.",
-  },
-  {
-    org: "Invictus Capital Partners",
-    role: "Co-founded SFR and CRE lending platforms and the Verus securitization platform.",
-  },
-  {
-    org: "LendingOne",
-    role: "Large-loan underwriting on a seven-person deal team.",
-  },
-  {
-    org: "Rocade Capital",
-    role: "Litigation finance—pricing legal outcomes for a living.",
-  },
-  {
-    org: "Antonin Scalia Law School",
-    role: "JD, full-tuition scholarship. BA, Washington and Lee University, magna cum laude.",
-  },
-  {
-    org: "District of Columbia Bar",
-    role: "Member. Licensed in DC only—matters elsewhere get a prompt referral.",
-  },
-];
-
 export default function PhilosophyPage() {
   return (
     <>
@@ -113,44 +86,6 @@ export default function PhilosophyPage() {
         </div>
       </section>
 
-      <section className="process" aria-labelledby="client-heading">
-        <div className="kicker">The Origin</div>
-        <h2 className="process-heading" id="client-heading">
-          I have been the client.
-        </h2>
-        <blockquote className="phil-quote">
-          &ldquo;I have paid large retainers and watched the meter run before
-          knowing if my lawyer was any good.&rdquo;
-          <span className="phil-quote-attr">
-            The Managing Partner
-          </span>
-        </blockquote>
-        <div className="phil-prose">
-          <p>
-            Before law, the firm&rsquo;s founder spent about a decade in
-            institutional finance—structuring, underwriting, and pricing credit
-            risk. In that world, nobody gets paid for effort; they get paid for
-            being right about outcomes. Then he hired lawyers of his own and
-            discovered the legal market runs on the opposite rule.
-          </p>
-          <p>
-            Kynigos is the firm he wanted to hire and could not find: posted
-            structures, fixed numbers before work begins, and a fee model that
-            makes the attorney&rsquo;s incentive legible instead of
-            aspirational. The analytical rigor is not a metaphor—it is the
-            résumé.
-          </p>
-        </div>
-        <ul className="phil-timeline">
-          {career.map((c) => (
-            <li key={c.org}>
-              <span className="phil-timeline-org">{c.org}</span>
-              <span className="phil-timeline-role">{c.role}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
       <section className="process process--band">
         <div className="rule-banner">
           <div className="kicker">Your Move</div>
@@ -158,6 +93,10 @@ export default function PhilosophyPage() {
           <p className="rule-body">
             Start with a document, a situation, or thirty free minutes. Either
             way, you will know the price before the work begins.
+          </p>
+          <p className="process-note">
+            Kynigos Law Firm, PLLC is a member of the District of Columbia
+            Bar. Licensed in DC only—matters elsewhere get a prompt referral.
           </p>
           <div className="cta-row">
             <Link href="/#get-started" className="btn-primary">
