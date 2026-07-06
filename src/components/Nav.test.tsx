@@ -131,6 +131,49 @@ describe("Nav mobile menu", () => {
     expect(document.body.style.overflow).toBe("");
   });
 
+  it("routes each practice group to its directory anchor", () => {
+    mockPathname = "/";
+    render(<Nav />);
+    openMenu();
+
+    for (const [label, slug] of [
+      ["Family & Personal", "family-personal"],
+      ["Work & Employment", "work-employment"],
+      ["Business & Corporate", "business-corporate"],
+      ["Real Estate & Housing", "real-estate-housing"],
+      ["Capital Markets & Finance", "capital-finance"],
+    ]) {
+      const links = screen
+        .getAllByText(label)
+        .map((el) => el.closest("a"))
+        .filter(Boolean) as HTMLAnchorElement[];
+      expect(links.length).toBeGreaterThan(0);
+      for (const link of links) {
+        expect(link.getAttribute("href")).toBe(`/practice-areas#${slug}`);
+      }
+    }
+  });
+
+  it("never marks hash links as the current page", () => {
+    mockPathname = "/practice-areas";
+    render(<Nav />);
+    openMenu();
+
+    const overlay = document.querySelector(".menu-overlay")!;
+    const hashLinks = Array.from(
+      overlay.querySelectorAll('a[href*="#"]'),
+    );
+    expect(hashLinks.length).toBeGreaterThan(0);
+    for (const link of hashLinks) {
+      expect(link.getAttribute("aria-current")).toBeNull();
+    }
+    // The parent page link itself still highlights.
+    const parent = Array.from(overlay.querySelectorAll("a")).find(
+      (a) => a.getAttribute("href") === "/practice-areas",
+    )!;
+    expect(parent.getAttribute("aria-current")).toBe("page");
+  });
+
   it("marks the current page with aria-current in the overlay", () => {
     mockPathname = "/philosophy";
     render(<Nav />);

@@ -9,6 +9,11 @@ import { useEffect } from "react";
  * under `html.js` with motion allowed (see globals.css), so content is never
  * invisible without JavaScript or for reduced-motion users. Re-runs on every
  * route change to pick up the new page's elements.
+ *
+ * Contract: [data-reveal] elements must exist when the route's effect runs.
+ * Elements mounted later (lazy sections, Suspense) are not observed—they stay
+ * hidden until the CSS revealFailsafe forces them visible (~1.6s). If a page
+ * ever needs late-mounted reveals, add a MutationObserver here first.
  */
 export default function ScrollReveal() {
   const pathname = usePathname();

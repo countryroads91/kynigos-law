@@ -4,6 +4,7 @@ import {
   PRACTICE_GROUPS,
   serviceCount,
 } from "./practices";
+import { PRACTICE_NAV } from "./practice-nav";
 
 describe("practice taxonomy", () => {
   it("has five groups with unique slugs and sequential numbering", () => {
@@ -45,6 +46,12 @@ describe("practice taxonomy", () => {
         if (service.href) expect(validRoutes).toContain(service.href);
       }
     }
+  });
+
+  it("keeps the lightweight nav view in lockstep with the full taxonomy", () => {
+    expect(PRACTICE_NAV).toEqual(
+      PRACTICE_GROUPS.map((g) => ({ slug: g.slug, name: g.name })),
+    );
   });
 
   it("invents no prices and stays inside the DC license", () => {

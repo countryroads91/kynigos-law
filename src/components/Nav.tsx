@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { PRACTICE_GROUPS } from "@/content/practices";
+import { PRACTICE_NAV } from "@/content/practice-nav";
 
 type MenuItem = { label: string; href: string };
 type Menu = {
@@ -21,7 +21,7 @@ const MENUS: Menu[] = [
     href: "/practice-areas",
     // The five practice groups, anchored into the directory. Deep pages are
     // reached from each group's section—the nav stays one level deep.
-    items: PRACTICE_GROUPS.map((group) => ({
+    items: PRACTICE_NAV.map((group) => ({
       label: group.name,
       href: `/practice-areas#${group.slug}`,
     })),
@@ -172,9 +172,12 @@ export default function Nav() {
   }
 
   function isActive(href: string) {
-    const base = href.split("#")[0];
-    if (base === "/") return pathname === "/";
-    return pathname === base || pathname.startsWith(`${base}/`);
+    // Hash links (practice groups, insights channels) point at sections, not
+    // pages—never claim aria-current for them, or every child of the current
+    // page would highlight at once.
+    if (href.includes("#")) return false;
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(`${href}/`);
   }
 
   return (

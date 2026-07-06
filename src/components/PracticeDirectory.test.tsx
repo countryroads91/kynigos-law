@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("next/link", () => ({
@@ -92,7 +92,31 @@ describe("PracticeDirectory", () => {
       const flagship = section.querySelector("a.pa-flagship")!;
       expect(flagship.getAttribute("href")).toBe(group.flagship.href);
     }
-    // screen is referenced so the import stays purposeful under lint.
-    expect(screen.getAllByRole("button").length).toBeGreaterThan(0);
+  });
+
+  it("offers a full-practice-page link only for services with a deep page", () => {
+    render(<PracticeDirectory />);
+
+    const triggers = Array.from(
+      document.querySelectorAll("button.pa-trigger"),
+    ) as HTMLButtonElement[];
+    const services = PRACTICE_GROUPS.flatMap((g) => g.services);
+    expect(triggers.length).toBe(services.length);
+
+    services.forEach((service, i) => {
+      fireEvent.click(triggers[i]);
+      const panel = document.getElementById(
+        triggers[i].getAttribute("aria-controls")!,
+      )!;
+      const deepLinks = Array.from(panel.querySelectorAll("a")).filter(
+        (a) => a.textContent!.includes("Full practice page"),
+      );
+      if (service.href) {
+        expect(deepLinks.length).toBe(1);
+        expect(deepLinks[0].getAttribute("href")).toBe(service.href);
+      } else {
+        expect(deepLinks.length).toBe(0);
+      }
+    });
   });
 });

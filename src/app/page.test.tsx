@@ -124,6 +124,19 @@ describe("Home page", () => {
     expect(
       insights.querySelector(".insight-card--essay")!.textContent,
     ).toContain("The Managing Partner");
+
+    // Pin the label copy exactly—a wrong-encoding save once shipped
+    // "Personal Essay Â· Why Kynigos Exists" and nothing caught it.
+    expect(
+      insights.querySelector(".insight-card--essay .insight-label")!
+        .textContent,
+    ).toBe("Personal Essay · Why Kynigos Exists");
+  });
+
+  it("renders no mojibake anywhere on the page", () => {
+    render(<Home />);
+    // Double-encoded UTF-8 artifacts (Â, â€) must never reach the DOM.
+    expect(document.body.textContent).not.toMatch(/Â|â€/);
   });
 
   it("keeps the DC-only jurisdiction note on the page", () => {

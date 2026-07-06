@@ -150,7 +150,7 @@ export default function EngagementShapes() {
                 <span className="games-head">Our stake</span>
                 <span className="games-text">{shape.stake}</span>
               </span>
-              <span className="games-cell games-cell--last">
+              <span className="games-cell">
                 <span className="games-head">Fee shape</span>
                 <span className="games-fee">{shape.fee}</span>
                 <span className="games-cue">
@@ -160,7 +160,7 @@ export default function EngagementShapes() {
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="2"
+                    strokeWidth="1.75"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     aria-hidden="true"

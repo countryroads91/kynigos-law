@@ -1235,8 +1235,9 @@ h1, h2, h3, h4, h5, h6 {
 .ticker-track {
   display: flex;
   width: max-content;
-  /* 17 items per loop half—keep the scroll speed of the old 9-item band. */
-  animation: marquee 75s linear infinite;
+  /* 21 items per loop half—duration scaled up to keep the same px/s scroll
+     speed as the previous 17-item band (75s). */
+  animation: marquee 92s linear infinite;
 }
 .ticker:hover .ticker-track,
 .ticker:focus-within .ticker-track {
@@ -2976,7 +2977,7 @@ a.menu-child-link.is-active {
   .first-move-actions .gate-note { max-width: none; }
 }
 
-/* â”€â”€â”€ Scroll reveal (design system Â§11) â”€â”€â”€
+/* ─── Scroll reveal (design system §11) ───
    Hidden state is gated on html.js (set by the inline script in layout.tsx)
    AND motion preference, so content is never invisible without JavaScript or
    for reduced-motion users. Reveals animate via fadeUp keyframes rather than
@@ -2985,20 +2986,49 @@ a.menu-child-link.is-active {
   html.js [data-reveal]:not(.is-visible) {
     opacity: 0;
     transform: translateY(18px);
+    /* Failsafe: if hydration stalls, a chunk fails, or the observer never
+       fires, the content forces itself visible after 1.6s—nothing may stay
+       hidden behind JavaScript. */
+    animation: revealFailsafe 0s linear 1.6s forwards;
   }
   html.js [data-reveal].is-visible {
     animation: fadeUp 480ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
   }
-  /* Stagger siblings that reveal together (Â§11: 80â€“100ms apart). */
-  html.js [data-reveal].is-visible:nth-child(2) { animation-delay: 90ms; }
-  html.js [data-reveal].is-visible:nth-child(3) { animation-delay: 180ms; }
-  html.js [data-reveal].is-visible:nth-child(4) { animation-delay: 270ms; }
-  html.js [data-reveal].is-visible:nth-child(5) { animation-delay: 360ms; }
+  /* Stagger only inside grids whose reveal children enter the viewport
+     together (§11: 80–100ms apart). Elements that reveal one at a time on
+     scroll—like the homepage practice rows—get no artificial delay. */
+  html.js .skin-grid > [data-reveal].is-visible:nth-child(2),
+  html.js .card-grid > [data-reveal].is-visible:nth-child(2),
+  html.js .process-steps > [data-reveal].is-visible:nth-child(2) {
+    animation-delay: 90ms;
+  }
+  html.js .skin-grid > [data-reveal].is-visible:nth-child(3),
+  html.js .card-grid > [data-reveal].is-visible:nth-child(3),
+  html.js .process-steps > [data-reveal].is-visible:nth-child(3) {
+    animation-delay: 180ms;
+  }
+  html.js .process-steps > [data-reveal].is-visible:nth-child(4) {
+    animation-delay: 270ms;
+  }
+}
+@keyframes revealFailsafe {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Print knows nothing about scroll position—everything is revealed. */
+@media print {
+  html.js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
 }
 
-/* â”€â”€â”€ Band watermark â”€â”€â”€
+/* ─── Band watermark ───
    An oversized spearhead fragment layered behind band sections. Plain logo
-   usage at whisper opacityâ€”decorative depth, not redaction (Â§12 scope). */
+   usage at whisper opacity—decorative depth, not redaction (§12 scope). */
 .band-marked {
   position: relative;
   overflow: hidden;
@@ -3009,7 +3039,8 @@ a.menu-child-link.is-active {
   right: -3%;
   height: 165%;
   width: auto;
-  transform: translateY(-50%) rotate(10deg);
+  /* Upright only—design system §6 forbids rotating the mark. */
+  transform: translateY(-50%);
   fill: var(--color-oxblood);
   opacity: 0.05;
   pointer-events: none;
@@ -3021,7 +3052,7 @@ a.menu-child-link.is-active {
   z-index: 1;
 }
 
-/* â”€â”€â”€ Practice-areas hero index chips â”€â”€â”€ */
+/* ─── Practice-areas hero index chips ─── */
 .pa-index {
   display: flex;
   flex-wrap: wrap;
@@ -3030,8 +3061,9 @@ a.menu-child-link.is-active {
 }
 .pa-index-link {
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   gap: 9px;
+  min-height: 44px;
   padding: 11px 16px;
   background: var(--color-warm-white);
   border: 1px solid var(--color-divider);
@@ -3058,7 +3090,7 @@ a.menu-child-link.is-active {
   transform: translateY(-1px);
 }
 
-/* â”€â”€â”€ Practice directory (grouped accordion) â”€â”€â”€ */
+/* ─── Practice directory (grouped accordion) ─── */
 .process--directory {
   padding-top: 24px;
 }
@@ -3073,7 +3105,7 @@ a.menu-child-link.is-active {
   align-items: start;
   margin-bottom: 26px;
 }
-/* Oversized editorial numeralâ€”outlined where supported, tinted otherwise. */
+/* Oversized editorial numeral—outlined where supported, tinted otherwise. */
 .pa-group-num {
   font-family: var(--font-display);
   font-weight: 700;
@@ -3081,7 +3113,10 @@ a.menu-child-link.is-active {
   line-height: 0.9;
   color: color-mix(in srgb, var(--color-oxblood) 22%, transparent);
 }
-@supports (-webkit-text-stroke: 1px black) {
+/* Both features must exist: a browser with text-stroke but no color-mix
+   would drop the stroke declaration and render fully transparent text. */
+@supports (-webkit-text-stroke: 1px black) and
+  (color: color-mix(in srgb, red 50%, transparent)) {
   .pa-group-num {
     color: transparent;
     -webkit-text-stroke: 1.2px
@@ -3108,7 +3143,8 @@ a.menu-child-link.is-active {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  margin-top: 14px;
+  min-height: 44px;
+  margin-top: 2px;
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 600;
@@ -3213,12 +3249,13 @@ a.menu-child-link.is-active {
 .pa-panel-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px 26px;
+  gap: 0 26px;
 }
 .pa-panel-link {
   display: inline-flex;
   align-items: center;
   gap: 7px;
+  min-height: 44px;
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 600;
@@ -3231,7 +3268,7 @@ a.menu-child-link.is-active {
   text-underline-offset: 3px;
 }
 
-/* â”€â”€â”€ Fee-design module â”€â”€â”€ */
+/* ─── Fee-design module ─── */
 .fee-design {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -3286,7 +3323,7 @@ a.menu-child-link.is-active {
   margin-bottom: 5px;
 }
 
-/* â”€â”€â”€ Homepage practice index (editorial rows) â”€â”€â”€ */
+/* ─── Homepage practice index (editorial rows) ─── */
 .practice-index {
   border-top: 1px solid var(--color-divider);
   margin-bottom: 36px;
@@ -3311,7 +3348,8 @@ a.menu-child-link.is-active {
   line-height: 1;
   color: color-mix(in srgb, var(--color-oxblood) 24%, transparent);
 }
-@supports (-webkit-text-stroke: 1px black) {
+@supports (-webkit-text-stroke: 1px black) and
+  (color: color-mix(in srgb, red 50%, transparent)) {
   .practice-row-num {
     color: transparent;
     -webkit-text-stroke: 1.1px
@@ -3350,7 +3388,7 @@ a.menu-child-link.is-active {
   transform: translateX(6px);
 }
 
-/* â”€â”€â”€ Interactive fee-shape board (How It Works) â”€â”€â”€ */
+/* ─── Interactive fee-shape board (How It Works) ─── */
 .games-board--interactive .games-item {
   background: var(--color-warm-white);
   border: 1px solid var(--color-divider);
@@ -3366,7 +3404,7 @@ a.menu-child-link.is-active {
   border-color: color-mix(in srgb, var(--color-oxblood) 30%, var(--color-divider));
   box-shadow: 0 4px 16px rgba(28, 25, 23, 0.08);
 }
-/* The row itself becomes the disclosure buttonâ€”strip its standalone chrome. */
+/* The row itself becomes the disclosure button—strip its standalone chrome. */
 .games-board--interactive .games-row--trigger {
   width: 100%;
   border: none;
@@ -3378,6 +3416,10 @@ a.menu-child-link.is-active {
   font: inherit;
   color: inherit;
   padding: 0;
+}
+/* The item clips overflow, so the trigger's focus ring must sit inside it. */
+.games-board--interactive .games-row--trigger:focus-visible {
+  outline-offset: -3px;
 }
 .games-board--interactive .games-cell {
   display: block;
@@ -3462,7 +3504,7 @@ a.menu-child-link.is-active {
   color: var(--color-umber);
 }
 
-/* â”€â”€â”€ Directory + index responsive â”€â”€â”€ */
+/* ─── Directory + index responsive ─── */
 @media (max-width: 900px) {
   .fee-design {
     grid-template-columns: 1fr 1fr;
@@ -3519,4 +3561,3 @@ a.menu-child-link.is-active {
     right: -18%;
   }
 }
-

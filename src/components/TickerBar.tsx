@@ -1,6 +1,7 @@
-// One item per practice-area service family (see src/content/practices.ts),
-// with the brand accent recurring at each loop third. Fee framing lives in
-// the sections below; the marquee's job is breadth.
+// Curated marquee copy spanning all five practice groups—inspired by, not
+// bound to, src/content/practices.ts (marquee labels are shortened for
+// rhythm). The brand accent recurs at each loop third; fee framing lives in
+// the sections below. The marquee's job is breadth.
 const items = [
   "Divorce & Separation",
   "Custody & Support",
