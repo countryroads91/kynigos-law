@@ -3,6 +3,26 @@
 All notable changes to the Kynigos Law Firm site are documented here.
 Versions follow a 4-digit MAJOR.MINOR.PATCH.MICRO format.
 
+## [0.4.0.0] - 2026-07-06
+
+### Added
+- "Get Started" fork on the homepage: the hero button now scrolls to a two-door choice—"I have a document" (document types, drag-and-drop upload UI with file validation, and a working email fallback while online upload and checkout are being connected) and "I have a situation" (three-step consultation path with a scheduler slot that goes live once Calendly is configured). Both doors work by keyboard and screen reader.
+- "Skin in the Game" homepage section: three arenas (disputes, review, deals) each explaining the game, the skin, and the fee shape—closing with the firm rule, "Play to Win. Win to Play."
+- "The First Move Is Yours" message box on the homepage: describe a document or situation in a few sentences, add name, email, and jurisdiction, and it lands in the firm inbox—with the DC-only gate and spam protection of the contact form.
+- New Philosophy page (/philosophy): the meaning of "Play to Win. Win to Play.", why hourly billing misaligns incentives, the "I have been the client" origin story, and the attorney's career background. Linked from the About menu and the footer.
+- How It Works rebuilt as a full visual page: a four-step flow, a game/skin/fee matrix, four worked examples across document review, transactions, family law, and disputes ($444 remains the only posted price), and a philosophy banner.
+- Tests: 16 new (56 total) covering the fork's doors, keyboard navigation, file validation, the message form's success/error/network paths, and the two rebuilt pages.
+
+### Changed
+- The scrolling services band now lists the full flat-fee catalog (divorce, staged-fee divorce, opinion letters, eviction defense, prenuptial agreements, contract review and negotiation, lease, employment-agreement, NDA, loan-document, business-agreement, demand-letter, settlement, and privacy-policy work), with scroll speed unchanged.
+- The hero's "Book A Free Consultation" button is replaced by "Get Started"; consultation booking now lives inside the fork, the contact page, and the navigation button.
+
+### Fixed
+- Dropping a file anywhere outside the upload box no longer navigates the browser away from the page (which could discard a typed message).
+- When several files fail validation at once, every problem is reported—not just the last one.
+- The scheduler embed loads only when the "I have a situation" door is open, so visitors who never open it don't download it.
+- Small accessibility fixes: 44px touch targets on the upload controls, the "integration pending" chip meets the minimum type size, and the drag highlight no longer flickers while moving across the box.
+
 ## [0.3.0.0] - 2026-07-06
 
 ### Added
