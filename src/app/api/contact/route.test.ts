@@ -65,7 +65,7 @@ describe("POST /api/contact", () => {
     expect(res.status).toBe(502);
     const data = await res.json();
     expect(data.ok).toBe(false);
-    expect(data.error).toMatch(/call \(304\) 549-1058|bayan@kynigos\.law/);
+    expect(data.error).toMatch(/call \(304\) 549-1058|info@kynigos.law/);
   });
 
   it("returns 502 when email env vars are not configured", async () => {

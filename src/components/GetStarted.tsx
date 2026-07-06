@@ -246,13 +246,13 @@ export default function GetStarted() {
             )}
             <a
               className="btn-primary fork-panel-cta"
-              href="mailto:bayan@kynigos.law?subject=Document%20review"
+              href="mailto:info@kynigos.law?subject=Document%20review"
             >
               Email Your Document
             </a>
             <p className="fork-note">
               Online upload and checkout are being connected. Until then, the
-              document goes straight to Bayan&rsquo;s desk by email—same
+              document goes straight to the reviewing attorney by email—same
               review, same price. Or{" "}
               <a href="#first-move">describe it below</a> and we reply within
               one business day.
@@ -316,8 +316,8 @@ export default function GetStarted() {
             <p className="fork-note">
               Prefer to skip the calendar? Call{" "}
               <a href="tel:+13045491058">(304) 549-1058</a> or email{" "}
-              <a href="mailto:bayan@kynigos.law">bayan@kynigos.law</a>. You
-              will speak with Bayan Misaghi, Esq.—not an intake service.
+              <a href="mailto:info@kynigos.law">info@kynigos.law</a>. You
+              will speak directly with the attorney—not an intake service.
             </p>
           </div>
         </div>

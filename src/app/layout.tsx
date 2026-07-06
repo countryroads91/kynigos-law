@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Source_Serif_4, DM_Sans } from "next/font/google";
 import "./globals.css";
-import { Analytics } from "@vercel/analytics/next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import CookieConsent from "@/components/CookieConsent";
+import AnalyticsGate from "@/components/AnalyticsGate";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
   description:
     "Flat-fee and contingency representation from a finance-trained attorney. Washington, DC. Family law, landlord-tenant, capital markets, and contract review—priced by outcome, not hours.",
   applicationName: "Kynigos Law Firm",
-  authors: [{ name: "Bayan Misaghi, Esq." }],
+  authors: [{ name: "Kynigos Law Firm, PLLC" }],
   keywords: [
     "Washington DC attorney",
     "flat fee lawyer",
@@ -53,11 +54,32 @@ export const metadata: Metadata = {
     locale: "en_US",
     title: "Kynigos Law Firm",
     description: "Flat-fee and contingency representation. Washington, DC.",
+    images: [{ url: "/og-image.png", width: 2400, height: 1260 }],
   },
   robots: {
     index: true,
     follow: true,
   },
+};
+
+// Organization structured data—only claims supported by page content.
+const legalServiceJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LegalService",
+  name: "Kynigos Law Firm, PLLC",
+  url: "https://kynigos.law",
+  logo: "https://kynigos.law/logo.png",
+  image: "https://kynigos.law/og-image.png",
+  telephone: "+1-304-549-1058",
+  email: "info@kynigos.law",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Washington",
+    addressRegion: "DC",
+    addressCountry: "US",
+  },
+  areaServed: "District of Columbia",
+  priceRange: "Flat fee and contingency",
 };
 
 export default function RootLayout({
@@ -71,11 +93,23 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${playfair.variable} ${sourceSerif.variable} ${dmSans.variable}`}
     >
-      <body>
+      {/* suppressHydrationWarning: browser extensions (password managers,
+          shopping assistants) stamp attributes onto <body> before React
+          hydrates; that mismatch is theirs, not ours. Applies one level
+          deep only—real child mismatches still surface. */}
+      <body suppressHydrationWarning>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(legalServiceJsonLd),
+          }}
+        />
         <Nav />
         <main>{children}</main>
         <Footer />
-        <Analytics />
+        <CookieConsent />
+        {/* Loads only after analytics consent—see AnalyticsGate. */}
+        <AnalyticsGate />
       </body>
     </html>
   );

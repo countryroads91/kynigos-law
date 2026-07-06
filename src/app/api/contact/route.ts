@@ -21,7 +21,7 @@ function clean(value: string): string {
 }
 
 const SEND_FAILED_ERROR =
-  "We could not send your message. Please call (304) 549-1058 or email bayan@kynigos.law directly.";
+  "We could not send your message. Please call (304) 549-1058 or email info@kynigos.law directly.";
 
 export async function POST(req: Request) {
   // Reject oversized payloads before parsing; the message cap is 5000 chars.
@@ -88,7 +88,7 @@ export async function POST(req: Request) {
       {
         ok: false,
         error:
-          "Kynigos Law Firm, PLLC is licensed in the District of Columbia only. For matters in another jurisdiction, email bayan@kynigos.law and we may be able to refer you to local counsel.",
+          "Kynigos Law Firm, PLLC is licensed in the District of Columbia only. For matters in another jurisdiction, email info@kynigos.law and we may be able to refer you to local counsel.",
       },
       { status: 422 },
     );

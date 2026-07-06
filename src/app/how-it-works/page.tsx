@@ -107,28 +107,28 @@ export default function HowItWorksPage() {
       </section>
 
       <section className="process process--band" aria-labelledby="games-heading">
-        <div className="kicker">The Fee Follows the Game</div>
+        <div className="kicker">Fee Design</div>
         <h2 className="process-heading" id="games-heading">
-          First name the game. Then put skin on the table.
+          The fee is matched to the work.
         </h2>
         <p className="section-sub">
-          The model is not one weird trick. It is a matching exercise: identify
-          what kind of legal game we are playing, then structure the fee so we
-          have something at stake besides your patience.
+          Every engagement falls into one of three shapes. We define the work
+          first, then structure the fee so the firm carries real stakes in the
+          outcome.
         </p>
         <div className="games-board">
           {games.map((g) => (
             <div className="games-row" key={g.bucket}>
               <div className="games-cell games-cell--bucket">
-                <span className="games-head">Bucket</span>
+                <span className="games-head">Engagement</span>
                 <h3>{g.bucket}</h3>
               </div>
               <div className="games-cell">
-                <span className="games-head">The game</span>
+                <span className="games-head">The objective</span>
                 <p>{g.game}</p>
               </div>
               <div className="games-cell">
-                <span className="games-head">The skin</span>
+                <span className="games-head">Our stake</span>
                 <p>{g.skin}</p>
               </div>
               <div className="games-cell">

@@ -3,6 +3,22 @@
 All notable changes to the Kynigos Law Firm site are documented here.
 Versions follow a 4-digit MAJOR.MINOR.PATCH.MICRO format.
 
+## [0.5.0.0] - 2026-07-06
+
+### Added
+- New pages: a real About hub (with a "Why Kynigos Exists" section built around the founding essay), an attorney biography, an Insights hub at /insights with three visibly distinct channels (Personal Essays, Kynigos Publications, White Papers), and a full legal-information system—Privacy Policy, Website Disclaimer, Attorney Advertising, Cookie Policy, and an Accessibility Statement—plus a branded 404 page.
+- Practice Areas rebuilt as real destinations: an index page and four full practice pages (Family Law, Landlord-Tenant, Capital Markets, Contract Review), each explaining the problem, the scope, how the fee works, the process, what to prepare, and FAQs. $444 remains the only posted price.
+- Homepage gains a practice-area overview and a featured-insights band that visibly distinguishes a personal essay, a firm publication, and a white paper.
+- SEO foundation: sitemap.xml, robots.txt, social-share image, LegalService structured data, and article structured data with correct authorship.
+- Tests: 53 new (110 total) covering every new page, the menu, authorship rules, and the sitemap.
+
+### Changed
+- Navigation redesigned. On phones, the menu is now a full-screen environment with large primary destinations, grouped child links, a pinned consultation button, and quiet legal links—keyboard- and screen-reader-complete, and the page behind it is fully inactive while open. On desktop, Practice Areas, About, and Insights are each one-click destinations with a separate chevron for their children.
+- The footer is now a full sitemap: brand and consultation call-to-action, practice areas, firm pages, insights channels, contact details, and a quiet legal row with an automatically current copyright year.
+- Authorship is now explicit across the site: the two personal essays remain by Bayan Misaghi; the analytical articles and both white papers are attributed to Kynigos Law Firm—in bylines, page metadata, and structured data alike.
+- The public contact email is now info@kynigos.law everywhere (pages, forms, error messages, footer); the blog index moved to /insights (old article links keep working; /blog redirects).
+- The services band announces its list once to screen readers and pauses on hover.
+
 ## [0.4.0.0] - 2026-07-06
 
 ### Added

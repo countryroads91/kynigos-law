@@ -134,7 +134,7 @@ export default function ContactForm() {
         <p className="gate-note" role="status">
           Kynigos Law Firm, PLLC is licensed in the District of Columbia only.
           For matters in another jurisdiction, email{" "}
-          <a href="mailto:bayan@kynigos.law">bayan@kynigos.law</a> and we may be
+          <a href="mailto:info@kynigos.law">info@kynigos.law</a> and we may be
           able to refer you to local counsel.
         </p>
       )}
@@ -165,7 +165,8 @@ export default function ContactForm() {
       <p className="gate-note">
         Your details go to Kynigos Law Firm so we can respond to your inquiry.
         We do not sell your information. Submitting this form does not create
-        an attorney-client relationship.
+        an attorney-client relationship. Do not send confidential or
+        time-sensitive information.
       </p>
     </form>
   );

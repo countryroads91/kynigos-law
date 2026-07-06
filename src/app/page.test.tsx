@@ -82,6 +82,32 @@ describe("Home page", () => {
     expect(text).not.toContain("Contingency Employment");
   });
 
+  it("shows the practice overview and typed featured insights", () => {
+    render(<Home />);
+
+    // Practice overview: four whole-card links + the index link.
+    const practices = document.querySelectorAll("#practice-areas a.practice-card");
+    expect(practices.length).toBe(4);
+    const all = screen.getByRole("link", { name: "All Practice Areas" });
+    expect(all.getAttribute("href")).toBe("/practice-areas");
+
+    // Featured insights: three content types, visibly distinct, with the
+    // essay personally attributed and the publication attributed to the firm.
+    const insights = document.getElementById("insights")!;
+    expect(insights.querySelector(".insight-card--essay")).toBeTruthy();
+    expect(insights.querySelector(".insight-card--publication")).toBeTruthy();
+    expect(insights.querySelector(".insight-card--paper")).toBeTruthy();
+    expect(
+      insights.querySelector(".insight-card--publication")!.textContent,
+    ).toContain("Kynigos Law Firm");
+    expect(
+      insights.querySelector(".insight-card--publication")!.textContent,
+    ).not.toContain("Bayan");
+    expect(
+      insights.querySelector(".insight-card--essay")!.textContent,
+    ).toContain("The Managing Partner");
+  });
+
   it("keeps the DC-only jurisdiction note on the page", () => {
     render(<Home />);
 
