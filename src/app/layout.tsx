@@ -4,7 +4,6 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import TickerBar from "@/components/TickerBar";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -65,15 +64,17 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
+    // Next 16: data-scroll-behavior lets the router snap scroll-to-top during
+    // SPA navigation while CSS scroll-behavior:smooth animates in-page anchors.
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${playfair.variable} ${sourceSerif.variable} ${dmSans.variable}`}
     >
       <body>
         <Nav />
         <main>{children}</main>
         <Footer />
-        <TickerBar />
         <Analytics />
       </body>
     </html>

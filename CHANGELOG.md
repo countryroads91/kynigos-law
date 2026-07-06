@@ -3,6 +3,22 @@
 All notable changes to the Kynigos Law Firm site are documented here.
 Versions follow a 4-digit MAJOR.MINOR.PATCH.MICRO format.
 
+## [0.3.0.0] - 2026-07-06
+
+### Added
+- "How It Works" section on the homepage: a three-step explanation of the pricing model (free consultation, one price in writing, aligned outcome) with the DC-only jurisdiction note. A new "How It Works" button next to "Book A Free Consultation" smooth-scrolls to it; on phones the two buttons stack full-width.
+- Homepage tests (5 new, 40 total) covering the new section, the anchor button, and the ticker placement, plus new mobile-menu tests for link-tap close, desktop-resize close, and the Tab focus trap.
+
+### Changed
+- Mobile menu redesigned: one tap on the menu button now shows every page as a direct link (grouped under small About / Practice Areas / Insights labels)—no more expanding sections. The page dims behind the menu and tapping anywhere outside closes it. Links are larger and easier to read, and the consultation button sits at the bottom of the list.
+- The scrolling services banner now appears only on the homepage, as a normal band between the hero and the How It Works section that scrolls with the page—it no longer sticks to the bottom of every screen.
+- Slimmer mobile header: the wordmark and menu button take less vertical space, leaving more room for content.
+- Smooth in-page scrolling for anchor links, while switching pages still snaps instantly (Next 16 data-scroll-behavior).
+
+### Fixed
+- Screen readers no longer announce two identical "Close menu" buttons when the menu is open; the menu is announced as a dialog and the menu button points at it (aria-controls).
+- Anchor scrolling now clears the fixed header on desktop (scroll-margin), and the menu sheet has a max-height fallback for older browsers without dvh support.
+
 ## [0.2.1.0] - 2026-07-01
 
 ### Fixed

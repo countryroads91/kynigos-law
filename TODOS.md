@@ -18,7 +18,11 @@ The contact route now returns 502 when RESEND_API_KEY/LEAD_NOTIFY_EMAIL are miss
 
 ### Verify the mobile menu fix on a real iPhone
 **Priority:** P1
-The ISSUE-001 stacking-context fix (menu could not be closed) was verified in Chromium emulation at 390x844. Do a 30-second check on a physical iPhone after v0.2.0.0 deploys: open menu, close via X, navigate via menu links.
+The ISSUE-001 stacking-context fix (menu could not be closed) was verified in Chromium emulation at 390x844. Do a 30-second check on a physical iPhone after v0.2.0.0 deploys: open menu, close via X, navigate via menu links. (v0.3.0.0 replaced the menu with a flat sheet—re-check on device: open, tap outside to close, tap a link, tap How It Works on the homepage.)
+
+### iOS Safari can scroll the page behind the open mobile menu
+**Priority:** P3
+`body { overflow: hidden }` does not block touch scrolling on iOS Safari. With the v0.3.0.0 translucent scrim the background page is visible, so a determined swipe scrolls it behind the open menu (cosmetic only—menu still works). Robust fix is the position:fixed body-lock pattern or touchmove prevention on the scrim. Flagged by /ship adversarial review 2026-07-06.
 
 ## Code Health
 

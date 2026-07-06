@@ -4,7 +4,7 @@
 
 ## Framework
 
-- **Vitest 4** (`vitest.config.ts`), node environment, `@` aliased to `src/`.
+- **Vitest 4** (`vitest.config.ts`), node environment by default, `@` aliased to `src/`. Component and page tests opt into jsdom with a per-file `// @vitest-environment jsdom` pragma and use React Testing Library.
 
 ## Running tests
 
@@ -17,7 +17,7 @@ CI runs a typecheck (`npx tsc --noEmit`) and `npm test` on every push to main an
 
 ## Test layers
 
-- **Unit/API tests** (`src/**/*.test.ts`)—colocated next to the code they cover. Currently: the `/api/contact` and `/api/lead` route handlers (validation, jurisdiction gate, malformed input).
+- **Unit/API tests** (`src/**/*.test.{ts,tsx}`)—colocated next to the code they cover. Currently 40 tests in 6 files: the `/api/contact` and `/api/lead` route handlers (validation, jurisdiction gate, malformed input), the `Nav`, `ContactForm`, and `WhitePaperGate` components, and the homepage (`src/app/page.test.tsx`—hero anchor, `#how-it-works` section, services ticker band).
 - **Integration/E2E**—not yet configured. Browser-level verification happens via gstack `/qa` at mobile and desktop viewports.
 
 ## Conventions

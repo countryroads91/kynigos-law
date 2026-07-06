@@ -26,7 +26,7 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 npm test
 ```
 
-Vitest API-route tests live next to the code they cover (`src/**/*.test.ts`). CI runs a typecheck and the test suite on every pull request. See [TESTING.md](TESTING.md) for conventions.
+Vitest tests—API routes, components, and the homepage—live next to the code they cover (`src/**/*.test.{ts,tsx}`). CI runs a typecheck and the test suite on every pull request. See [TESTING.md](TESTING.md) for conventions.
 
 ## Project docs
 
