@@ -16,6 +16,7 @@ const MENUS: Menu[] = [
     label: "About",
     items: [
       { label: "How it Works", href: "/how-it-works" },
+      { label: "Philosophy", href: "/philosophy" },
       { label: "Contact", href: "/contact" },
     ],
   },
