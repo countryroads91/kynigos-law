@@ -42,6 +42,9 @@ export default function Footer() {
                 <Link href="/how-it-works">How it Works</Link>
               </li>
               <li>
+                <Link href="/philosophy">Philosophy</Link>
+              </li>
+              <li>
                 <Link href="/white-papers">White Papers</Link>
               </li>
               <li>

@@ -33,27 +33,70 @@ beforeAll(() => {
 afterEach(cleanup);
 
 describe("Home page", () => {
-  it("anchors the hero button to the three-step How It Works section", () => {
+  it("anchors the hero Get Started button to the fork section", () => {
     render(<Home />);
 
-    const anchor = screen.getByRole("link", { name: "How It Works" });
-    expect(anchor.getAttribute("href")).toBe("#how-it-works");
+    const anchor = screen.getByRole("link", { name: "Get Started" });
+    expect(anchor.getAttribute("href")).toBe("#get-started");
+    expect(document.getElementById("get-started")).toBeTruthy();
 
-    const section = document.getElementById("how-it-works");
-    expect(section).toBeTruthy();
-    expect(section!.querySelectorAll(".process-step").length).toBe(3);
-    // Section CTA points at the full page, not another anchor.
-    const learnMore = screen.getByRole("link", { name: "Learn More" });
-    expect(learnMore.getAttribute("href")).toBe("/how-it-works");
+    // The consultation button is gone from the hero; every How It Works
+    // link goes to the full page, not an in-page anchor.
+    const hiw = screen.getAllByRole("link", { name: "How It Works" });
+    expect(hiw.length).toBeGreaterThan(0);
+    for (const link of hiw) {
+      expect(link.getAttribute("href")).toBe("/how-it-works");
+    }
   });
 
-  it("renders the in-flow ticker band and the DC-only jurisdiction note", () => {
+  it("chains the homepage sections with scroll cues", () => {
     render(<Home />);
 
-    // TickerBar moved out of the layout; the homepage must render it itself.
-    expect(document.querySelector(".ticker")).toBeTruthy();
+    // hero → #get-started → #skin-in-the-game → #first-move
+    expect(document.getElementById("skin-in-the-game")).toBeTruthy();
+    expect(document.getElementById("first-move")).toBeTruthy();
+    const cues = Array.from(document.querySelectorAll("a.scroll-cue")).map(
+      (a) => a.getAttribute("href"),
+    );
+    expect(cues).toContain("#skin-in-the-game");
+    expect(cues).toContain("#first-move");
+  });
 
-    const note = screen.getByText(/licensed in the District of Columbia/);
+  it("renders the in-flow ticker with the expanded flat-fee service list", () => {
+    render(<Home />);
+
+    const ticker = document.querySelector(".ticker");
+    expect(ticker).toBeTruthy();
+    const text = ticker!.textContent ?? "";
+    for (const item of [
+      "Flat Fee Divorce",
+      "Staged-Fee Divorce",
+      "Flat Fee Privacy Policy Review",
+      "Flat Fee Demand Letters",
+      "Not for Feeding the Clock",
+    ]) {
+      expect(text).toContain(item);
+    }
+    // Vague items were removed with the rewrite.
+    expect(text).not.toContain("Custody");
+    expect(text).not.toContain("Contingency Employment");
+  });
+
+  it("keeps the DC-only jurisdiction note on the page", () => {
+    render(<Home />);
+
+    const note = screen.getByText(/licensed in the District of Columbia\./);
     expect(note.textContent).toContain("outside DC may require referral");
+  });
+
+  it("explains the skin-in-the-game model with three arenas and a philosophy link", () => {
+    render(<Home />);
+
+    const section = document.getElementById("skin-in-the-game")!;
+    expect(section.querySelectorAll(".skin-card").length).toBe(3);
+    expect(section.textContent).toContain("Play to Win. Win to Play.");
+
+    const phil = screen.getByRole("link", { name: "Read The Philosophy" });
+    expect(phil.getAttribute("href")).toBe("/philosophy");
   });
 });

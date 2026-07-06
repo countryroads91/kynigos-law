@@ -83,6 +83,7 @@ describe("Nav mobile menu", () => {
     for (const label of [
       "Home",
       "How it Works",
+      "Philosophy",
       "Contact",
       "All Practice Areas",
       "Family Law",
