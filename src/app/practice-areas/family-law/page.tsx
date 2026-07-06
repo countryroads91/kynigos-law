@@ -110,18 +110,18 @@ export default function FamilyLawPage() {
         <div className="games-board">
           <div className="games-row">
             <div className="games-cell games-cell--bucket">
-              <span className="games-head">Bucket</span>
+              <span className="games-head">Engagement</span>
               <h3>Negotiation &amp; disputes</h3>
             </div>
             <div className="games-cell">
-              <span className="games-head">The game</span>
+              <span className="games-head">The objective</span>
               <p>
                 Move the matter forward without letting conflict become a
                 machine that runs on your money.
               </p>
             </div>
             <div className="games-cell">
-              <span className="games-head">The skin</span>
+              <span className="games-head">Our stake</span>
               <p>
                 The firm re-earns the matter one stage at a time—if a stage
                 takes longer than we scoped, we absorb it.

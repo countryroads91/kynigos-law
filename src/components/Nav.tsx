@@ -31,7 +31,6 @@ const MENUS: Menu[] = [
     items: [
       { label: "How It Works", href: "/how-it-works" },
       { label: "Philosophy", href: "/philosophy" },
-      { label: "The Attorney", href: "/about/attorney" },
       { label: "Contact", href: "/contact" },
     ],
   },

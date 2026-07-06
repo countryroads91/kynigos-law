@@ -24,8 +24,8 @@ export async function generateMetadata({
   return {
     title: post.title,
     description: post.description,
-    // Authorship is the point: essays are Bayan's personally, publications
-    // are the firm's—metadata must match the visible byline exactly.
+    // Authorship is the point: essays carry the personal (unnamed) byline,
+    // publications the firm's—metadata must match the visible byline exactly.
     authors: [{ name: post.author }],
   };
 }
@@ -54,10 +54,9 @@ function jsonLd(post: Post) {
     headline: post.title,
     datePublished: post.date,
     description: post.description,
-    author:
-      post.contentType === "essay"
-        ? { "@type": "Person", name: "Bayan Misaghi" }
-        : { "@type": "Organization", name: "Kynigos Law Firm, PLLC" },
+    // No personal names anywhere on the site (by request)—the organization
+    // is the structured-data author for both content types.
+    author: { "@type": "Organization", name: "Kynigos Law Firm, PLLC" },
     publisher: { "@type": "Organization", name: "Kynigos Law Firm, PLLC" },
   };
 }

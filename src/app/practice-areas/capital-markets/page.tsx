@@ -122,18 +122,18 @@ export default function CapitalMarketsPage() {
         <div className="games-board">
           <div className="games-row">
             <div className="games-cell games-cell--bucket">
-              <span className="games-head">Bucket</span>
+              <span className="games-head">Engagement</span>
               <h3>Deal work</h3>
             </div>
             <div className="games-cell">
-              <span className="games-head">The game</span>
+              <span className="games-head">The objective</span>
               <p>
                 Close the transaction—clean opinions, tight documents, no
                 surprises at the closing table.
               </p>
             </div>
             <div className="games-cell">
-              <span className="games-head">The skin</span>
+              <span className="games-head">Our stake</span>
               <p>
                 The fee is fixed against the scope, so efficiency is the
                 firm&rsquo;s problem—and repeat mandates are earned deal by

@@ -122,16 +122,16 @@ export default function PhilosophyPage() {
           &ldquo;I have paid large retainers and watched the meter run before
           knowing if my lawyer was any good.&rdquo;
           <span className="phil-quote-attr">
-            Bayan Misaghi, Esq. · Managing Partner
+            The Managing Partner
           </span>
         </blockquote>
         <div className="phil-prose">
           <p>
-            Before law, Bayan spent about a decade in institutional
-            finance—structuring, underwriting, and pricing credit risk. In that
-            world, nobody gets paid for effort; they get paid for being right
-            about outcomes. Then he hired lawyers of his own and discovered the
-            legal market runs on the opposite rule.
+            Before law, the firm&rsquo;s founder spent about a decade in
+            institutional finance—structuring, underwriting, and pricing credit
+            risk. In that world, nobody gets paid for effort; they get paid for
+            being right about outcomes. Then he hired lawyers of his own and
+            discovered the legal market runs on the opposite rule.
           </p>
           <p>
             Kynigos is the firm he wanted to hire and could not find: posted

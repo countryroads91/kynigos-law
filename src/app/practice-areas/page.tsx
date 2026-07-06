@@ -52,7 +52,7 @@ export default function PracticeAreasPage() {
           They look different on the surface—a custody dispute is not an
           intercreditor agreement—but each one is priced the same way: a
           defined scope, a fixed number in writing, and a fee shape matched to
-          the game being played.
+          the work.
         </p>
       </section>
 
@@ -78,7 +78,7 @@ export default function PracticeAreasPage() {
       <section className="process process--band" aria-labelledby="model-heading">
         <div className="kicker">The Shared Principle</div>
         <h2 className="process-heading" id="model-heading">
-          The fee follows the game
+          The fee follows the work
         </h2>
         <p className="section-sub">
           A review problem takes a flat fee. A staged dispute takes staged

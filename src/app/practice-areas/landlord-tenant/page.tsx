@@ -108,18 +108,18 @@ export default function LandlordTenantPage() {
         <div className="games-board">
           <div className="games-row">
             <div className="games-cell games-cell--bucket">
-              <span className="games-head">Bucket</span>
+              <span className="games-head">Engagement</span>
               <h3>Disputes with a winnable outcome</h3>
             </div>
             <div className="games-cell">
-              <span className="games-head">The game</span>
+              <span className="games-head">The objective</span>
               <p>
                 Win the possession question—not rack up appearances while the
                 case circles the docket.
               </p>
             </div>
             <div className="games-cell">
-              <span className="games-head">The skin</span>
+              <span className="games-head">Our stake</span>
               <p>
                 Part of the fee is earned only if the defined outcome is
                 achieved. More hearings do not mean more fees.

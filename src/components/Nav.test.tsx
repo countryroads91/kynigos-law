@@ -88,7 +88,6 @@ describe("Nav mobile menu", () => {
       "About",
       "How It Works",
       "Philosophy",
-      "The Attorney",
       "Contact",
       "Insights",
       "Personal Essays",

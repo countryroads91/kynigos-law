@@ -15,7 +15,6 @@ export const STATIC_ROUTES = [
   "/practice-areas/capital-markets",
   "/practice-areas/contract-review",
   "/about",
-  "/about/attorney",
   "/how-it-works",
   "/philosophy",
   "/insights",

@@ -43,7 +43,9 @@ describe("About page", () => {
     expect(
       screen.getByText(/I have been the client\. I have paid large retainers/),
     ).toBeTruthy();
-    expect(document.body.textContent).toContain("Bayan Misaghi, Esq.");
+    // No personal names anywhere on the site, by request.
+    expect(document.body.textContent).not.toContain("Bayan");
+    expect(document.body.textContent).not.toContain("Misaghi");
     expect(
       screen.getByRole("link", { name: "Read the Essay" }).getAttribute("href"),
     ).toBe("/blog/i-have-been-the-client");
@@ -67,7 +69,6 @@ describe("About page", () => {
     for (const expected of [
       "/how-it-works",
       "/philosophy",
-      "/about/attorney",
       "/practice-areas",
       "/contact",
     ]) {

@@ -31,7 +31,7 @@ describe("Blog article template—essay", () => {
 
     expect(document.body.textContent).toContain("Personal Essay");
     expect(document.body.textContent).toContain(
-      "By Bayan Misaghi, Esq., Managing Partner",
+      "By The Managing Partner",
     );
     expect(screen.getByRole("link", { name: "← All Insights" }).getAttribute("href")).toBe(
       "/insights",
@@ -62,13 +62,16 @@ describe("Blog article template—essay", () => {
     const script = container.querySelector('script[type="application/ld+json"]');
     const data = JSON.parse(script!.textContent!);
     expect(data["@type"]).toBe("BlogPosting");
-    expect(data.author).toEqual({ "@type": "Person", name: "Bayan Misaghi" });
+    expect(data.author).toEqual({
+      "@type": "Organization",
+      name: "Kynigos Law Firm, PLLC",
+    });
     expect(data.publisher.name).toBe("Kynigos Law Firm, PLLC");
 
     const meta = await generateMetadata({
       params: Promise.resolve({ slug: "i-have-been-the-client" }),
     });
-    expect(meta.authors).toEqual([{ name: "Bayan Misaghi, Esq." }]);
+    expect(meta.authors).toEqual([{ name: "The Managing Partner" }]);
   });
 });
 

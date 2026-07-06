@@ -105,7 +105,7 @@ describe("Home page", () => {
     ).not.toContain("Bayan");
     expect(
       insights.querySelector(".insight-card--essay")!.textContent,
-    ).toContain("Bayan Misaghi");
+    ).toContain("The Managing Partner");
   });
 
   it("keeps the DC-only jurisdiction note on the page", () => {

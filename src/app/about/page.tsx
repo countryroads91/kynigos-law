@@ -19,14 +19,9 @@ const destinations = [
     blurb: "Play to Win. Win to Play. The six words that run the firm.",
   },
   {
-    href: "/about/attorney",
-    title: "The Attorney",
-    blurb: "Bayan Misaghi, Esq.—about a decade in institutional finance before law.",
-  },
-  {
     href: "/practice-areas",
     title: "Practice Areas",
-    blurb: "Family law, capital markets, employment and contract review, business matters.",
+    blurb: "Family law, landlord-tenant, capital markets, and contract review.",
   },
   {
     href: "/contact",
@@ -60,7 +55,7 @@ export default function AboutPage() {
           watched the meter run before knowing if my lawyer was any
           good.&rdquo;
           <span className="phil-quote-attr">
-            Bayan Misaghi, Esq. · Personal Essay
+            From the personal essay behind the firm
           </span>
         </blockquote>
         <div className="phil-prose">
@@ -86,14 +81,14 @@ export default function AboutPage() {
         <div className="rule-banner">
           <div className="kicker">The Model</div>
           <h2 className="rule-heading" id="model-heading">
-            The fee follows the game.
+            The fee follows the work.
           </h2>
           <p className="rule-body">
-            First we name the game you are actually playing—a dispute to
-            resolve, a document to judge, a deal to improve. Then we price it
-            so our margin depends on judgment and efficiency, not on the
-            calendar. Each stage closes with a result and your decision to
-            re-engage, so the firm re-earns the matter one stage at a time.
+            Every engagement starts by defining the work—a dispute to resolve,
+            a document to judge, a deal to improve—and pricing it in writing
+            before anything begins. Our margin depends on judgment and
+            efficiency, not on the calendar, and each stage closes with a
+            result and your decision to re-engage.
           </p>
           <div className="cta-row">
             <Link href="/how-it-works" className="btn-secondary">

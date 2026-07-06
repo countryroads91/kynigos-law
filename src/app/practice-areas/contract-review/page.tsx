@@ -118,18 +118,18 @@ export default function ContractReviewPage() {
         <div className="games-board">
           <div className="games-row">
             <div className="games-cell games-cell--bucket">
-              <span className="games-head">Bucket</span>
+              <span className="games-head">Engagement</span>
               <h3>Review &amp; advice</h3>
             </div>
             <div className="games-cell">
-              <span className="games-head">The game</span>
+              <span className="games-head">The objective</span>
               <p>
                 Give you a clear, usable answer on your contract without
                 over-lawyering the problem.
               </p>
             </div>
             <div className="games-cell">
-              <span className="games-head">The skin</span>
+              <span className="games-head">Our stake</span>
               <p>
                 The price is posted before you ever call. The firm bears the
                 risk of doing the work efficiently.

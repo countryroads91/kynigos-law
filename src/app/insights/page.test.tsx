@@ -53,7 +53,7 @@ describe("Insights hub", () => {
     for (const card of essayCards) {
       expect(card.textContent).toContain("Personal Essay");
       expect(card.textContent).toContain(
-        "By Bayan Misaghi, Esq., Managing Partner",
+        "By The Managing Partner",
       );
     }
 

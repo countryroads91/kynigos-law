@@ -1,6 +1,7 @@
 // ─── Insights content model ───
 // Two editorial voices share one knowledge system:
-//   "essay"       — personal perspective, authored by Bayan personally.
+//   "essay"       — personal perspective from the managing partner (no
+//                    personal name anywhere on the site, by request).
 //   "publication" — institutional Kynigos analysis, authored by the firm.
 // White papers live in papers.ts; articles and papers cross-link by slug.
 
@@ -30,7 +31,7 @@ export type Post = {
 };
 
 export const FIRM_AUTHOR = "Kynigos Law Firm";
-export const PERSONAL_AUTHOR = "Bayan Misaghi, Esq.";
+export const PERSONAL_AUTHOR = "The Managing Partner";
 
 // Newest first.
 export const posts: Post[] = [
@@ -42,7 +43,6 @@ export const posts: Post[] = [
       "A first-person account of being billed by the hour through the author's own divorce—four examples with dates and numbers—and the experience behind founding Kynigos Law Firm on flat fees.",
     contentType: "essay",
     author: PERSONAL_AUTHOR,
-    authorTitle: "Managing Partner",
     label: "Personal Essay",
     date: "2026-06-26",
     category: "Why Kynigos Exists",
@@ -60,7 +60,6 @@ export const posts: Post[] = [
       "A first-person account of being billed by the hour through the author's own divorce—and why he built Kynigos Law Firm on flat fees that align the attorney's incentives with the client's.",
     contentType: "essay",
     author: PERSONAL_AUTHOR,
-    authorTitle: "Managing Partner",
     label: "Personal Essay",
     date: "2026-06-25",
     category: "Fee Structures",
