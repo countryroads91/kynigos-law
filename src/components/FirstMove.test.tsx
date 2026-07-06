@@ -90,4 +90,28 @@ describe("FirstMove", () => {
       expect(screen.getByRole("alert").textContent).toBe("Request too large."),
     );
   });
+
+  it("reports a network failure and re-enables the submit button", async () => {
+    const fetchMock = vi.fn().mockRejectedValue(new TypeError("failed"));
+    vi.stubGlobal("fetch", fetchMock);
+
+    render(<FirstMove />);
+    fill();
+    fireEvent.change(screen.getByLabelText("Matter involves"), {
+      target: { value: "dc" },
+    });
+    fireEvent.click(
+      screen.getByRole("button", { name: "Make The First Move" }),
+    );
+
+    await waitFor(() =>
+      expect(screen.getByRole("alert").textContent).toBe(
+        "Network error. Please try again.",
+      ),
+    );
+    // status is "error", not "submitting"—the user can retry.
+    expect(
+      screen.getByRole("button", { name: "Make The First Move" }),
+    ).toHaveProperty("disabled", false);
+  });
 });

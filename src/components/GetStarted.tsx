@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 
 type Path = "document" | "situation";
@@ -38,23 +38,56 @@ export default function GetStarted() {
   const [dragging, setDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
+  // While the fork is on screen, a drop that misses the dropzone must not
+  // navigate the browser into the file (which would destroy anything typed
+  // in the First Move form below).
+  useEffect(() => {
+    function swallow(e: DragEvent) {
+      e.preventDefault();
+    }
+    window.addEventListener("dragover", swallow);
+    window.addEventListener("drop", swallow);
+    return () => {
+      window.removeEventListener("dragover", swallow);
+      window.removeEventListener("drop", swallow);
+    };
+  }, []);
+
   function addFiles(list: FileList | null) {
     if (!list) return;
     const next: File[] = [];
-    let error = "";
+    const errors: string[] = [];
     for (const file of Array.from(list)) {
       if (file.size > MAX_BYTES) {
-        error = `${file.name} is over 15 MB—email it to bayan@kynigos.law instead.`;
+        errors.push(`${file.name} is over 15 MB—email it instead.`);
         continue;
       }
       if (!/\.(pdf|docx?)$/i.test(file.name)) {
-        error = `${file.name} is not a PDF or Word document.`;
+        errors.push(`${file.name} is not a PDF or Word document.`);
         continue;
       }
       next.push(file);
     }
-    setFileError(error);
+    setFileError(errors.join(" "));
     if (next.length) setFiles((cur) => [...cur, ...next]);
+  }
+
+  function onTablistKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
+    const order: Path[] = ["document", "situation"];
+    let target: Path | null = null;
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+      target = order[(order.indexOf(path) + 1) % order.length];
+    } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+      target = order[(order.indexOf(path) + order.length - 1) % order.length];
+    } else if (e.key === "Home") {
+      target = order[0];
+    } else if (e.key === "End") {
+      target = order[order.length - 1];
+    }
+    if (!target) return;
+    e.preventDefault();
+    setPath(target);
+    document.getElementById(`${uid}-tab-${target}`)?.focus();
   }
 
   return (
@@ -69,13 +102,19 @@ export default function GetStarted() {
           work begins.
         </p>
 
-        <div className="fork-doors" role="tablist" aria-label="Ways to start">
+        <div
+          className="fork-doors"
+          role="tablist"
+          aria-label="Ways to start"
+          onKeyDown={onTablistKeyDown}
+        >
           <button
             type="button"
             role="tab"
             id={`${uid}-tab-document`}
             aria-selected={path === "document"}
             aria-controls={`${uid}-panel-document`}
+            tabIndex={path === "document" ? 0 : -1}
             className="fork-door"
             onClick={() => setPath("document")}
           >
@@ -93,6 +132,7 @@ export default function GetStarted() {
             id={`${uid}-tab-situation`}
             aria-selected={path === "situation"}
             aria-controls={`${uid}-panel-situation`}
+            tabIndex={path === "situation" ? 0 : -1}
             className="fork-door"
             onClick={() => setPath("situation")}
           >
@@ -111,6 +151,7 @@ export default function GetStarted() {
           role="tabpanel"
           id={`${uid}-panel-document`}
           aria-labelledby={`${uid}-tab-document`}
+          tabIndex={0}
           hidden={path !== "document"}
         >
           <div>
@@ -139,7 +180,12 @@ export default function GetStarted() {
                 e.preventDefault();
                 setDragging(true);
               }}
-              onDragLeave={() => setDragging(false)}
+              onDragLeave={(e) => {
+                // Ignore leave events fired by crossing the dropzone's own
+                // children—only a true exit clears the highlight.
+                if (e.currentTarget.contains(e.relatedTarget as Node)) return;
+                setDragging(false);
+              }}
               onDrop={(e) => {
                 e.preventDefault();
                 setDragging(false);
@@ -219,6 +265,7 @@ export default function GetStarted() {
           role="tabpanel"
           id={`${uid}-panel-situation`}
           aria-labelledby={`${uid}-tab-situation`}
+          tabIndex={0}
           hidden={path !== "situation"}
         >
           <div>
@@ -242,14 +289,17 @@ export default function GetStarted() {
             </p>
           </div>
           <div>
-            {CALENDLY_URL ? (
+            {CALENDLY_URL && path === "situation" ? (
+              // Mounted only while this tab is open—loading="lazy" does not
+              // reliably defer iframes inside [hidden] containers, and the
+              // third-party embed should not tax visitors who never open it.
               <iframe
                 src={CALENDLY_URL}
                 title="Schedule a free consultation"
                 className="calendly-embed"
                 loading="lazy"
               />
-            ) : (
+            ) : CALENDLY_URL ? null : (
               <div className="calendly-placeholder">
                 <p className="dropzone-title">Consultation scheduler</p>
                 <p className="dropzone-hint">

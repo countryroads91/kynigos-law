@@ -38,8 +38,8 @@ export default function SkinInTheGame() {
         </h2>
         <p className="section-sub">
           Hourly billing pays the lawyer more when your problem takes longer.
-          We structure every fee so the incentive points at your outcome—
-          something to lose, something to prove, or something to earn.
+          We structure every fee so the incentive points at your
+          outcome—something to lose, something to prove, or something to earn.
         </p>
 
         <div className="skin-grid">

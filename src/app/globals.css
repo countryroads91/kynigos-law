@@ -2211,6 +2211,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .dropzone-browse {
   padding: 10px 22px;
+  min-height: 44px;
 }
 .dropzone-input {
   display: none;
@@ -2219,7 +2220,7 @@ h1, h2, h3, h4, h5, h6 {
   display: inline-block;
   margin-top: 14px;
   font-family: var(--font-sans);
-  font-size: 9px;
+  font-size: 10px; /* overline token—the type scale's floor (§3) */
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2273,8 +2274,14 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 18px;
   line-height: 1;
   color: var(--color-umber);
-  padding: 2px 6px;
   border-radius: 2px;
+  /* 44px hit area (§16) without inflating the row: pad out, pull back in. */
+  min-width: 44px;
+  min-height: 44px;
+  margin: -10px -12px -10px 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .dropzone-remove:hover {
   color: var(--color-error);

@@ -42,6 +42,23 @@ describe("GetStarted fork", () => {
     expect(sitPanel.hidden).toBe(false);
   });
 
+  it("moves between doors with arrow keys (roving tabindex)", () => {
+    render(<GetStarted />);
+
+    expect(docTab().tabIndex).toBe(0);
+    expect(sitTab().tabIndex).toBe(-1);
+
+    fireEvent.keyDown(docTab().closest("[role=tablist]")!, {
+      key: "ArrowRight",
+    });
+    expect(sitTab().getAttribute("aria-selected")).toBe("true");
+    expect(sitTab().tabIndex).toBe(0);
+    expect(docTab().tabIndex).toBe(-1);
+
+    fireEvent.keyDown(sitTab().closest("[role=tablist]")!, { key: "Home" });
+    expect(docTab().getAttribute("aria-selected")).toBe("true");
+  });
+
   it("lists a selected file and removes it again", () => {
     render(<GetStarted />);
 
@@ -70,6 +87,25 @@ describe("GetStarted fork", () => {
       "not a PDF or Word document",
     );
     expect(screen.queryByText("photo.png")).toBeNull();
+  });
+
+  it("rejects oversized files but keeps valid files from the same batch", () => {
+    render(<GetStarted />);
+
+    const input = screen.getByLabelText("Choose a document to upload");
+    const big = new File(["x"], "deal-room.pdf", { type: "application/pdf" });
+    Object.defineProperty(big, "size", { value: 16 * 1024 * 1024 });
+    const ok = new File(["fine"], "lease.docx", {
+      type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    });
+    fireEvent.change(input, { target: { files: [big, ok] } });
+
+    expect(screen.getByRole("alert").textContent).toContain(
+      "deal-room.pdf is over 15 MB",
+    );
+    // The valid file from the same selection still lands in the list.
+    expect(screen.getByText("lease.docx")).toBeTruthy();
+    expect(screen.queryByText("deal-room.pdf")).toBeNull();
   });
 
   it("labels the unfinished integrations and keeps working fallbacks", () => {
