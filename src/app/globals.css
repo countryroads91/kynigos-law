@@ -1237,6 +1237,10 @@ h1, h2, h3, h4, h5, h6 {
   /* 17 items per loop half—keep the scroll speed of the old 9-item band. */
   animation: marquee 75s linear infinite;
 }
+.ticker:hover .ticker-track,
+.ticker:focus-within .ticker-track {
+  animation-play-state: paused;
+}
 .ticker-item {
   font-family: var(--font-sans);
   font-size: 11px;
@@ -1454,6 +1458,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 .example-card .skin-fee {
   background: var(--color-linen);
+}
+/* Whole-card practice links on the homepage overview. */
+a.practice-card {
+  text-decoration: none;
+  transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+a.practice-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(28, 25, 23, 0.08);
+}
+a.practice-card:hover .example-title {
+  color: var(--color-oxblood);
 }
 
 .rule-banner {
@@ -1673,20 +1690,24 @@ h1, h2, h3, h4, h5, h6 {
   display: inline-flex;
   align-items: center;
 }
+/* Split target: the text label navigates, the chevron opens children.
+   Two unambiguous controls, never one control doing both. */
+.nav-split {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.nav-links a.nav-link.is-active {
+  color: var(--color-oxblood);
+}
 .nav-trigger {
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
   color: var(--color-umber);
   background: none;
   border: none;
-  padding: 0;
+  padding: 8px 4px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
   transition: color 200ms;
 }
 .nav-trigger:hover,
@@ -1755,6 +1776,13 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--color-linen);
   color: var(--color-oxblood);
 }
+.nav-links a.nav-dropdown-link--all {
+  color: var(--color-oxblood);
+  font-weight: 600;
+  border-bottom: 1px solid var(--color-divider);
+  border-radius: 2px 2px 0 0;
+  margin-bottom: 4px;
+}
 
 /* ─── Mobile menu ─── */
 .nav-burger {
@@ -1790,101 +1818,126 @@ h1, h2, h3, h4, h5, h6 {
 .nav-burger[aria-expanded="true"] span:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
 }
-/* Dimmed backdrop behind the sheet; tapping it closes the menu. */
-.nav-scrim {
+/* ─── Full-screen menu (mobile) ───
+   A temporary full-viewport environment, not a panel over the page. The
+   header (brand + burger-as-X) stays visible above it; the page behind is
+   inert and scroll-locked while open. */
+.menu-overlay {
   position: fixed;
-  /* Explicit box instead of inset:0. The nav's backdrop-filter can make it
-     the containing block for fixed descendants (Filter Effects L2); anchoring
-     bottom:0 there would collapse the scrim to the header's 64px strip.
-     A fixed height overflows any containing block and always covers the page. */
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  z-index: 98;
-  background: color-mix(in srgb, var(--color-espresso) 32%, transparent);
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  animation: scrimIn 200ms ease forwards;
+  z-index: 99;
+  background:
+    radial-gradient(
+      120% 90% at 85% -10%,
+      color-mix(in srgb, var(--color-linen) 85%, transparent),
+      transparent 60%
+    ),
+    var(--color-parchment);
+  animation: overlayIn 240ms ease forwards;
 }
-@keyframes scrimIn {
+@keyframes overlayIn {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
-/* One-tap flat menu: a sheet dropping from under the header. Every page is a
-   single tap away—no accordions. Section labels are non-interactive. */
-.nav-sheet {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  z-index: 99;
-  background: var(--color-parchment);
-  border-bottom: 1px solid var(--color-divider);
-  box-shadow: 0 24px 48px rgba(28, 25, 23, 0.18);
-  padding: 8px 20px calc(20px + env(safe-area-inset-bottom));
-  max-height: calc(100vh - 64px); /* fallback for engines without dvh */
-  max-height: calc(100dvh - 64px);
+.menu-scroll {
+  height: 100%;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  animation: sheetIn 220ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  padding: calc(72px + env(safe-area-inset-top)) 24px
+    calc(28px + env(safe-area-inset-bottom));
+  overscroll-behavior: contain;
 }
-@keyframes sheetIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* Staggered, restrained entrance—large calm labels, no spring. */
+.menu-scroll > * {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 320ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
-.nav-sheet-label {
-  font-family: var(--font-sans);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-  padding: 14px 4px 4px;
-  border-bottom: 1px solid var(--color-divider);
-  margin-bottom: 4px;
+.menu-scroll > *:nth-child(1) { animation-delay: 40ms; }
+.menu-scroll > *:nth-child(2) { animation-delay: 80ms; }
+.menu-scroll > *:nth-child(3) { animation-delay: 120ms; }
+.menu-scroll > *:nth-child(4) { animation-delay: 160ms; }
+.menu-scroll > *:nth-child(5) { animation-delay: 200ms; }
+.menu-scroll > *:nth-child(6) { animation-delay: 240ms; }
+.menu-group {
+  margin-top: 18px;
 }
-.nav-sheet a.nav-sheet-link {
-  display: flex;
+a.menu-primary-link {
+  display: inline-flex;
   align-items: center;
   min-height: 48px;
-  padding: 6px 4px;
   font-family: var(--font-display);
-  font-size: 19px;
-  font-weight: 500;
+  font-size: clamp(28px, 7.5vw, 36px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
   color: var(--color-espresso);
   text-decoration: none;
   transition: color 160ms;
 }
-.nav-sheet a.nav-sheet-link:hover,
-.nav-sheet a.nav-sheet-link:active {
+a.menu-primary-link:hover,
+a.menu-primary-link:active {
   color: var(--color-oxblood);
 }
-.nav-sheet a.nav-sheet-cta {
-  margin-top: 20px;
+a.menu-primary-link.is-active {
+  color: var(--color-oxblood);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 8px;
+}
+.menu-children {
+  display: flex;
+  flex-direction: column;
+  margin: 2px 0 0 2px;
+}
+a.menu-child-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--font-serif);
+  font-size: 17px;
+  color: var(--color-umber);
+  text-decoration: none;
+  transition: color 160ms;
+}
+a.menu-child-link:hover,
+a.menu-child-link:active,
+a.menu-child-link.is-active {
+  color: var(--color-oxblood);
+}
+.menu-cta {
+  margin-top: 32px;
   align-self: stretch;
   text-align: center;
   justify-content: center;
   display: flex;
-  font-family: var(--font-sans);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  background: var(--color-oxblood);
-  color: var(--color-parchment);
   padding: 16px 28px;
-  border: 2px solid var(--color-espresso);
-  border-radius: 2px;
-  text-decoration: none;
-  transition: background 200ms;
 }
-.nav-sheet a.nav-sheet-cta:hover {
-  background: var(--color-oxblood-hover);
-  color: var(--color-parchment);
+.menu-legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 22px;
+  margin-top: 24px;
+}
+.menu-legal a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  text-decoration: none;
+}
+.menu-legal a:hover {
+  color: var(--color-oxblood);
 }
 
 /* ─── Footer ─── */
@@ -1899,7 +1952,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  grid-template-columns: 1.6fr 1fr 1fr 1.1fr 1fr;
   gap: 40px;
   margin-bottom: 48px;
 }
@@ -1937,6 +1990,57 @@ h1, h2, h3, h4, h5, h6 {
   transition: color 200ms;
 }
 .footer-links a:hover { color: var(--color-linen); }
+.footer-desc {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  line-height: 1.6;
+  max-width: 240px;
+  margin: 0 0 20px;
+}
+.footer-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: var(--color-oxblood);
+  color: var(--color-parchment);
+  padding: 12px 22px;
+  border: 2px solid color-mix(in srgb, var(--color-parchment) 20%, transparent);
+  border-radius: 2px;
+  text-decoration: none;
+  transition: background 200ms;
+}
+.footer-cta:hover { background: var(--color-oxblood-hover); }
+.footer-plain {
+  font-size: 13px;
+  color: color-mix(in srgb, var(--color-parchment) 50%, transparent);
+}
+/* Legal/utility row—visually subordinate but comfortably tappable. */
+.footer-legal {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 24px;
+  margin: 16px 0 0;
+  padding: 0;
+}
+.footer-legal a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-parchment) 38%, transparent);
+  text-decoration: none;
+  transition: color 200ms;
+}
+.footer-legal a:hover { color: var(--color-linen); }
 .footer-bottom {
   border-top: 1px solid color-mix(in srgb, var(--color-parchment) 6%, transparent);
   padding-top: 24px;
@@ -2451,6 +2555,218 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 28px;
 }
 
+/* ─── Breadcrumbs ─── */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: 24px;
+}
+.breadcrumbs a {
+  color: var(--color-umber);
+  text-decoration: none;
+  transition: color 160ms;
+}
+.breadcrumbs a:hover { color: var(--color-oxblood); }
+.breadcrumbs .crumb-sep { color: var(--color-divider); }
+
+/* ─── Generic page vocabulary (shared by IA/insights/legal templates) ─── */
+.eyebrow {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-oxblood);
+  margin-bottom: 12px;
+}
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.card-grid--wide { grid-template-columns: repeat(3, 1fr); }
+
+/* ─── Insights editorial system ───
+   One publication ecosystem, three clearly differentiated voices:
+   essays (personal), publications (institutional), papers (research). */
+.insight-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-warm-white);
+  border: 1px solid var(--color-divider);
+  border-radius: 8px;
+  padding: 26px 24px;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(28, 25, 23, 0.04);
+  transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.insight-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(28, 25, 23, 0.08);
+}
+/* Personal essays: linen ground + italic display accents—editorial, warm. */
+.insight-card--essay {
+  background: var(--color-linen);
+  border-left: 3px solid var(--color-oxblood);
+}
+.insight-card--essay .insight-title { font-style: italic; }
+/* Publications: white ground, oxblood top rule—institutional. */
+.insight-card--publication {
+  border-top: 2px solid var(--color-oxblood);
+  border-radius: 0 0 8px 8px;
+}
+/* White papers: espresso keyline, document-like—research depth. */
+.insight-card--paper {
+  border: 1.5px solid var(--color-espresso);
+  background: var(--color-parchment);
+}
+.insight-label {
+  display: inline-flex;
+  align-self: flex-start;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-oxblood);
+  margin-bottom: 14px;
+}
+.insight-card--paper .insight-label {
+  color: var(--color-parchment);
+  background: var(--color-espresso);
+  padding: 4px 8px;
+  border-radius: 2px;
+}
+.insight-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-espresso);
+  margin: 0 0 8px;
+  transition: color 200ms;
+}
+.insight-card:hover .insight-title { color: var(--color-oxblood); }
+.insight-dek {
+  font-family: var(--font-serif);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--color-umber);
+  margin: 0 0 16px;
+}
+.insight-meta {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+}
+.insight-meta .insight-author { color: var(--color-umber); font-weight: 600; }
+.insight-relation {
+  margin-top: 12px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--color-umber);
+}
+.insight-relation em {
+  font-style: italic;
+  font-family: var(--font-serif);
+  color: var(--color-oxblood);
+}
+
+/* Cross-link module: article ↔ white paper relationship band. */
+.related-band {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  border: 1px solid var(--color-divider);
+  border-left: 3px solid var(--color-oxblood);
+  border-radius: 8px;
+  background: var(--color-linen);
+  padding: 20px 24px;
+  margin: 32px 0;
+}
+.related-band-label {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-oxblood);
+  margin-bottom: 6px;
+}
+.related-band-title {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--color-espresso);
+  margin: 0 0 4px;
+}
+.related-band p {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--color-umber);
+  margin: 0 0 12px;
+}
+
+/* ─── Legal page template ─── */
+.legal-page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 120px 24px 96px;
+}
+.legal-updated {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin: 8px 0 32px;
+}
+.legal-prose {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--color-espresso);
+}
+.legal-prose h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 40px 0 12px;
+}
+.legal-prose h3 {
+  font-size: 19px;
+  font-weight: 600;
+  margin: 28px 0 10px;
+}
+.legal-prose p { margin: 0 0 16px; }
+.legal-prose ul { margin: 0 0 16px; padding-left: 1.3em; }
+.legal-prose li { margin-bottom: 8px; }
+.legal-prose a {
+  color: var(--color-oxblood);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  .card-grid, .card-grid--wide { grid-template-columns: 1fr; }
+}
+
 /* ─── Responsive ─── */
 @media (max-width: 1024px) {
   .hero-spear { display: none; }
@@ -2463,12 +2779,12 @@ h1, h2, h3, h4, h5, h6 {
   .nav-links { display: none; }
   .nav-burger { display: flex; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .footer-brand-col { grid-column: 1 / -1; }
   .process { padding: 72px 24px; }
 }
 @media (min-width: 901px) {
   .nav-burger,
-  .nav-scrim,
-  .nav-sheet { display: none; }
+  .menu-overlay { display: none; }
 }
 @media (max-width: 900px) {
   .fork-inner, .skin-inner, .first-move-inner { padding: 72px 24px; }

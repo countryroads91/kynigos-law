@@ -7,22 +7,17 @@ import { useEffect, useRef, useState } from "react";
 type MenuItem = { label: string; href: string };
 type Menu = {
   label: string;
-  overview?: { label: string; href: string };
+  /** Every primary label is a real one-tap destination. */
+  href: string;
   items: MenuItem[];
 };
 
+// Primary labels link to landing pages; the chevron (desktop) or the grouped
+// list (mobile overlay) exposes children. No label is only a submenu toggle.
 const MENUS: Menu[] = [
   {
-    label: "About",
-    items: [
-      { label: "How it Works", href: "/how-it-works" },
-      { label: "Philosophy", href: "/philosophy" },
-      { label: "Contact", href: "/contact" },
-    ],
-  },
-  {
     label: "Practice Areas",
-    overview: { label: "All Practice Areas", href: "/practice-areas" },
+    href: "/practice-areas",
     items: [
       { label: "Family Law", href: "/practice-areas/family-law" },
       { label: "Landlord-Tenant", href: "/practice-areas/landlord-tenant" },
@@ -31,12 +26,31 @@ const MENUS: Menu[] = [
     ],
   },
   {
-    label: "Insights",
+    label: "About",
+    href: "/about",
     items: [
-      { label: "White Papers", href: "/white-papers" },
-      { label: "Blog", href: "/blog" },
+      { label: "How It Works", href: "/how-it-works" },
+      { label: "Philosophy", href: "/philosophy" },
+      { label: "The Attorney", href: "/about/attorney" },
+      { label: "Contact", href: "/contact" },
     ],
   },
+  {
+    label: "Insights",
+    href: "/insights",
+    items: [
+      { label: "Personal Essays", href: "/insights#essays" },
+      { label: "Kynigos Publications", href: "/insights#publications" },
+      { label: "White Papers", href: "/white-papers" },
+    ],
+  },
+];
+
+const LEGAL_LINKS: MenuItem[] = [
+  { label: "Privacy", href: "/legal/privacy" },
+  { label: "Disclaimer", href: "/legal/disclaimer" },
+  { label: "Attorney Advertising", href: "/legal/attorney-advertising" },
+  { label: "Accessibility", href: "/accessibility" },
 ];
 
 export default function Nav() {
@@ -85,18 +99,32 @@ export default function Nav() {
     };
   }, []);
 
-  // Lock body scroll while the mobile menu is open.
+  // While the full-screen menu is open: lock body scroll AND make the page
+  // behind it inert so keyboard and screen-reader users cannot reach it.
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    const page = document.querySelector("main");
+    const footer = document.querySelector("footer");
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+      page?.setAttribute("inert", "");
+      footer?.setAttribute("inert", "");
+    } else {
+      document.body.style.overflow = "";
+      page?.removeAttribute("inert");
+      footer?.removeAttribute("inert");
+    }
     return () => {
       document.body.style.overflow = "";
+      page?.removeAttribute("inert");
+      footer?.removeAttribute("inert");
     };
   }, [mobileOpen]);
 
-  // Trap Tab focus inside the nav while the full-screen mobile menu is open
+  // Trap Tab focus inside the nav while the full-screen menu is open
   // (design system §16); return focus to the burger when it closes.
   useEffect(() => {
     if (!mobileOpen) return;
+    const burger = burgerRef.current;
     function onTrapKey(e: KeyboardEvent) {
       if (e.key !== "Tab" || !navRef.current) return;
       const focusables = Array.from(
@@ -119,12 +147,12 @@ export default function Nav() {
     document.addEventListener("keydown", onTrapKey);
     return () => {
       document.removeEventListener("keydown", onTrapKey);
-      burgerRef.current?.focus();
+      burger?.focus();
     };
   }, [mobileOpen]);
 
   // Close the mobile menu when the viewport grows past the mobile breakpoint.
-  // CSS hides .nav-burger and .nav-sheet at >=901px, but without this the
+  // CSS hides .nav-burger and .menu-overlay at >=901px, but without this the
   // mobileOpen state would stay true and keep the body scroll locked on
   // desktop after a rotate/resize, with no visible control to release it.
   useEffect(() => {
@@ -141,6 +169,12 @@ export default function Nav() {
   function closeAll() {
     setOpen(null);
     setMobileOpen(false);
+  }
+
+  function isActive(href: string) {
+    const base = href.split("#")[0];
+    if (base === "/") return pathname === "/";
+    return pathname === base || pathname.startsWith(`${base}/`);
   }
 
   return (
@@ -162,30 +196,40 @@ export default function Nav() {
                 setOpen((cur) => (cur === i ? null : cur));
             }}
           >
-            <button
-              type="button"
-              className="nav-trigger"
-              aria-haspopup="true"
-              aria-expanded={open === i}
-              onClick={() => setOpen((cur) => (cur === i ? null : i))}
-            >
-              {menu.label}
-              <span className="nav-caret" aria-hidden="true" />
-            </button>
+            <span className="nav-split">
+              <Link
+                href={menu.href}
+                className={
+                  isActive(menu.href) ? "nav-link is-active" : "nav-link"
+                }
+                aria-current={isActive(menu.href) ? "page" : undefined}
+                onClick={closeAll}
+              >
+                {menu.label}
+              </Link>
+              <button
+                type="button"
+                className="nav-trigger"
+                aria-haspopup="true"
+                aria-expanded={open === i}
+                aria-label={`${menu.label} submenu`}
+                onClick={() => setOpen((cur) => (cur === i ? null : i))}
+              >
+                <span className="nav-caret" aria-hidden="true" />
+              </button>
+            </span>
             <div
               className={open === i ? "nav-dropdown is-open" : "nav-dropdown"}
               role="menu"
             >
-              {menu.overview && (
-                <Link
-                  href={menu.overview.href}
-                  className="nav-dropdown-link"
-                  role="menuitem"
-                  onClick={closeAll}
-                >
-                  {menu.overview.label}
-                </Link>
-              )}
+              <Link
+                href={menu.href}
+                className="nav-dropdown-link nav-dropdown-link--all"
+                role="menuitem"
+                onClick={closeAll}
+              >
+                All {menu.label === "About" ? "About the Firm" : menu.label}
+              </Link>
               {menu.items.map((item) => (
                 <Link
                   key={item.href}
@@ -220,59 +264,75 @@ export default function Nav() {
       </button>
 
       {mobileOpen && (
-        <>
-          {/* Tap anywhere outside the sheet to dismiss. Hidden from keyboard
-              and screen readers—the burger is the accessible close control. */}
-          <button
-            type="button"
-            className="nav-scrim"
-            aria-hidden="true"
-            tabIndex={-1}
-            onClick={closeAll}
-          />
-          <div
-            className="nav-sheet"
-            id="nav-sheet"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Site menu"
-          >
-            <Link href="/" className="nav-sheet-link" onClick={closeAll}>
+        <div
+          className="menu-overlay"
+          id="nav-sheet"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Site menu"
+        >
+          <div className="menu-scroll">
+            <Link
+              href="/"
+              className={
+                pathname === "/"
+                  ? "menu-primary-link is-active"
+                  : "menu-primary-link"
+              }
+              aria-current={pathname === "/" ? "page" : undefined}
+              onClick={closeAll}
+            >
               Home
             </Link>
             {MENUS.map((menu) => (
-              <div key={menu.label} className="nav-sheet-group">
-                <div className="nav-sheet-label">{menu.label}</div>
-                {menu.overview && (
-                  <Link
-                    href={menu.overview.href}
-                    className="nav-sheet-link"
-                    onClick={closeAll}
-                  >
-                    {menu.overview.label}
-                  </Link>
-                )}
-                {menu.items.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="nav-sheet-link"
-                    onClick={closeAll}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+              <div key={menu.label} className="menu-group">
+                <Link
+                  href={menu.href}
+                  className={
+                    isActive(menu.href)
+                      ? "menu-primary-link is-active"
+                      : "menu-primary-link"
+                  }
+                  aria-current={isActive(menu.href) ? "page" : undefined}
+                  onClick={closeAll}
+                >
+                  {menu.label}
+                </Link>
+                <div className="menu-children">
+                  {menu.items.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={
+                        isActive(item.href)
+                          ? "menu-child-link is-active"
+                          : "menu-child-link"
+                      }
+                      aria-current={isActive(item.href) ? "page" : undefined}
+                      onClick={closeAll}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
               </div>
             ))}
             <Link
               href="/contact"
-              className="nav-cta nav-sheet-cta"
+              className="nav-cta menu-cta"
               onClick={closeAll}
             >
               Book A Free Consultation
             </Link>
+            <div className="menu-legal">
+              {LEGAL_LINKS.map((l) => (
+                <Link key={l.href} href={l.href} onClick={closeAll}>
+                  {l.label}
+                </Link>
+              ))}
+            </div>
           </div>
-        </>
+        </div>
       )}
     </nav>
   );

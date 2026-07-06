@@ -5,16 +5,23 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-inner">
         <div className="footer-grid">
-          <div>
+          <div className="footer-brand-col">
             <div className="footer-brand">Kynigos</div>
             <div className="footer-tag">Calculated. Zealous. Invested.</div>
-            <p style={{ fontSize: 13 }}>
-              Flat-fee and contingency representation. Washington, DC.
+            <p className="footer-desc">
+              Flat-fee and contingency representation, priced before the work
+              begins. Washington, DC.
             </p>
+            <Link href="/contact" className="footer-cta">
+              Book A Free Consultation
+            </Link>
           </div>
-          <div>
+          <nav aria-label="Practice areas">
             <h4>Practice Areas</h4>
             <ul className="footer-links">
+              <li>
+                <Link href="/practice-areas">All Practice Areas</Link>
+              </li>
               <li>
                 <Link href="/practice-areas/family-law">Family Law</Link>
               </li>
@@ -34,10 +41,13 @@ export default function Footer() {
                 </Link>
               </li>
             </ul>
-          </div>
-          <div>
+          </nav>
+          <nav aria-label="Firm">
             <h4>Firm</h4>
             <ul className="footer-links">
+              <li>
+                <Link href="/about">About</Link>
+              </li>
               <li>
                 <Link href="/how-it-works">How it Works</Link>
               </li>
@@ -45,16 +55,30 @@ export default function Footer() {
                 <Link href="/philosophy">Philosophy</Link>
               </li>
               <li>
-                <Link href="/white-papers">White Papers</Link>
-              </li>
-              <li>
-                <Link href="/blog">Blog</Link>
+                <Link href="/about/attorney">The Attorney</Link>
               </li>
               <li>
                 <Link href="/contact">Contact</Link>
               </li>
             </ul>
-          </div>
+          </nav>
+          <nav aria-label="Insights">
+            <h4>Insights</h4>
+            <ul className="footer-links">
+              <li>
+                <Link href="/insights">All Insights</Link>
+              </li>
+              <li>
+                <Link href="/insights#essays">Personal Essays</Link>
+              </li>
+              <li>
+                <Link href="/insights#publications">Kynigos Publications</Link>
+              </li>
+              <li>
+                <Link href="/white-papers">White Papers</Link>
+              </li>
+            </ul>
+          </nav>
           <div>
             <h4>Contact</h4>
             <ul className="footer-links">
@@ -62,7 +86,10 @@ export default function Footer() {
                 <a href="tel:+13045491058">(304) 549-1058</a>
               </li>
               <li>
-                <a href="mailto:bayan@kynigos.law">bayan@kynigos.law</a>
+                <a href="mailto:info@kynigos.law">info@kynigos.law</a>
+              </li>
+              <li>
+                <span className="footer-plain">Washington, DC</span>
               </li>
             </ul>
           </div>
@@ -77,6 +104,25 @@ export default function Footer() {
             Results may vary depending on your particular facts and legal
             circumstances.
           </p>
+          <ul className="footer-legal">
+            <li>
+              <Link href="/legal/privacy">Privacy Policy</Link>
+            </li>
+            <li>
+              <Link href="/legal/disclaimer">Website Disclaimer</Link>
+            </li>
+            <li>
+              <Link href="/legal/attorney-advertising">
+                Attorney Advertising
+              </Link>
+            </li>
+            <li>
+              <Link href="/legal/cookies">Cookie Policy</Link>
+            </li>
+            <li>
+              <Link href="/accessibility">Accessibility</Link>
+            </li>
+          </ul>
         </div>
       </div>
     </footer>

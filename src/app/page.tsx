@@ -4,6 +4,8 @@ import HeadlineReel from "@/components/HeadlineReel";
 import TickerBar from "@/components/TickerBar";
 import GetStarted from "@/components/GetStarted";
 import SkinInTheGame from "@/components/SkinInTheGame";
+import PracticeOverview from "@/components/PracticeOverview";
+import FeaturedInsights from "@/components/FeaturedInsights";
 import FirstMove from "@/components/FirstMove";
 
 export const metadata: Metadata = {
@@ -76,6 +78,10 @@ export default function Home() {
     <GetStarted />
 
     <SkinInTheGame />
+
+    <PracticeOverview />
+
+    <FeaturedInsights />
 
     <FirstMove />
     </>

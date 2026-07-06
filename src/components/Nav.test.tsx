@@ -41,10 +41,8 @@ function openMenu() {
   fireEvent.click(screen.getByRole("button", { name: "Open menu" }));
 }
 
-// The scrim is aria-hidden (the burger is the accessible close control), so
-// role queries can't reach it—query by class instead.
-function closeButton(className: "nav-burger" | "nav-scrim") {
-  return document.querySelector(`button.${className}`) as HTMLButtonElement;
+function closeButton() {
+  return document.querySelector("button.nav-burger") as HTMLButtonElement;
 }
 
 describe("Nav mobile menu", () => {
@@ -53,7 +51,7 @@ describe("Nav mobile menu", () => {
     render(<Nav />);
     openMenu();
     expect(document.body.style.overflow).toBe("hidden");
-    fireEvent.click(closeButton("nav-burger"));
+    fireEvent.click(closeButton());
     expect(screen.getByRole("button", { name: "Open menu" })).toBeTruthy();
     expect(document.body.style.overflow).toBe("");
   });
@@ -82,45 +80,66 @@ describe("Nav mobile menu", () => {
     // One tap on the burger, and each of these is one more tap away.
     for (const label of [
       "Home",
-      "How it Works",
-      "Philosophy",
-      "Contact",
-      "All Practice Areas",
+      "Practice Areas",
       "Family Law",
       "Landlord-Tenant",
       "Capital Markets",
       "Contract Review",
+      "About",
+      "How It Works",
+      "Philosophy",
+      "The Attorney",
+      "Contact",
+      "Insights",
+      "Personal Essays",
+      "Kynigos Publications",
       "White Papers",
-      "Blog",
     ]) {
       const links = screen
         .getAllByText(label)
-        .filter((el) => el.closest(".nav-sheet"));
+        .filter((el) => el.closest(".menu-overlay"));
       expect(links.length).toBeGreaterThan(0);
     }
   });
 
-  it("closes when the scrim behind the sheet is tapped", () => {
+  it("marks the page behind the open menu inert and restores it on close", () => {
+    mockPathname = "/";
+    const main = document.createElement("main");
+    document.body.appendChild(main);
+    try {
+      render(<Nav />);
+      openMenu();
+      expect(main.hasAttribute("inert")).toBe(true);
+      fireEvent.click(closeButton());
+      expect(main.hasAttribute("inert")).toBe(false);
+    } finally {
+      main.remove();
+    }
+  });
+
+  it("closes and releases the scroll lock when a menu link is tapped", () => {
     mockPathname = "/";
     render(<Nav />);
     openMenu();
-    fireEvent.click(closeButton("nav-scrim"));
+
+    const insightsLink = screen
+      .getAllByText("Insights")
+      .find((el) => el.closest(".menu-overlay"))!;
+    fireEvent.click(insightsLink);
+
     expect(screen.getByRole("button", { name: "Open menu" })).toBeTruthy();
     expect(document.body.style.overflow).toBe("");
   });
 
-  it("closes and releases the scroll lock when a sheet link is tapped", () => {
-    mockPathname = "/";
+  it("marks the current page with aria-current in the overlay", () => {
+    mockPathname = "/philosophy";
     render(<Nav />);
     openMenu();
 
-    const blogLink = screen
-      .getAllByText("Blog")
-      .find((el) => el.closest(".nav-sheet"))!;
-    fireEvent.click(blogLink);
-
-    expect(screen.getByRole("button", { name: "Open menu" })).toBeTruthy();
-    expect(document.body.style.overflow).toBe("");
+    const active = screen
+      .getAllByText("Philosophy")
+      .find((el) => el.closest(".menu-overlay"))!;
+    expect(active.getAttribute("aria-current")).toBe("page");
   });
 
   it("auto-closes when the viewport crosses the desktop breakpoint", () => {

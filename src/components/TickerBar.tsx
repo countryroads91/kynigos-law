@@ -21,9 +21,14 @@ const items = [
 export default function TickerBar() {
   // Duplicate for seamless loop
   const doubled = [...items, ...items];
+  const unique = items.filter((i, n) => items.indexOf(i) === n);
   return (
-    <div className="ticker" aria-hidden="true">
-      <div className="ticker-track">
+    <div className="ticker">
+      {/* The marquee is decorative and duplicated—announce the list once. */}
+      <p className="sr-only">
+        Kynigos services: {unique.join(", ")}.
+      </p>
+      <div className="ticker-track" aria-hidden="true">
         {doubled.map((label, i) => {
           const accent = label === "Not for Feeding the Clock";
           return (
