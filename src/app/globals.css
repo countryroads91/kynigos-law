@@ -2642,6 +2642,12 @@ a.menu-child-link.is-active {
   border: 1.5px solid var(--color-espresso);
   background: var(--color-parchment);
 }
+/* On article pages the label follows the inline "← All Insights" back link;
+   display:table keeps it shrink-wrapped but forces its own line. */
+.blog-post .insight-label {
+  display: table;
+  margin-bottom: 12px;
+}
 .insight-label {
   display: inline-flex;
   align-self: flex-start;
@@ -2678,6 +2684,7 @@ a.menu-child-link.is-active {
 }
 .insight-meta {
   margin-top: auto;
+  padding-top: 12px;
   display: flex;
   flex-wrap: wrap;
   gap: 6px 14px;

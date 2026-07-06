@@ -93,7 +93,11 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${playfair.variable} ${sourceSerif.variable} ${dmSans.variable}`}
     >
-      <body>
+      {/* suppressHydrationWarning: browser extensions (password managers,
+          shopping assistants) stamp attributes onto <body> before React
+          hydrates; that mismatch is theirs, not ours. Applies one level
+          deep only—real child mismatches still surface. */}
+      <body suppressHydrationWarning>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
