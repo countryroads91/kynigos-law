@@ -1,36 +1,11 @@
 import Link from "next/link";
+import { PRACTICE_GROUPS } from "@/content/practices";
 
-const areas = [
-  {
-    href: "/practice-areas/family-law",
-    eyebrow: "Flat Fee · Staged",
-    title: "Family Law",
-    body: "Divorce, custody, support, and prenuptial agreements—each stage priced as a defined flat fee before work begins.",
-    fee: "Staged fixed fees",
-  },
-  {
-    href: "/practice-areas/landlord-tenant",
-    eyebrow: "Fixed + Success",
-    title: "Landlord-Tenant",
-    body: "Eviction and possession matters in DC, priced as a fixed fee plus a success component earned only if the outcome is won.",
-    fee: "Fixed + success",
-  },
-  {
-    href: "/practice-areas/capital-markets",
-    eyebrow: "Per Opinion · Per Deal",
-    title: "Capital Markets",
-    body: "DC-law opinion letters and deal counsel for lenders and funds—scoped and quoted per transaction, before signing.",
-    fee: "Quoted per transaction",
-  },
-  {
-    href: "/practice-areas/contract-review",
-    eyebrow: "$444 Flat · Posted",
-    title: "Professional Contract Review",
-    body: "Physicians, dentists, professionals—a full redline, a call to walk through every change, and market analytics on your offer.",
-    fee: "$444 flat",
-  },
-];
-
+/**
+ * Editorial index of the five practice groups. Each row links into its
+ * anchor section on the /practice-areas directory; the small service run
+ * under each name is a preview, not the full list.
+ */
 export default function PracticeOverview() {
   return (
     <section
@@ -40,19 +15,36 @@ export default function PracticeOverview() {
     >
       <div className="kicker">Practice Areas</div>
       <h2 className="section-heading" id="practices-heading">
-        Four practices. One pricing principle.
+        One firm for the whole field.
       </h2>
       <p className="section-sub">
-        Whatever the matter, the structure is the same: a defined scope and a
-        number you see before the work begins.
+        Five practice groups, from family law to structured finance. Whatever
+        the matter, the structure is the same: a defined scope and a number
+        you see before the work begins.
       </p>
-      <div className="examples-grid">
-        {areas.map((a) => (
-          <Link href={a.href} className="example-card practice-card" key={a.href}>
-            <span className="example-eyebrow">{a.eyebrow}</span>
-            <h3 className="example-title">{a.title}</h3>
-            <p className="example-body">{a.body}</p>
-            <span className="skin-fee">{a.fee}</span>
+      <div className="practice-index">
+        {PRACTICE_GROUPS.map((group) => (
+          <Link
+            href={`/practice-areas#${group.slug}`}
+            className="practice-row"
+            key={group.slug}
+            data-reveal
+          >
+            <span className="practice-row-num" aria-hidden="true">
+              {group.num}
+            </span>
+            <span className="practice-row-main">
+              <span className="practice-row-name">{group.name}</span>
+              <span className="practice-row-services">
+                {group.services
+                  .slice(0, 4)
+                  .map((s) => s.name)
+                  .join(" · ")}
+              </span>
+            </span>
+            <span className="practice-row-arrow" aria-hidden="true">
+              &rarr;
+            </span>
           </Link>
         ))}
       </div>

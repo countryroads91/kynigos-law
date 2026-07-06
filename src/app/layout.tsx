@@ -5,6 +5,8 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CookieConsent from "@/components/CookieConsent";
 import AnalyticsGate from "@/components/AnalyticsGate";
+import ScrollReveal from "@/components/ScrollReveal";
+import { PRACTICE_GROUPS } from "@/content/practices";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -35,7 +37,7 @@ export const metadata: Metadata = {
     template: "%s · Kynigos Law Firm",
   },
   description:
-    "Flat-fee and contingency representation from a finance-trained attorney. Washington, DC. Family law, landlord-tenant, capital markets, and contract review—priced by outcome, not hours.",
+    "Flat-fee and contingency representation from a finance-trained attorney in Washington, DC. Family, employment, business, real estate, and capital markets matters—priced by outcome, not hours.",
   applicationName: "Kynigos Law Firm",
   authors: [{ name: "Kynigos Law Firm, PLLC" }],
   keywords: [
@@ -80,6 +82,7 @@ const legalServiceJsonLd = {
   },
   areaServed: "District of Columbia",
   priceRange: "Flat fee and contingency",
+  knowsAbout: PRACTICE_GROUPS.map((group) => group.name),
 };
 
 export default function RootLayout({
@@ -88,16 +91,28 @@ export default function RootLayout({
   return (
     // Next 16: data-scroll-behavior lets the router snap scroll-to-top during
     // SPA navigation while CSS scroll-behavior:smooth animates in-page anchors.
+    // suppressHydrationWarning: the inline script below adds the `js` class to
+    // <html> before hydration (by design—it gates scroll-reveal hiding), so
+    // the server markup and hydrated class list intentionally differ here.
     <html
       lang="en"
       data-scroll-behavior="smooth"
       className={`${playfair.variable} ${sourceSerif.variable} ${dmSans.variable}`}
+      suppressHydrationWarning
     >
       {/* suppressHydrationWarning: browser extensions (password managers,
           shopping assistants) stamp attributes onto <body> before React
           hydrates; that mismatch is theirs, not ours. Applies one level
           deep only—real child mismatches still surface. */}
       <body suppressHydrationWarning>
+        {/* Runs synchronously before any content paints: the `js` class gates
+            the scroll-reveal hidden state so content is never invisible when
+            JavaScript is off (see [data-reveal] in globals.css). */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -108,6 +123,7 @@ export default function RootLayout({
         <main>{children}</main>
         <Footer />
         <CookieConsent />
+        <ScrollReveal />
         {/* Loads only after analytics consent—see AnalyticsGate. */}
         <AnalyticsGate />
       </body>

@@ -139,8 +139,8 @@ export default function GetStarted() {
             <span className="fork-door-eyebrow">Path Two</span>
             <span className="fork-door-title">I have a situation</span>
             <span className="fork-door-body">
-              No paper yet—a dispute, a divorce, an eviction, a deal taking
-              shape.
+              No paper yet—a dispute, a divorce, a deal taking shape, an
+              estate to plan.
             </span>
             <span className="fork-door-meta">Free 30-minute consultation</span>
           </button>

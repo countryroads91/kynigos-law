@@ -28,6 +28,7 @@ export default function FeaturedInsights() {
         <Link
           href={`/blog/${essay.slug}`}
           className="insight-card insight-card--essay"
+          data-reveal
         >
           <span className="insight-label">Personal Essay · Why Kynigos Exists</span>
           <h3 className="insight-title">{essay.title}</h3>
@@ -41,6 +42,7 @@ export default function FeaturedInsights() {
         <Link
           href={`/blog/${publication.slug}`}
           className="insight-card insight-card--publication"
+          data-reveal
         >
           <span className="insight-label">Kynigos Publication</span>
           <h3 className="insight-title">{publication.title}</h3>
@@ -54,7 +56,11 @@ export default function FeaturedInsights() {
             <span>{publication.readingTime}</span>
           </div>
         </Link>
-        <Link href="/white-papers" className="insight-card insight-card--paper">
+        <Link
+          href="/white-papers"
+          className="insight-card insight-card--paper"
+          data-reveal
+        >
           <span className="insight-label">White Paper</span>
           <h3 className="insight-title">{paper.title}</h3>
           <p className="insight-dek">{paper.sub}</p>

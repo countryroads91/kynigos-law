@@ -3,6 +3,26 @@
 All notable changes to the Kynigos Law Firm site are documented here.
 Versions follow a 4-digit MAJOR.MINOR.PATCH.MICRO format.
 
+## [0.6.0.0] - 2026-07-06
+
+### Added
+- The firm now presents as a full-service practice. A new practice taxonomy organizes 26 kinds of matters into five groups—Family & Personal, Work & Employment, Business & Corporate, Real Estate & Housing, and Capital Markets & Finance—covering everything from wills and severance negotiations to M&A, structured finance, and private funds.
+- Practice Areas is now a browsable directory: five numbered group sections with anchor chips in the hero, each service an expandable row showing what the work covers, a fee-shape badge, and a way to start the matter. The four in-depth practice pages remain the flagship destinations inside their groups.
+- A reusable Fee Design module explains the four fee shapes the firm works in—flat fee, staged fixed fees, fixed + success, and quoted per matter—each with what it is and when it fits.
+- How It Works is now interactive: each of the three engagement shapes opens into an illustrative matter (a divorce heading toward settlement, an executive employment agreement, an acquisition) showing the objective, the work, the fee, and why that structure fits.
+- Visual depth across the site: scroll-triggered reveals per the design system's motion spec (with a no-JavaScript guard, a reduced-motion opt-out, a print override, and a failsafe so content can never stay hidden), an upright spearhead watermark behind key bands, outlined editorial numerals, and refined hover states.
+- Tests: 29 new (139 total), including taxonomy policy invariants (DC-only, no invented prices, tight em dashes), full disclosure-widget ARIA coverage, a Footer suite, scroll-reveal branch coverage, and a mojibake guard pinning homepage copy.
+
+### Changed
+- The homepage hero now rotates through matters across all five groups (divorce, deal, employment, estate, M&A, custody, real estate, fund), and the services marquee spans the full practice instead of repeating flat-fee document review.
+- The homepage practice section is an editorial index of the five groups—oversized numerals, service previews, and links into the directory—replacing the four-card grid.
+- The Practice Areas dropdown and footer now list the five practice groups; the menu stays one level deep and hash links no longer claim to be the current page in assistive tech.
+- Fee explanation was rewritten: the "shared principle" paragraph is gone, replaced by the Fee Design module and per-service fee badges.
+- Touch targets on the new directory controls meet the 44px accessibility minimum, and the marquee speed was rescaled to its tuned pace for the longer service list.
+
+### Fixed
+- Repaired a wrong-encoding save that shipped corrupted characters in the homepage insights label and stylesheet comments; a regression test now guards against double-encoded text anywhere on the homepage.
+
 ## [0.5.0.0] - 2026-07-06
 
 ### Added

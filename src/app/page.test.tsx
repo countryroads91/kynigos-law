@@ -62,32 +62,50 @@ describe("Home page", () => {
     expect(cues).toContain("#first-move");
   });
 
-  it("renders the in-flow ticker with the expanded flat-fee service list", () => {
+  it("renders the in-flow ticker spanning all five practice groups", () => {
     render(<Home />);
 
     const ticker = document.querySelector(".ticker");
     expect(ticker).toBeTruthy();
     const text = ticker!.textContent ?? "";
+    // At least one item per practice group, plus the brand accent.
     for (const item of [
-      "Flat Fee Divorce",
-      "Staged-Fee Divorce",
-      "Flat Fee Privacy Policy Review",
-      "Flat Fee Demand Letters",
+      "Divorce & Separation",
+      "Executive Contract Review",
+      "Mergers & Acquisitions",
+      "Eviction Defense",
+      "Structured Finance",
       "Not for Feeding the Clock",
     ]) {
       expect(text).toContain(item);
     }
-    // Vague items were removed with the rewrite.
-    expect(text).not.toContain("Custody");
-    expect(text).not.toContain("Contingency Employment");
+    // The old contract-review-heavy "Flat Fee X" framing is gone.
+    expect(text).not.toContain("Flat Fee");
   });
 
-  it("shows the practice overview and typed featured insights", () => {
+  it("rotates the hero reel through matters across the practice groups", () => {
     render(<Home />);
 
-    // Practice overview: four whole-card links + the index link.
-    const practices = document.querySelectorAll("#practice-areas a.practice-card");
-    expect(practices.length).toBe(4);
+    const reel = document.querySelector(".reel-track")!;
+    const words = new Set(
+      Array.from(reel.querySelectorAll(".reel-item")).map(
+        (el) => el.textContent,
+      ),
+    );
+    for (const word of ["divorce", "deal", "estate", "M&A", "real estate"]) {
+      expect(words.has(word)).toBe(true);
+    }
+  });
+
+  it("shows the practice-group index and typed featured insights", () => {
+    render(<Home />);
+
+    // Practice index: five group rows linking into the directory anchors.
+    const rows = document.querySelectorAll("#practice-areas a.practice-row");
+    expect(rows.length).toBe(5);
+    for (const row of rows) {
+      expect(row.getAttribute("href")).toMatch(/^\/practice-areas#/);
+    }
     const all = screen.getByRole("link", { name: "All Practice Areas" });
     expect(all.getAttribute("href")).toBe("/practice-areas");
 
@@ -106,6 +124,19 @@ describe("Home page", () => {
     expect(
       insights.querySelector(".insight-card--essay")!.textContent,
     ).toContain("The Managing Partner");
+
+    // Pin the label copy exactly—a wrong-encoding save once shipped
+    // "Personal Essay Â· Why Kynigos Exists" and nothing caught it.
+    expect(
+      insights.querySelector(".insight-card--essay .insight-label")!
+        .textContent,
+    ).toBe("Personal Essay · Why Kynigos Exists");
+  });
+
+  it("renders no mojibake anywhere on the page", () => {
+    render(<Home />);
+    // Double-encoded UTF-8 artifacts (Â, â€) must never reach the DOM.
+    expect(document.body.textContent).not.toMatch(/Â|â€/);
   });
 
   it("keeps the DC-only jurisdiction note on the page", () => {

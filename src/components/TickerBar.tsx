@@ -1,20 +1,28 @@
+// Curated marquee copy spanning all five practice groups—inspired by, not
+// bound to, src/content/practices.ts (marquee labels are shortened for
+// rhythm). The brand accent recurs at each loop third; fee framing lives in
+// the sections below. The marquee's job is breadth.
 const items = [
-  "Flat Fee Divorce",
-  "Staged-Fee Divorce",
-  "Flat Fee Contract Review",
-  "Flat Fee Contract Negotiation",
-  "Flat Fee Legal Opinion Letters",
-  "Flat Fee Eviction Defense",
-  "Flat Fee Prenuptial Agreements",
+  "Divorce & Separation",
+  "Custody & Support",
+  "Prenuptial Agreements",
+  "Wills, Trusts & Estates",
+  "Executive Contract Review",
+  "Employment Agreements",
   "Not for Feeding the Clock",
-  "Flat Fee Lease Review",
-  "Flat Fee Employment Agreement Review",
-  "Flat Fee NDA Review",
-  "Flat Fee Loan Document Review",
-  "Flat Fee Business Agreements",
-  "Flat Fee Demand Letters",
-  "Flat Fee Settlement Agreements",
-  "Flat Fee Privacy Policy Review",
+  "Severance Negotiation",
+  "Business Formation",
+  "Commercial Contracts",
+  "Mergers & Acquisitions",
+  "Commercial Disputes",
+  "Negotiation Counsel",
+  "Not for Feeding the Clock",
+  "Real Estate & Leasing",
+  "Eviction Defense",
+  "Legal Opinion Letters",
+  "Real Estate Finance",
+  "Structured Finance",
+  "Private Funds",
   "Not for Feeding the Clock",
 ];
 
