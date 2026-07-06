@@ -41,7 +41,6 @@ const MENUS: Menu[] = [
 export default function Nav() {
   const [open, setOpen] = useState<number | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mobileSection, setMobileSection] = useState<number | null>(null);
   const navRef = useRef<HTMLElement | null>(null);
   const burgerRef = useRef<HTMLButtonElement | null>(null);
   const hoverCapable = useRef(false);
@@ -56,7 +55,6 @@ export default function Nav() {
     setPrevPathname(pathname);
     setOpen(null);
     setMobileOpen(false);
-    setMobileSection(null);
   }
 
   useEffect(() => {
@@ -76,7 +74,6 @@ export default function Nav() {
       if (e.key === "Escape") {
         setOpen(null);
         setMobileOpen(false);
-        setMobileSection(null);
       }
     }
     document.addEventListener("mousedown", onPointerDown);
@@ -103,7 +100,7 @@ export default function Nav() {
       if (e.key !== "Tab" || !navRef.current) return;
       const focusables = Array.from(
         navRef.current.querySelectorAll<HTMLElement>(
-          "a[href], button:not([disabled])",
+          'a[href], button:not([disabled]):not([tabindex="-1"])',
         ),
       ).filter((el) => el.offsetParent !== null);
       if (focusables.length === 0) return;
@@ -126,7 +123,7 @@ export default function Nav() {
   }, [mobileOpen]);
 
   // Close the mobile menu when the viewport grows past the mobile breakpoint.
-  // CSS hides .nav-burger and .nav-mobile at >=901px, but without this the
+  // CSS hides .nav-burger and .nav-sheet at >=901px, but without this the
   // mobileOpen state would stay true and keep the body scroll locked on
   // desktop after a rotate/resize, with no visible control to release it.
   useEffect(() => {
@@ -134,7 +131,6 @@ export default function Nav() {
     const onChange = () => {
       if (mql.matches) {
         setMobileOpen(false);
-        setMobileSection(null);
       }
     };
     mql.addEventListener("change", onChange);
@@ -144,7 +140,6 @@ export default function Nav() {
   function closeAll() {
     setOpen(null);
     setMobileOpen(false);
-    setMobileSection(null);
   }
 
   return (
@@ -215,6 +210,7 @@ export default function Nav() {
         className="nav-burger"
         aria-label={mobileOpen ? "Close menu" : "Open menu"}
         aria-expanded={mobileOpen}
+        aria-controls="nav-sheet"
         onClick={() => setMobileOpen((v) => !v)}
       >
         <span />
@@ -223,48 +219,59 @@ export default function Nav() {
       </button>
 
       {mobileOpen && (
-        <div className="nav-mobile">
-          {MENUS.map((menu, i) => (
-            <div key={menu.label} className="nav-mobile-group">
-              <button
-                type="button"
-                className="nav-mobile-trigger"
-                aria-expanded={mobileSection === i}
-                onClick={() =>
-                  setMobileSection((cur) => (cur === i ? null : i))
-                }
-              >
-                {menu.label}
-                <span className="nav-caret" aria-hidden="true" />
-              </button>
-              <div
-                className={
-                  mobileSection === i
-                    ? "nav-mobile-sub is-open"
-                    : "nav-mobile-sub"
-                }
-              >
+        <>
+          {/* Tap anywhere outside the sheet to dismiss. Hidden from keyboard
+              and screen readers—the burger is the accessible close control. */}
+          <button
+            type="button"
+            className="nav-scrim"
+            aria-hidden="true"
+            tabIndex={-1}
+            onClick={closeAll}
+          />
+          <div
+            className="nav-sheet"
+            id="nav-sheet"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site menu"
+          >
+            <Link href="/" className="nav-sheet-link" onClick={closeAll}>
+              Home
+            </Link>
+            {MENUS.map((menu) => (
+              <div key={menu.label} className="nav-sheet-group">
+                <div className="nav-sheet-label">{menu.label}</div>
                 {menu.overview && (
-                  <Link href={menu.overview.href} onClick={closeAll}>
+                  <Link
+                    href={menu.overview.href}
+                    className="nav-sheet-link"
+                    onClick={closeAll}
+                  >
                     {menu.overview.label}
                   </Link>
                 )}
                 {menu.items.map((item) => (
-                  <Link key={item.href} href={item.href} onClick={closeAll}>
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="nav-sheet-link"
+                    onClick={closeAll}
+                  >
                     {item.label}
                   </Link>
                 ))}
               </div>
-            </div>
-          ))}
-          <Link
-            href="/contact"
-            className="nav-cta nav-mobile-cta"
-            onClick={closeAll}
-          >
-            Book A Free Consultation
-          </Link>
-        </div>
+            ))}
+            <Link
+              href="/contact"
+              className="nav-cta nav-sheet-cta"
+              onClick={closeAll}
+            >
+              Book A Free Consultation
+            </Link>
+          </div>
+        </>
       )}
     </nav>
   );
