@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import HeadlineReel from "@/components/HeadlineReel";
+import TickerBar from "@/components/TickerBar";
 
 export const metadata: Metadata = {
   title: { absolute: "Home | Kynigos Law Firm PLLC" },
@@ -14,8 +15,24 @@ const reelWords = [
   "capital markets",
 ];
 
+const steps = [
+  {
+    title: "Talk to us—free",
+    body: "A free consultation to understand your matter, your goals, and whether we are the right fit. No commitment, no clock running.",
+  },
+  {
+    title: "One price, in writing",
+    body: "Before any work begins, you get a flat fee or contingency structure in the engagement letter. You know the cost up front—no hourly billing, no surprise invoice.",
+  },
+  {
+    title: "We win when you do",
+    body: "With the price fixed, every incentive points at your outcome. Your attorney is invested in the result, not the hours it takes to get there.",
+  },
+];
+
 export default function Home() {
   return (
+    <>
     <section className="hero" aria-labelledby="hero-headline">
       <div className="hero-spear" aria-hidden="true">
         <svg viewBox="0 0 70 175" role="img">
@@ -60,7 +77,47 @@ export default function Home() {
         <Link href="/contact" className="btn-primary">
           Book A Free Consultation
         </Link>
+        <a href="#how-it-works" className="btn-secondary">
+          How It Works
+        </a>
       </div>
     </section>
+
+    <TickerBar />
+
+    <section
+      className="process"
+      id="how-it-works"
+      aria-labelledby="process-heading"
+    >
+      <div className="kicker">How It Works</div>
+      <h2 className="process-heading" id="process-heading">
+        Three steps. No meter.
+      </h2>
+      <ol className="process-steps">
+        {steps.map((step, i) => (
+          <li key={step.title} className="process-step">
+            <span className="process-num" aria-hidden="true">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <h3 className="process-title">{step.title}</h3>
+            <p className="process-body">{step.body}</p>
+          </li>
+        ))}
+      </ol>
+      <p className="process-note">
+        Kynigos Law Firm, PLLC is licensed in the District of Columbia. Matters
+        outside DC may require referral to local counsel.
+      </p>
+      <div className="cta-row">
+        <Link href="/contact" className="btn-primary">
+          Book A Free Consultation
+        </Link>
+        <Link href="/how-it-works" className="btn-secondary">
+          Learn More
+        </Link>
+      </div>
+    </section>
+    </>
   );
 }
