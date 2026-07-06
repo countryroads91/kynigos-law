@@ -19,7 +19,7 @@ import PrivacyPage from "./page";
 afterEach(cleanup);
 
 describe("Privacy Policy page", () => {
-  it("names the actual service providers and the no-cookie posture", () => {
+  it("names the actual service providers and the consent-based cookie posture", () => {
     render(<PrivacyPage />);
 
     expect(
@@ -28,7 +28,8 @@ describe("Privacy Policy page", () => {
     const text = document.body.textContent ?? "";
     expect(text).toContain("Vercel");
     expect(text).toContain("Resend");
-    expect(text).toContain("The site sets no cookies");
+    expect(text).toContain("only with your consent");
+    expect(text).toContain("Cookie Settings");
     expect(text).toContain("we do not sell personal");
   });
 

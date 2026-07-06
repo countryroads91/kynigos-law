@@ -109,9 +109,10 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
   align-items: flex-start;
   /* svh: stable on iOS where the URL bar collapses; vh fallback for older
-     engines. */
-  min-height: 100vh;
-  min-height: 100svh;
+     engines. Short of full height by the ticker band's height so the
+     services marquee is visible at the bottom of the first viewport. */
+  min-height: calc(100vh - 46px);
+  min-height: calc(100svh - 46px);
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
@@ -1347,16 +1348,17 @@ h1, h2, h3, h4, h5, h6 {
   grid-template-columns: repeat(4, 1fr);
   gap: 32px;
 }
+/* Full-bleed band with a centered 1200px content column. Children align
+   left inside the column—narrow elements (section subs, notes) must never
+   center themselves against the full-bleed box. */
 .process--band {
   max-width: none;
   background: var(--color-linen);
   border-top: 1px solid var(--color-divider);
   border-bottom: 1px solid var(--color-divider);
-}
-.process--band > * {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1200px);
+  justify-content: center;
 }
 .process--band .kicker { margin-bottom: 32px; }
 
@@ -2502,7 +2504,7 @@ a.menu-child-link.is-active {
   scroll-margin-top: 84px;
 }
 .first-move-form {
-  max-width: 720px;
+  max-width: 840px;
   background: var(--color-warm-white);
   border: 1px solid var(--color-divider);
   border-radius: 8px;
@@ -2540,6 +2542,16 @@ a.menu-child-link.is-active {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 14px;
+}
+/* Grid items refuse to shrink below content width by default; without
+   min-width:0 the select overflows its column and bleeds past the card. */
+.first-move-grid .gate-field {
+  min-width: 0;
+}
+.first-move-grid .gate-field input,
+.first-move-grid .gate-field select {
+  width: 100%;
+  min-width: 0;
 }
 .first-move-actions {
   display: flex;
@@ -2765,6 +2777,152 @@ a.menu-child-link.is-active {
 
 @media (max-width: 900px) {
   .card-grid, .card-grid--wide { grid-template-columns: 1fr; }
+}
+
+/* ─── Cookie consent (banner + preference center) ─── */
+.cookie-banner {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 200;
+  max-width: 720px;
+  margin: 0 auto;
+  background: var(--color-warm-white);
+  border: 1px solid var(--color-divider);
+  border-top: 2px solid var(--color-oxblood);
+  border-radius: 8px;
+  box-shadow: 0 12px 40px rgba(28, 25, 23, 0.16);
+  padding: 20px 22px;
+  animation: fadeUp 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.cookie-text {
+  font-family: var(--font-serif);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--color-umber);
+  margin: 0 0 14px;
+}
+.cookie-text a {
+  color: var(--color-oxblood);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.cookie-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+/* Accepting and rejecting take comparable effort—same size, same row. */
+.cookie-btn {
+  padding: 11px 18px;
+  font-size: 11px;
+}
+.cookie-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 210;
+  background: color-mix(in srgb, var(--color-espresso) 40%, transparent);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+.cookie-modal {
+  width: 100%;
+  max-width: 560px;
+  max-height: calc(100vh - 40px);
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+  background: var(--color-parchment);
+  border: 1px solid var(--color-divider);
+  border-radius: 8px;
+  box-shadow: 0 24px 64px rgba(28, 25, 23, 0.25);
+  padding: 28px;
+}
+.cookie-modal-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-espresso);
+  margin: 0 0 8px;
+}
+.cookie-modal-sub {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--color-umber);
+  margin: 0 0 20px;
+}
+.cookie-modal-sub a {
+  color: var(--color-oxblood);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.cookie-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid var(--color-divider);
+}
+.cookie-row-text { flex: 1; min-width: 0; }
+.cookie-row-title {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-espresso);
+  margin-bottom: 4px;
+  cursor: pointer;
+}
+.cookie-row-body {
+  font-family: var(--font-serif);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--color-umber);
+  margin: 0;
+}
+.cookie-locked {
+  flex-shrink: 0;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-success);
+  margin-top: 4px;
+}
+.cookie-toggle {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  accent-color: var(--color-oxblood);
+  cursor: pointer;
+}
+.cookie-modal-actions {
+  margin-top: 20px;
+}
+.footer-legal-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-parchment) 38%, transparent);
+  transition: color 200ms;
+}
+.footer-legal-btn:hover { color: var(--color-linen); }
+@media (max-width: 600px) {
+  .cookie-banner { padding: 16px; }
+  .cookie-actions { flex-direction: column; align-items: stretch; }
+  .cookie-modal { padding: 20px 16px; }
 }
 
 /* ─── Responsive ─── */

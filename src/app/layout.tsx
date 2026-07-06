@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Source_Serif_4, DM_Sans } from "next/font/google";
 import "./globals.css";
-import { Analytics } from "@vercel/analytics/next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import CookieConsent from "@/components/CookieConsent";
+import AnalyticsGate from "@/components/AnalyticsGate";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -67,6 +68,8 @@ const legalServiceJsonLd = {
   "@type": "LegalService",
   name: "Kynigos Law Firm, PLLC",
   url: "https://kynigos.law",
+  logo: "https://kynigos.law/logo.png",
+  image: "https://kynigos.law/og-image.png",
   telephone: "+1-304-549-1058",
   email: "info@kynigos.law",
   address: {
@@ -76,10 +79,6 @@ const legalServiceJsonLd = {
     addressCountry: "US",
   },
   areaServed: "District of Columbia",
-  founder: {
-    "@type": "Person",
-    name: "Bayan Misaghi",
-  },
   priceRange: "Flat fee and contingency",
 };
 
@@ -104,7 +103,9 @@ export default function RootLayout({
         <Nav />
         <main>{children}</main>
         <Footer />
-        <Analytics />
+        <CookieConsent />
+        {/* Loads only after analytics consent—see AnalyticsGate. */}
+        <AnalyticsGate />
       </body>
     </html>
   );

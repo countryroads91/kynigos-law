@@ -40,13 +40,20 @@ export default function PrivacyPage() {
             fails, so that your inquiry is not lost and we can respond to it.
           </li>
           <li>
-            <strong>Analytics.</strong> The site uses Vercel Analytics, a
-            cookieless analytics service. It reports aggregated page-view
-            data, does not track you across other sites, and does not store
-            persistent identifiers on your device.
+            <strong>Analytics.</strong> With your consent, the site measures
+            aggregated page-view data to understand what visitors read.
+            Analytics tools run only after you accept the analytics category
+            in the cookie banner.
+          </li>
+          <li>
+            <strong>Cookies.</strong> The site uses cookies by category—
+            strictly necessary, functional, analytics, and marketing—and
+            non-essential categories run only with your consent. The{" "}
+            <Link href="/legal/cookies">Cookie Policy</Link> lists each
+            cookie, and the &ldquo;Cookie Settings&rdquo; link in the footer
+            lets you change your choices at any time.
           </li>
         </ul>
-        <p>The site sets no cookies and stores nothing in your browser.</p>
 
         <h2>Why we collect it</h2>
         <p>
@@ -58,7 +65,7 @@ export default function PrivacyPage() {
         <h2>Service providers</h2>
         <p>
           Two providers process data on our behalf: Vercel, which hosts the
-          site and provides its cookieless analytics, and Resend, which
+          site and provides its analytics, and Resend, which
           transmits form submissions to the firm by email. We do not share
           your information with anyone else, and we do not sell personal
           information.

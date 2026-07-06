@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CookieSettingsButton from "@/components/CookieSettingsButton";
 
 export default function Footer() {
   return (
@@ -53,9 +54,6 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/philosophy">Philosophy</Link>
-              </li>
-              <li>
-                <Link href="/about/attorney">The Attorney</Link>
               </li>
               <li>
                 <Link href="/contact">Contact</Link>
@@ -118,6 +116,9 @@ export default function Footer() {
             </li>
             <li>
               <Link href="/legal/cookies">Cookie Policy</Link>
+            </li>
+            <li>
+              <CookieSettingsButton />
             </li>
             <li>
               <Link href="/accessibility">Accessibility</Link>
