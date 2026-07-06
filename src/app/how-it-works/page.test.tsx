@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("next/link", () => ({
@@ -19,7 +19,7 @@ import HowItWorksPage from "./page";
 afterEach(cleanup);
 
 describe("How it Works page", () => {
-  it("lays out the four-step flow, the fee-matching board, and real examples", () => {
+  it("lays out the four-step flow and the interactive fee-shape board", () => {
     render(<HowItWorksPage />);
 
     // Four numbered steps in order.
@@ -28,11 +28,13 @@ describe("How it Works page", () => {
     expect(steps[0].textContent).toContain("Free consultation");
     expect(steps[3].textContent).toContain("You decide what’s next");
 
-    // Three game/skin/fee rows and four worked examples.
-    expect(document.querySelectorAll(".games-row").length).toBe(3);
-    expect(document.querySelectorAll(".example-card").length).toBe(4);
-    // The one posted price on the site.
-    expect(document.body.textContent).toContain("$444");
+    // Three expandable fee-shape rows replace the static examples grid.
+    const triggers = document.querySelectorAll("button.games-row--trigger");
+    expect(triggers.length).toBe(3);
+    expect(document.querySelectorAll(".example-card").length).toBe(0);
+    expect(document.body.textContent).not.toContain(
+      "What that looks like on real matters",
+    );
 
     // DC-only jurisdiction note survives the rewrite.
     expect(
@@ -49,5 +51,31 @@ describe("How it Works page", () => {
     expect(
       screen.getByRole("link", { name: "Get Started" }).getAttribute("href"),
     ).toBe("/#get-started");
+  });
+
+  it("reveals an illustrative matter when a fee shape is expanded", () => {
+    render(<HowItWorksPage />);
+
+    const triggers = Array.from(
+      document.querySelectorAll("button.games-row--trigger"),
+    ) as HTMLButtonElement[];
+
+    // Collapsed by default.
+    for (const trigger of triggers) {
+      expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    }
+
+    // The review shape carries the one posted price on the site.
+    const review = triggers.find((t) =>
+      t.textContent!.includes("Review & advice"),
+    )!;
+    fireEvent.click(review);
+    expect(review.getAttribute("aria-expanded")).toBe("true");
+    const panel = document.getElementById(
+      review.getAttribute("aria-controls")!,
+    )!;
+    expect(panel.hasAttribute("hidden")).toBe(false);
+    expect(panel.textContent).toContain("$444");
+    expect(panel.textContent).toContain("Why it fits");
   });
 });
