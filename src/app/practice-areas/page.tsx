@@ -1,95 +1,67 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import PracticeDirectory from "@/components/PracticeDirectory";
+import FeeDesign from "@/components/FeeDesign";
+import SpearMark from "@/components/SpearMark";
+import { PRACTICE_GROUPS, serviceCount } from "@/content/practices";
 
 export const metadata: Metadata = {
   title: "Practice Areas",
   description:
-    "Family law, landlord-tenant, capital markets, and professional contract review in Washington, DC—each matched to a fee structure that puts the firm's skin in the game.",
+    "Family law, employment, business and corporate, real estate, and capital markets counsel in Washington, DC—more than two dozen matters, each priced with a fee designed for its outcome.",
 };
-
-const AREAS = [
-  {
-    href: "/practice-areas/family-law",
-    eyebrow: "Flat fee or staged fixed fees",
-    title: "Family Law",
-    body: "Uncontested and contested divorce, custody and visitation, child support and modifications, separation and prenuptial agreements. Each stage is scoped and priced in writing before work begins, so the meter never decides how your divorce goes.",
-    fee: "Staged fixed fees",
-  },
-  {
-    href: "/practice-areas/landlord-tenant",
-    eyebrow: "Fixed fee plus success component",
-    title: "Landlord-Tenant",
-    body: "Eviction and possession matters, DC Landlord-Tenant Branch filings, hearings, lease disputes, and notice defects. The fee pairs a fixed number with a success component—our upside is the outcome, not the number of hearings.",
-    fee: "Fixed + success",
-  },
-  {
-    href: "/practice-areas/capital-markets",
-    eyebrow: "Flat fee per opinion",
-    title: "Capital Markets",
-    body: "DC-law legal opinion letters for institutional clients—CRE loans, SFR mortgages, preferred equity, LLC membership interests—and deal counsel for lenders and funds. Opinions carry a flat fee; deal counsel is quoted per transaction.",
-    fee: "Quoted per transaction",
-  },
-  {
-    href: "/practice-areas/contract-review",
-    eyebrow: "Self-serve flat fee",
-    title: "Professional Contract Review",
-    body: "A self-serve product for physicians, dentists, and other professionals: full redline, phone consultation, and market analytics on your offer, delivered within 5 business days. Other documents—leases, NDAs, loan files—are quoted up front.",
-    fee: "Flat fee, posted",
-  },
-];
 
 export default function PracticeAreasPage() {
   return (
     <>
       <section className="hero hero--page">
         <div className="kicker">Practice Areas</div>
-        <h1 className="headline-line">Four practices. One model.</h1>
+        <h1 className="headline-line">Five practice groups. One discipline.</h1>
         <p className="subhead">
-          Every matter gets a fee structure that proves the zeal.
+          From a custody dispute to a structured financing.
         </p>
         <p className="lede">
-          Kynigos handles four kinds of legal work in the District of Columbia.
-          They look different on the surface—a custody dispute is not an
-          intercreditor agreement—but each one is priced the same way: a
-          defined scope, a fixed number in writing, and a fee shape matched to
-          the work.
+          Kynigos advises individuals, families, businesses, and institutions
+          across the District of Columbia—{serviceCount()} kinds of matters
+          organized into five practice groups. The matters differ; the
+          discipline does not: a defined scope, a number in writing, and a fee
+          shaped to the outcome it serves.
         </p>
-      </section>
-
-      <section className="process" aria-labelledby="areas-heading">
-        <div className="kicker">The Practices</div>
-        <h2 className="process-heading" id="areas-heading">
-          Where the firm goes to work
-        </h2>
-        <div className="examples-grid">
-          {AREAS.map((area) => (
-            <article className="example-card" key={area.href}>
-              <span className="example-eyebrow">{area.eyebrow}</span>
-              <h3 className="example-title">
-                <Link href={area.href}>{area.title}</Link>
-              </h3>
-              <p className="example-body">{area.body}</p>
-              <span className="skin-fee">{area.fee}</span>
-            </article>
+        <nav className="pa-index" aria-label="Practice groups">
+          {PRACTICE_GROUPS.map((group) => (
+            <a key={group.slug} href={`#${group.slug}`} className="pa-index-link">
+              <span className="pa-index-num" aria-hidden="true">
+                {group.num}
+              </span>
+              {group.name}
+            </a>
           ))}
-        </div>
+        </nav>
       </section>
 
-      <section className="process process--band" aria-labelledby="model-heading">
-        <div className="kicker">The Shared Principle</div>
-        <h2 className="process-heading" id="model-heading">
-          The fee follows the work
+      <section className="process process--directory" aria-label="Practice directory">
+        <PracticeDirectory />
+      </section>
+
+      <section
+        className="process process--band band-marked"
+        aria-labelledby="fee-heading"
+      >
+        <SpearMark className="band-mark" />
+        <div className="kicker">Fee Design</div>
+        <h2 className="process-heading" id="fee-heading">
+          The fee is an instrument.
         </h2>
         <p className="section-sub">
-          A review problem takes a flat fee. A staged dispute takes staged
-          fixed fees, so the firm re-earns the matter one stage at a time. A
-          matter with a winnable outcome takes a fixed fee plus a success
-          component. No practice area bills by the hour, because a fee that
-          grows with your problem is a fee that roots for your problem.
+          Different matters carry different objectives, different uncertainty,
+          and different incentives. Kynigos designs the fee around all
+          three—four shapes cover nearly everything the firm takes on, and the
+          engagement letter states which one applies to yours.
         </p>
+        <FeeDesign />
         <div className="cta-row">
           <Link href="/how-it-works" className="btn-secondary">
-            See How It Works
+            How Fees Are Designed
           </Link>
         </div>
       </section>
