@@ -7,6 +7,6 @@ This version has breaking changes — APIs, conventions, and file structure may 
 ## Testing
 
 - Framework: Vitest 4 (`vitest.config.ts`). Run with `npm test`. See TESTING.md.
-- Test files are colocated (`src/**/*.test.ts`); API route handlers are tested by importing `POST` and calling it with a real `Request`.
+- Test files are colocated (`src/**/*.test.{ts,tsx}`); API route handlers are tested by importing `POST` and calling it with a real `Request`. Component and page tests (`.tsx`) use React Testing Library with a per-file `// @vitest-environment jsdom` pragma.
 - Expectations: when writing new functions add a test; when fixing a bug add a regression test; when adding error handling or a conditional, test every path. Never commit code that makes existing tests fail.
 - Tests must never send real email—delete `RESEND_API_KEY`/`LEAD_NOTIFY_EMAIL` in `beforeEach`.
