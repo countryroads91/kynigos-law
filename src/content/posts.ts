@@ -1,14 +1,36 @@
+// ─── Insights content model ───
+// Two editorial voices share one knowledge system:
+//   "essay"       — personal perspective, authored by Bayan personally.
+//   "publication" — institutional Kynigos analysis, authored by the firm.
+// White papers live in papers.ts; articles and papers cross-link by slug.
+
+export type ContentType = "essay" | "publication";
+
 export type Post = {
   slug: string;
   title: string;
   dek: string;
   description: string;
+  contentType: ContentType;
+  /** Visible byline AND metadata author—keep these in sync everywhere. */
   author: string;
-  authorTitle: string;
+  authorTitle?: string;
+  /** Editorial channel label shown on cards and article pages. */
+  label: string;
   date: string; // ISO YYYY-MM-DD
   category: string;
-  ctaText?: string; // overrides the default white-paper CTA paragraph for this post
+  readingTime: string;
+  /** Slug into papers.ts—only set when the relationship is real. */
+  relatedPaper?: string;
+  /** Route of the most relevant practice area, if any. */
+  relatedPractice?: { label: string; href: string };
+  /** Essays that explain why the firm exists get tied into About. */
+  whyKynigosExists?: boolean;
+  ctaText?: string; // overrides the default white-paper CTA paragraph
 };
+
+export const FIRM_AUTHOR = "Kynigos Law Firm";
+export const PERSONAL_AUTHOR = "Bayan Misaghi, Esq.";
 
 // Newest first.
 export const posts: Post[] = [
@@ -17,24 +39,33 @@ export const posts: Post[] = [
     title: "I Have Been the Client",
     dek: "I paid large retainers. I watched the meter run. I watched a white-shoe firm mangle my own drafts, bill me for the damage, and bill me again to fix what they broke. Then I pushed back. The firm wrote off nearly $3,000.",
     description:
-      "A DC attorney's documented, first-person account of being billed by the hour through his own divorce—four examples with dates and numbers—and why he built Kynigos Law Firm on flat fees.",
-    author: "Bayan Misaghi, Esq.",
+      "A first-person account of being billed by the hour through the author's own divorce—four examples with dates and numbers—and the experience behind founding Kynigos Law Firm on flat fees.",
+    contentType: "essay",
+    author: PERSONAL_AUTHOR,
     authorTitle: "Managing Partner",
+    label: "Personal Essay",
     date: "2026-06-26",
-    category: "Personal · Why Kynigos Exists",
+    category: "Why Kynigos Exists",
+    readingTime: "9 min read",
+    whyKynigosExists: true,
+    relatedPractice: { label: "Family Law", href: "/practice-areas/family-law" },
     ctaText:
-      "Our white paper series—Misaligned Incentives and The Market for Lemons—presents the complete economic case, with formal models and 100+ academic citations, for why the legal market is structured to fail consumers and what a different model looks like.",
+      "The Kynigos white paper series—Misaligned Incentives and The Market for Lemons—presents the complete economic case, with formal models and 100+ academic citations, for why the legal market is structured to fail consumers and what a different model looks like.",
   },
   {
     slug: "i-watched-the-meter-run",
     title: "I Watched the Meter Run",
     dek: "What my own divorce taught me about the economics of hourly billing—and why I built a firm that refuses to do it.",
     description:
-      "A DC attorney's first-person account of being billed by the hour through his own divorce—and why he built Kynigos Law Firm on flat fees that align his incentives with the client's.",
-    author: "Bayan Misaghi, Esq.",
+      "A first-person account of being billed by the hour through the author's own divorce—and why he built Kynigos Law Firm on flat fees that align the attorney's incentives with the client's.",
+    contentType: "essay",
+    author: PERSONAL_AUTHOR,
     authorTitle: "Managing Partner",
+    label: "Personal Essay",
     date: "2026-06-25",
-    category: "Personal · Fee Structures",
+    category: "Fee Structures",
+    readingTime: "7 min read",
+    relatedPractice: { label: "Family Law", href: "/practice-areas/family-law" },
   },
   {
     slug: "why-divorce-makes-you-bad-at-math",
@@ -42,10 +73,14 @@ export const posts: Post[] = [
     dek: "The behavioral economics of why even sophisticated professionals make terrible financial decisions during divorce—and how the billing model makes it worse.",
     description:
       "Even sophisticated professionals make poor financial decisions during divorce. Behavioral economics explains why—and how hourly billing exploits every cognitive bias.",
-    author: "Bayan Misaghi, Esq.",
-    authorTitle: "Managing Partner",
+    contentType: "publication",
+    author: FIRM_AUTHOR,
+    label: "Kynigos Publication",
     date: "2026-06-24",
     category: "Behavioral Economics",
+    readingTime: "8 min read",
+    relatedPaper: "misaligned-incentives",
+    relatedPractice: { label: "Family Law", href: "/practice-areas/family-law" },
   },
   {
     slug: "your-lawyer-has-an-incentive-problem",
@@ -53,15 +88,26 @@ export const posts: Post[] = [
     dek: "Economists have spent fifty years studying how hourly billing quietly works against you. Here's what they found.",
     description:
       "Hourly billing creates a principal-agent problem that quietly works against you. Fifty years of economics explain why flat fees realign your lawyer's incentives with your outcome.",
-    author: "Bayan Misaghi, Esq.",
-    authorTitle: "Managing Partner",
+    contentType: "publication",
+    author: FIRM_AUTHOR,
+    label: "Kynigos Publication",
     date: "2026-06-23",
     category: "Economics · Fee Structures",
+    readingTime: "8 min read",
+    relatedPaper: "misaligned-incentives",
   },
 ];
 
 export function getPost(slug: string): Post | undefined {
   return posts.find((p) => p.slug === slug);
+}
+
+export function essays(): Post[] {
+  return posts.filter((p) => p.contentType === "essay");
+}
+
+export function publications(): Post[] {
+  return posts.filter((p) => p.contentType === "publication");
 }
 
 const MONTHS = [

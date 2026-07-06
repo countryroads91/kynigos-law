@@ -116,7 +116,7 @@ describe("GetStarted fork", () => {
       screen.getByText(/Upload & checkout—integration pending/),
     ).toBeTruthy();
     const mail = screen.getByRole("link", { name: "Email Your Document" });
-    expect(mail.getAttribute("href")).toContain("mailto:bayan@kynigos.law");
+    expect(mail.getAttribute("href")).toContain("mailto:info@kynigos.law");
 
     fireEvent.click(sitTab());
     // No NEXT_PUBLIC_CALENDLY_URL in tests → placeholder, not an iframe.

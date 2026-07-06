@@ -141,7 +141,7 @@ export default function FirstMove() {
               <p className="gate-note" role="status">
                 Kynigos Law Firm, PLLC is licensed in the District of Columbia
                 only. For matters in another jurisdiction, email{" "}
-                <a href="mailto:bayan@kynigos.law">bayan@kynigos.law</a> and we
+                <a href="mailto:info@kynigos.law">info@kynigos.law</a> and we
                 may be able to refer you to local counsel.
               </p>
             )}
