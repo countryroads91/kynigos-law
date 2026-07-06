@@ -1,5 +1,6 @@
 import Link from "next/link";
 import CookieSettingsButton from "@/components/CookieSettingsButton";
+import { PRACTICE_GROUPS } from "@/content/practices";
 
 export default function Footer() {
   return (
@@ -23,24 +24,13 @@ export default function Footer() {
               <li>
                 <Link href="/practice-areas">All Practice Areas</Link>
               </li>
-              <li>
-                <Link href="/practice-areas/family-law">Family Law</Link>
-              </li>
-              <li>
-                <Link href="/practice-areas/landlord-tenant">
-                  Landlord-Tenant
-                </Link>
-              </li>
-              <li>
-                <Link href="/practice-areas/capital-markets">
-                  Capital Markets
-                </Link>
-              </li>
-              <li>
-                <Link href="/practice-areas/contract-review">
-                  Contract Review
-                </Link>
-              </li>
+              {PRACTICE_GROUPS.map((group) => (
+                <li key={group.slug}>
+                  <Link href={`/practice-areas#${group.slug}`}>
+                    {group.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </nav>
           <nav aria-label="Firm">

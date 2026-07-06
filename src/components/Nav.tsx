@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { PRACTICE_GROUPS } from "@/content/practices";
 
 type MenuItem = { label: string; href: string };
 type Menu = {
@@ -18,12 +19,12 @@ const MENUS: Menu[] = [
   {
     label: "Practice Areas",
     href: "/practice-areas",
-    items: [
-      { label: "Family Law", href: "/practice-areas/family-law" },
-      { label: "Landlord-Tenant", href: "/practice-areas/landlord-tenant" },
-      { label: "Capital Markets", href: "/practice-areas/capital-markets" },
-      { label: "Contract Review", href: "/practice-areas/contract-review" },
-    ],
+    // The five practice groups, anchored into the directory. Deep pages are
+    // reached from each group's section—the nav stays one level deep.
+    items: PRACTICE_GROUPS.map((group) => ({
+      label: group.name,
+      href: `/practice-areas#${group.slug}`,
+    })),
   },
   {
     label: "About",
