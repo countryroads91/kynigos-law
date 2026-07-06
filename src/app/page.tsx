@@ -12,12 +12,18 @@ export const metadata: Metadata = {
   title: { absolute: "Home | Kynigos Law Firm PLLC" },
 };
 
+// The rotating noun completes "Your ___ attorney should have skin in the
+// game." Every word must read naturally in that frame and, together, the set
+// should span the five practice groups.
 const reelWords = [
   "divorce",
+  "deal",
+  "employment",
+  "estate",
+  "M&A",
   "custody",
-  "eviction",
-  "contract",
-  "capital markets",
+  "real estate",
+  "fund",
 ];
 
 export default function Home() {
