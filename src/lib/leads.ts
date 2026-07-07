@@ -101,18 +101,21 @@ export async function recordEvent(
   }
 }
 
-export async function sendNotification(options: {
+// Sends to an arbitrary recipient (confirmation emails, digests). Returns
+// false when email is not configured; throws on send failure.
+export async function sendEmail(options: {
+  to: string;
   subject: string;
   text: string;
-  replyTo: string;
+  replyTo?: string;
 }): Promise<boolean> {
-  const { apiKey, to, from } = notifyEnv();
-  if (!apiKey || !to) return false;
+  const { apiKey, from } = notifyEnv();
+  if (!apiKey) return false;
   const resend = new Resend(apiKey);
   const result = await resend.emails.send({
     from,
-    to,
-    replyTo: options.replyTo,
+    to: options.to,
+    ...(options.replyTo ? { replyTo: options.replyTo } : {}),
     subject: options.subject,
     text: options.text,
   });
@@ -122,4 +125,15 @@ export async function sendNotification(options: {
     throw new Error(result.error.message ?? "Resend send failed");
   }
   return true;
+}
+
+// Notifies the attorney inbox (LEAD_NOTIFY_EMAIL).
+export async function sendNotification(options: {
+  subject: string;
+  text: string;
+  replyTo: string;
+}): Promise<boolean> {
+  const to = process.env.LEAD_NOTIFY_EMAIL;
+  if (!to) return false;
+  return sendEmail({ to, ...options });
 }

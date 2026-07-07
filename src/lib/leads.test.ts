@@ -12,7 +12,13 @@ vi.mock("resend", () => ({
   },
 }));
 
-import { clean, persistLead, recordEvent, sendNotification } from "./leads";
+import {
+  clean,
+  persistLead,
+  recordEvent,
+  sendEmail,
+  sendNotification,
+} from "./leads";
 
 // Minimal stand-in for drizzle's insert chain: .values() is awaitable and
 // exposes .returning().
@@ -106,6 +112,30 @@ describe("recordEvent", () => {
   });
 });
 
+describe("sendEmail", () => {
+  it("returns false without sending when the api key is not configured", async () => {
+    expect(
+      await sendEmail({ to: "reader@example.com", subject: "s", text: "t" }),
+    ).toBe(false);
+    expect(sendMock).not.toHaveBeenCalled();
+  });
+
+  it("sends to the given recipient and omits replyTo when not provided", async () => {
+    vi.stubEnv("RESEND_API_KEY", "test-key");
+    sendMock.mockResolvedValue({ data: { id: "email-1" } });
+    expect(
+      await sendEmail({
+        to: "reader@example.com",
+        subject: "Confirm",
+        text: "Body",
+      }),
+    ).toBe(true);
+    const payload = sendMock.mock.calls[0][0];
+    expect(payload.to).toBe("reader@example.com");
+    expect("replyTo" in payload).toBe(false);
+  });
+});
+
 describe("sendNotification", () => {
   const options = {
     subject: "Test subject",
@@ -114,6 +144,12 @@ describe("sendNotification", () => {
   };
 
   it("returns false without sending when email env is not configured", async () => {
+    expect(await sendNotification(options)).toBe(false);
+    expect(sendMock).not.toHaveBeenCalled();
+  });
+
+  it("returns false when only the notify address is missing (delegation guard)", async () => {
+    vi.stubEnv("RESEND_API_KEY", "test-key");
     expect(await sendNotification(options)).toBe(false);
     expect(sendMock).not.toHaveBeenCalled();
   });

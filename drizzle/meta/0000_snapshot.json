@@ -1,5 +1,5 @@
 {
-  "id": "ef735164-12ed-41b1-b0f8-fada42bce9ae",
+  "id": "da644f15-db14-450d-9836-88ad4a0158d2",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -182,6 +182,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "token_issued_at": {
+          "name": "token_issued_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
         "confirmed_at": {
           "name": "confirmed_at",
           "type": "timestamp with time zone",
@@ -189,7 +195,23 @@
           "notNull": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "subscribers_token_idx": {
+          "name": "subscribers_token_idx",
+          "columns": [
+            {
+              "expression": "token",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {

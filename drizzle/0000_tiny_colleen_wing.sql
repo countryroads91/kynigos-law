@@ -26,6 +26,7 @@ CREATE TABLE "subscribers" (
 	"name" text,
 	"status" text DEFAULT 'pending' NOT NULL,
 	"token" text,
+	"token_issued_at" timestamp with time zone,
 	"confirmed_at" timestamp with time zone,
 	CONSTRAINT "subscribers_email_unique" UNIQUE("email")
 );
@@ -38,4 +39,5 @@ CREATE TABLE "webhook_events" (
 );
 --> statement-breakpoint
 ALTER TABLE "events" ADD CONSTRAINT "events_lead_id_leads_id_fk" FOREIGN KEY ("lead_id") REFERENCES "public"."leads"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+CREATE UNIQUE INDEX "subscribers_token_idx" ON "subscribers" USING btree ("token");--> statement-breakpoint
 CREATE UNIQUE INDEX "webhook_events_provider_external_id" ON "webhook_events" USING btree ("provider","external_id");
