@@ -5,6 +5,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CookieConsent from "@/components/CookieConsent";
 import AnalyticsGate from "@/components/AnalyticsGate";
+import ConsentModeBridge from "@/components/ConsentModeBridge";
 import ScrollReveal from "@/components/ScrollReveal";
 import { PRACTICE_GROUPS } from "@/content/practices";
 
@@ -126,6 +127,8 @@ export default function RootLayout({
         <ScrollReveal />
         {/* Loads only after analytics consent—see AnalyticsGate. */}
         <AnalyticsGate />
+        {/* GA4 via Consent Mode v2—also gated on analytics consent. */}
+        <ConsentModeBridge />
       </body>
     </html>
   );
