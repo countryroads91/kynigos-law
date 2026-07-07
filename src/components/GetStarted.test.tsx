@@ -16,7 +16,15 @@ vi.mock("next/link", () => ({
 
 import GetStarted from "./GetStarted";
 
-afterEach(cleanup);
+// track() is env- and consent-gated (no-op here), so the GA4 wiring is
+// asserted through a mock rather than the dataLayer.
+const { trackMock } = vi.hoisted(() => ({ trackMock: vi.fn() }));
+vi.mock("@/lib/analytics", () => ({ track: trackMock }));
+
+afterEach(() => {
+  cleanup();
+  trackMock.mockClear();
+});
 
 function docTab() {
   return screen.getByRole("tab", { name: /I have a document/ });
@@ -126,5 +134,17 @@ describe("GetStarted fork", () => {
       name: "Book A Free Consultation",
     });
     expect(consult.getAttribute("href")).toBe("/contact");
+  });
+
+  it("tracks the consultation CTA click as a GA4 conversion", () => {
+    render(<GetStarted />);
+    fireEvent.click(sitTab());
+
+    fireEvent.click(
+      screen.getByRole("link", { name: "Book A Free Consultation" }),
+    );
+    expect(trackMock).toHaveBeenCalledWith("book_consultation", {
+      source: "get_started",
+    });
   });
 });

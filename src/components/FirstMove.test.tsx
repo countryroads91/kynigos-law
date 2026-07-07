@@ -1,8 +1,17 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import FirstMove from "./FirstMove";
+
+// track() is env- and consent-gated (no-op here), so the GA4 wiring is
+// asserted through a mock rather than the dataLayer.
+const { trackMock } = vi.hoisted(() => ({ trackMock: vi.fn() }));
+vi.mock("@/lib/analytics", () => ({ track: trackMock }));
+
+beforeEach(() => {
+  trackMock.mockClear();
+});
 
 afterEach(() => {
   cleanup();
@@ -73,6 +82,10 @@ describe("FirstMove", () => {
     expect(body.company).toBe(""); // honeypot untouched by a real user
     // Without a Turnstile site key the token is sent blank (server skips it).
     expect(body.turnstileToken).toBe("");
+    // The accepted inquiry is a GA4 conversion.
+    expect(trackMock).toHaveBeenCalledWith("generate_lead", {
+      method: "first_move",
+    });
   });
 
   it("surfaces a server rejection instead of pretending success", async () => {
@@ -118,5 +131,7 @@ describe("FirstMove", () => {
     expect(
       screen.getByRole("button", { name: "Make The First Move" }),
     ).toHaveProperty("disabled", false);
+    // Nothing was delivered—no conversion event.
+    expect(trackMock).not.toHaveBeenCalled();
   });
 });

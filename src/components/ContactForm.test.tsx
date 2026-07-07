@@ -1,7 +1,16 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import ContactForm from "./ContactForm";
+
+// track() is env- and consent-gated (no-op here), so the GA4 wiring is
+// asserted through a mock rather than the dataLayer.
+const { trackMock } = vi.hoisted(() => ({ trackMock: vi.fn() }));
+vi.mock("@/lib/analytics", () => ({ track: trackMock }));
+
+beforeEach(() => {
+  trackMock.mockClear();
+});
 
 afterEach(() => {
   cleanup();
@@ -71,6 +80,10 @@ describe("ContactForm", () => {
     expect(body.company).toBe(""); // honeypot untouched by a real user
     // Without a Turnstile site key the token is sent blank (server skips it).
     expect(body.turnstileToken).toBe("");
+    // The accepted inquiry is a GA4 conversion.
+    expect(trackMock).toHaveBeenCalledWith("generate_lead", {
+      method: "contact_form",
+    });
   });
 
   it("shows the server's fallback error when delivery fails", async () => {
@@ -90,6 +103,8 @@ describe("ContactForm", () => {
 
     const alert = await screen.findByRole("alert");
     expect(alert.textContent).toMatch(/could not send/);
+    // Nothing was delivered—no conversion event.
+    expect(trackMock).not.toHaveBeenCalled();
   });
 
   it("reports a network failure and re-enables the submit button", async () => {
