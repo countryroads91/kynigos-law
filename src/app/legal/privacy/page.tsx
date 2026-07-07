@@ -12,7 +12,7 @@ export default function PrivacyPage() {
     <div className="legal-page">
       <div className="kicker">Legal</div>
       <h1 className="section-heading">Privacy Policy</h1>
-      <p className="legal-updated">Last updated July 6, 2026</p>
+      <p className="legal-updated">Last updated July 7, 2026</p>
       <div className="legal-prose">
         <p>
           Kynigos Law Firm, PLLC (&ldquo;the firm,&rdquo; &ldquo;we&rdquo;)
@@ -35,9 +35,10 @@ export default function PrivacyPage() {
             by email.
           </li>
           <li>
-            <strong>Server logs.</strong> Form submissions are recorded in our
-            server logs (hosted on Vercel), including when email delivery
-            fails, so that your inquiry is not lost and we can respond to it.
+            <strong>Inquiry records.</strong> Form submissions are stored in a
+            database operated for the firm and recorded in our server logs
+            (hosted on Vercel), including when email delivery fails, so that
+            your inquiry is not lost and we can respond to it.
           </li>
           <li>
             <strong>Analytics.</strong> With your consent, the site measures
@@ -64,11 +65,14 @@ export default function PrivacyPage() {
 
         <h2>Service providers</h2>
         <p>
-          Two providers process data on our behalf: Vercel, which hosts the
-          site and provides its analytics, and Resend, which
-          transmits form submissions to the firm by email. We do not share
-          your information with anyone else, and we do not sell personal
-          information.
+          A small number of providers process data on our behalf: Vercel,
+          which hosts the site and provides its analytics; Resend, which
+          transmits form submissions to the firm by email; Neon, which stores
+          inquiry records in an encrypted database; Cloudflare, whose
+          Turnstile service checks that form submissions come from a person
+          rather than a bot; and Upstash, which enforces rate limits on form
+          submissions. We do not share your information with anyone else, and
+          we do not sell personal information.
         </p>
 
         <h2>Retention</h2>
