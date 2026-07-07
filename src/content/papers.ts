@@ -12,8 +12,7 @@ export type Paper = {
   author: string;
   date: string; // ISO YYYY-MM-DD
   readingTime: string;
-  file: string;
-  fileName: string;
+  fileName: string; // download filename; the PDF itself is served by /api/paper/[slug]
   topics: string[];
   relatedPosts: string[]; // slugs into posts.ts
   relatedPractice?: { label: string; href: string };
@@ -32,7 +31,6 @@ export const papers: Paper[] = [
     author: "Kynigos Law Firm",
     date: "2026-06-20",
     readingTime: "35 min read",
-    file: "/white-papers/misaligned-incentives.pdf",
     fileName: "Kynigos-Misaligned-Incentives.pdf",
     topics: ["Principal-agent theory", "Fee structures", "Incentive design"],
     relatedPosts: [
@@ -52,7 +50,6 @@ export const papers: Paper[] = [
     author: "Kynigos Law Firm",
     date: "2026-06-28",
     readingTime: "45 min read",
-    file: "/white-papers/market-for-lemons.pdf",
     fileName: "Kynigos-Market-for-Lemons.pdf",
     topics: ["Information economics", "Adverse selection", "Quality signals"],
     relatedPosts: [],

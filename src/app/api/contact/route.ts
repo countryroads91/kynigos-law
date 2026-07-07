@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
+import { crossSiteRequest } from "@/lib/http";
+import { clean, EMAIL_RE, persistLead, sendNotification } from "@/lib/leads";
+import { checkRateLimit, clientIp } from "@/lib/ratelimit";
+import { verifyTurnstile } from "@/lib/turnstile";
 
 export const runtime = "nodejs";
 
@@ -10,15 +13,9 @@ type ContactBody = {
   jurisdiction?: string;
   message?: string;
   company?: string; // honeypot—real users never see or fill this field
+  source?: string; // which form: the contact page or the homepage FirstMove
+  turnstileToken?: string;
 };
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-// Strip control characters so user input cannot forge log lines or reach the
-// email subject header un-neutralized.
-function clean(value: string): string {
-  return value.replace(/[\r\n\t\x00-\x1f]+/g, " ").trim();
-}
 
 const SEND_FAILED_ERROR =
   "We could not send your message. Please call (304) 549-1058 or email info@kynigos.law directly.";
@@ -30,6 +27,20 @@ export async function POST(req: Request) {
     return NextResponse.json(
       { ok: false, error: "Request too large." },
       { status: 413 },
+    );
+  }
+
+  if (crossSiteRequest(req)) {
+    return NextResponse.json(
+      { ok: false, error: "Invalid request origin." },
+      { status: 403 },
+    );
+  }
+
+  if (!(await checkRateLimit(req, "contact"))) {
+    return NextResponse.json(
+      { ok: false, error: "Too many requests. Please try again in a minute." },
+      { status: 429 },
     );
   }
 
@@ -49,6 +60,7 @@ export async function POST(req: Request) {
   const jurisdiction = (body.jurisdiction ?? "").trim().toLowerCase();
   const message = (body.message ?? "").trim();
   const honeypot = (body.company ?? "").trim();
+  const source = body.source === "first_move" ? "first_move" : "contact";
 
   // Bots fill every field; pretend success and send nothing.
   if (honeypot) {
@@ -94,51 +106,68 @@ export async function POST(req: Request) {
     );
   }
 
-  const stamp = new Date().toISOString();
-  console.log(
-    `[contact] ${stamp} name="${name}" email="${email}" phone="${phone}"`,
-  );
-
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.LEAD_NOTIFY_EMAIL;
-  const from =
-    process.env.LEAD_FROM_EMAIL || "Kynigos Law Firm <onboarding@resend.dev>";
-
-  // Unlike the white-paper lead route (where the download is the deliverable
-  // and email is secondary), delivering this email IS the product. If it
-  // cannot be sent, say so—never tell a prospective client their message is
-  // on its way when it is not. Log the full inquiry first so it is
-  // recoverable from Vercel logs.
-  if (!apiKey || !to) {
-    console.error(
-      `[contact] UNDELIVERED (env not configured) ${stamp} name="${name}" email="${email}" phone="${phone}" message="${clean(message)}"`,
-    );
+  // Turnstile LAST among the checks: tokens are single-use, so verifying
+  // before validation would burn the token on a 422 and doom the user's
+  // corrected resubmission to a 403.
+  if (!(await verifyTurnstile(body.turnstileToken, clientIp(req)))) {
     return NextResponse.json(
-      { ok: false, error: SEND_FAILED_ERROR },
-      { status: 502 },
+      {
+        ok: false,
+        error:
+          "We could not verify you are human. Please refresh the page and try again.",
+      },
+      { status: 403 },
     );
   }
 
+  const stamp = new Date().toISOString();
+  console.log(
+    `[contact] ${stamp} source="${source}" name="${name}" email="${email}" phone="${phone}"`,
+  );
+
+  // Persist FIRST: once this row exists the lead can never be lost, whatever
+  // happens to email delivery below.
+  const leadId = await persistLead({
+    name,
+    email,
+    phone,
+    jurisdiction,
+    message,
+    source,
+  });
+
+  // Delivering this email IS the product (unlike the white-paper route, where
+  // the download is the deliverable). If it cannot be sent, say so—never tell
+  // a prospective client their message is on its way when it is not. The
+  // inquiry is already persisted (and logged below) so it is recoverable.
   try {
-    const resend = new Resend(apiKey);
-    await resend.emails.send({
-      from,
-      to,
-      replyTo: email,
+    const sent = await sendNotification({
       subject: `Consultation inquiry—${name}`,
+      replyTo: email,
       text: [
-        "New consultation inquiry from kynigos.law/contact.",
+        "New consultation inquiry from kynigos.law" +
+          (source === "first_move" ? " (homepage First Move form)." : "/contact."),
         "",
         `Name:  ${name}`,
         `Email: ${email}`,
         `Phone: ${phone || "(not provided)"}`,
         `Jurisdiction: District of Columbia`,
         `Time:  ${stamp}`,
+        `Lead:  ${leadId ?? "(not persisted)"}`,
         "",
         "Message:",
         message,
       ].join("\n"),
     });
+    if (!sent) {
+      console.error(
+        `[contact] UNDELIVERED (env not configured) ${stamp} name="${name}" email="${email}" phone="${phone}" message="${clean(message)}"`,
+      );
+      return NextResponse.json(
+        { ok: false, error: SEND_FAILED_ERROR },
+        { status: 502 },
+      );
+    }
   } catch (err) {
     console.error(
       `[contact] UNDELIVERED (send failed) ${stamp} name="${name}" email="${email}" phone="${phone}" message="${clean(message)}"`,

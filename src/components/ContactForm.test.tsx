@@ -53,19 +53,24 @@ describe("ContactForm", () => {
   });
 
   it("shows the thank-you state after a successful submit", async () => {
-    vi.stubGlobal(
-      "fetch",
-      vi.fn().mockResolvedValue({
-        ok: true,
-        json: async () => ({ ok: true }),
-      }),
-    );
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ ok: true }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
     const { container } = render(<ContactForm />);
     fillValidDCInquiry();
     fireEvent.submit(container.querySelector("form")!);
 
     const status = await screen.findByRole("status");
     expect(status.textContent).toMatch(/Thanks, Test/);
+
+    const body = JSON.parse(
+      (fetchMock.mock.calls[0][1] as RequestInit).body as string,
+    );
+    expect(body.company).toBe(""); // honeypot untouched by a real user
+    // Without a Turnstile site key the token is sent blank (server skips it).
+    expect(body.turnstileToken).toBe("");
   });
 
   it("shows the server's fallback error when delivery fails", async () => {
@@ -85,5 +90,19 @@ describe("ContactForm", () => {
 
     const alert = await screen.findByRole("alert");
     expect(alert.textContent).toMatch(/could not send/);
+  });
+
+  it("reports a network failure and re-enables the submit button", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("failed")));
+    const { container } = render(<ContactForm />);
+    fillValidDCInquiry();
+    fireEvent.submit(container.querySelector("form")!);
+
+    const alert = await screen.findByRole("alert");
+    expect(alert.textContent).toBe("Network error. Please try again.");
+    const submit = screen.getByRole("button", {
+      name: "Send Message",
+    }) as HTMLButtonElement;
+    expect(submit.disabled).toBe(false);
   });
 });

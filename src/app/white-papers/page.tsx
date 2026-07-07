@@ -71,7 +71,7 @@ export default function WhitePapersPage() {
               <div className="gate-label">Download the paper</div>
               <WhitePaperGate
                 paper={paper.title}
-                file={paper.file}
+                slug={paper.slug}
                 fileName={paper.fileName}
               />
             </div>

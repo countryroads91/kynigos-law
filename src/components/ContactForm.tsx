@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import TurnstileWidget, { TURNSTILE_SITE_KEY } from "./TurnstileWidget";
 
 type Status = "idle" | "submitting" | "done" | "error";
 
@@ -12,10 +13,21 @@ export default function ContactForm() {
   const [jurisdiction, setJurisdiction] = useState("");
   const [message, setMessage] = useState("");
   const [company, setCompany] = useState(""); // honeypot—hidden from real users
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [turnstileReset, setTurnstileReset] = useState(0);
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
 
   const outsideDC = jurisdiction === "other";
+  // With Turnstile configured, hold submission until the challenge resolves.
+  const awaitingTurnstile = Boolean(TURNSTILE_SITE_KEY) && !turnstileToken;
+
+  // Tokens are single-use: any failed submission consumed this one, so a
+  // fresh challenge must run before the user retries.
+  function resetTurnstile() {
+    setTurnstileToken("");
+    setTurnstileReset((n) => n + 1);
+  }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -33,6 +45,7 @@ export default function ContactForm() {
           jurisdiction,
           message,
           company,
+          turnstileToken,
         }),
       });
       const data = (await res.json().catch(() => ({}))) as {
@@ -42,12 +55,14 @@ export default function ContactForm() {
       if (!res.ok || !data.ok) {
         setError(data.error || "Something went wrong. Please try again.");
         setStatus("error");
+        resetTurnstile();
         return;
       }
       setStatus("done");
     } catch {
       setError("Network error. Please try again.");
       setStatus("error");
+      resetTurnstile();
     }
   }
 
@@ -150,6 +165,7 @@ export default function ContactForm() {
           onChange={(e) => setMessage(e.target.value)}
         />
       </div>
+      <TurnstileWidget onToken={setTurnstileToken} resetSignal={turnstileReset} />
       {error && (
         <p className="gate-error" role="alert">
           {error}
@@ -158,7 +174,7 @@ export default function ContactForm() {
       <button
         type="submit"
         className="btn-primary"
-        disabled={status === "submitting" || outsideDC}
+        disabled={status === "submitting" || outsideDC || awaitingTurnstile}
       >
         {status === "submitting" ? "Sending…" : "Send Message"}
       </button>
