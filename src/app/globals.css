@@ -1067,6 +1067,52 @@ h1, h2, h3, h4, h5, h6 {
 .turnstile-slot:empty {
   display: none;
 }
+.gate-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--color-umber);
+  cursor: pointer;
+}
+.gate-checkbox input {
+  margin-top: 2px;
+  accent-color: var(--color-oxblood);
+}
+
+/* Research-notes signup (footer band + end of articles). */
+.newsletter-signup {
+  position: relative; /* containing block for the off-screen honeypot */
+  max-width: 480px;
+  margin: 40px 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.newsletter-label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-umber);
+}
+.newsletter-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.newsletter-row input {
+  flex: 1 1 220px;
+  font-family: var(--font-serif);
+  font-size: 16px; /* >=16px prevents iOS zoom on focus */
+  color: var(--color-espresso);
+  background: var(--color-warm-white);
+  border: 1px solid var(--color-divider);
+  border-radius: 4px;
+  padding: 11px 12px;
+}
 .gate-field label {
   font-family: var(--font-sans);
   font-size: 11px;
