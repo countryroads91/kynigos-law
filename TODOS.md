@@ -12,6 +12,8 @@ The code shipped in v0.7.0.0 is env-gated and inert until configured: Neon Postg
 
 Turnstile ops notes (from adversarial review): set BOTH keys, then **redeploy**—the site key is inlined at build time, so setting keys without a redeploy makes the server fail closed (403) while no widget renders. Decide the preview-deployment policy in the Turnstile dashboard (add `*.vercel.app` to the allowed hostnames or accept that previews show a widget error). Once `DATABASE_URL` is live, downgrade the success-path PII logging in the routes to lead id + source only.
 
+v0.8.0.0 additions (all optional, all free): `NEXT_PUBLIC_GA4_MEASUREMENT_ID` (create a GA4 property; loads only after analytics consent), `NEXT_PUBLIC_NEWSLETTER_ENABLED=1` + `RESEND_AUDIENCE_ID` (create an Audience in Resend; requires `DATABASE_URL`), and `CRON_SECRET` (weekly Monday digest email; Vercel wires the cron automatically from vercel.json). Both `NEXT_PUBLIC_*` vars are inlined at build time—**redeploy after setting them** or nothing changes. Before the first newsletter broadcast: send via Resend Broadcasts to the Audience (Resend manages unsubscribes/suppression); the site re-adds a subscriber to the Audience only when they explicitly sign up again.
+
 ## Mobile & Accessibility
 
 ### Verify the mobile menu fix on a real iPhone

@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import { track } from "@/lib/analytics";
 import TurnstileWidget, { TURNSTILE_SITE_KEY } from "./TurnstileWidget";
 
 type Status = "idle" | "submitting" | "done" | "error";
@@ -59,6 +60,7 @@ export default function FirstMove() {
         resetTurnstile();
         return;
       }
+      track("generate_lead", { method: "first_move" });
       setStatus("done");
     } catch {
       setError("Network error. Please try again.");

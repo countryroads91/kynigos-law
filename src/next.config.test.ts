@@ -40,6 +40,25 @@ describe("next.config security headers", () => {
     expect(csp).toContain("frame-ancestors 'self'");
   });
 
+  it("allows the GA4/Consent Mode hosts (gtag.js + analytics beacons)", async () => {
+    const rules = await nextConfig.headers!();
+    const headers = Object.fromEntries(
+      rules[0].headers.map((h) => [h.key, h.value]),
+    );
+    const csp = headers["Content-Security-Policy-Report-Only"];
+    expect(csp).toMatch(
+      /script-src [^;]*https:\/\/www\.googletagmanager\.com/,
+    );
+    expect(csp).toMatch(
+      /connect-src [^;]*https:\/\/www\.google-analytics\.com/,
+    );
+    // Regional collection endpoints (region1.google-analytics.com etc.).
+    expect(csp).toMatch(
+      /connect-src [^;]*https:\/\/\*\.google-analytics\.com/,
+    );
+    expect(csp).toMatch(/img-src [^;]*https:\/\/www\.google-analytics\.com/);
+  });
+
   it("bundles the gated white-paper PDFs into the /api/paper function", () => {
     expect(nextConfig.outputFileTracingIncludes).toMatchObject({
       "/api/paper/*": ["./src/content/white-papers/**"],

@@ -1,6 +1,8 @@
 "use client";
 
 import { useId, useState } from "react";
+import { track } from "@/lib/analytics";
+import { NEWSLETTER_ENABLED } from "@/lib/flags";
 import TurnstileWidget, { TURNSTILE_SITE_KEY } from "./TurnstileWidget";
 
 type Props = {
@@ -21,6 +23,9 @@ export default function WhitePaperGate({ paper, slug, fileName }: Props) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState(""); // honeypot—hidden from real users
+  // Explicit opt-in, never auto-enrolled—cleaner under CAN-SPAM and better
+  // list quality. Rendered only when the newsletter is enabled.
+  const [subscribeToo, setSubscribeToo] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState("");
   const [turnstileReset, setTurnstileReset] = useState(0);
   const [status, setStatus] = useState<Status>("idle");
@@ -71,7 +76,18 @@ export default function WhitePaperGate({ paper, slug, fileName }: Props) {
       const res = await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, paper, slug, company, turnstileToken }),
+        body: JSON.stringify({
+          name,
+          email,
+          paper,
+          slug,
+          company,
+          turnstileToken,
+          // Server-side opt-in: /api/lead already verified this request's
+          // Turnstile token, so the subscription piggybacks on it instead of
+          // hitting /api/subscribe without one.
+          subscribe: NEWSLETTER_ENABLED && subscribeToo,
+        }),
       });
       const data = (await res.json().catch(() => ({}))) as {
         ok?: boolean;
@@ -86,6 +102,7 @@ export default function WhitePaperGate({ paper, slug, fileName }: Props) {
       }
       const url = data.url || `/api/paper/${slug}`;
       setDownloadUrl(url);
+      track("file_download", { file_name: fileName, paper: slug });
       setStatus("done");
       if (!(await triggerDownload(url))) {
         setDownloadError(LINK_EXPIRED_ERROR);
@@ -161,6 +178,18 @@ export default function WhitePaperGate({ paper, slug, fileName }: Props) {
           onChange={(e) => setCompany(e.target.value)}
         />
       </div>
+      {NEWSLETTER_ENABLED && (
+        <label className="gate-checkbox">
+          <input
+            type="checkbox"
+            name="subscribe"
+            checked={subscribeToo}
+            onChange={(e) => setSubscribeToo(e.target.checked)}
+          />
+          Also send me the firm&rsquo;s research notes (confirmed by email,
+          unsubscribe anytime)
+        </label>
+      )}
       <TurnstileWidget onToken={setTurnstileToken} resetSignal={turnstileReset} />
       {error && (
         <p className="gate-error" role="alert">

@@ -17,7 +17,7 @@ CI runs a typecheck (`npx tsc --noEmit`) and `npm test` on every push to main an
 
 ## Test layers
 
-- **Unit/API tests** (`src/**/*.test.{ts,tsx}`)—colocated next to the code they cover. Currently 200 tests in 39 files: the `/api/contact`, `/api/lead`, and `/api/paper/[slug]` route handlers (validation, jurisdiction gate, Turnstile verification, rate limiting, persist-first ordering, signed downloads), the shared libraries in `src/lib` (`leads`, `turnstile`, `ratelimit`, `paper-token`, `db`), the security headers and CSP config (`src/next.config.test.ts`), components (including `TurnstileWidget` and cross-form Turnstile gating), and every page.
+- **Unit/API tests** (`src/**/*.test.{ts,tsx}`)—colocated next to the code they cover. Currently 267 tests in 48 files: the `/api/contact`, `/api/lead`, `/api/paper/[slug]`, `/api/subscribe`, `/api/subscribe/confirm`, and `/api/digest` route handlers (validation, jurisdiction gate, Turnstile verification, rate limiting, persist-first ordering, signed downloads, double-opt-in tokens, cron bearer auth), the shared libraries in `src/lib` (`leads`, `newsletter`, `analytics`, `turnstile`, `ratelimit`, `paper-token`, `db`), the security headers and CSP config (`src/next.config.test.ts`), components (including `TurnstileWidget`, cross-form Turnstile gating, `ConsentModeBridge`, `NewsletterSignup`, and `ConfirmSubscription`), and every page.
 - **Integration/E2E**—not yet configured. Browser-level verification happens via gstack `/qa` at mobile and desktop viewports.
 
 ## Conventions

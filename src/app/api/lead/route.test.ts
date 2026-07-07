@@ -1,15 +1,19 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { POST } from "./route";
 
-const { sendMock, limitMock } = vi.hoisted(() => ({
+const { sendMock, limitMock, startMock } = vi.hoisted(() => ({
   sendMock: vi.fn(),
   limitMock: vi.fn(),
+  startMock: vi.fn(),
 }));
 
 vi.mock("resend", () => ({
   Resend: class {
     emails = { send: sendMock };
   },
+}));
+vi.mock("@/lib/newsletter", () => ({
+  startSubscription: startMock,
 }));
 
 // Inert unless a test stubs the Upstash env vars—checkRateLimit returns early
@@ -34,6 +38,8 @@ beforeEach(() => {
   vi.stubEnv("PAPER_TOKEN_SECRET", "");
   sendMock.mockReset();
   sendMock.mockResolvedValue({ data: { id: "test" } });
+  startMock.mockReset();
+  startMock.mockResolvedValue("pending");
 });
 
 afterEach(() => {
@@ -180,5 +186,26 @@ describe("POST /api/lead", () => {
       }),
     );
     expect(res.status).toBe(400);
+  });
+
+  it("starts a newsletter subscription when the gate checkbox opted in", async () => {
+    const res = await post({ ...valid, email: "Test@Example.com", subscribe: true });
+    expect(res.status).toBe(200);
+    expect(startMock).toHaveBeenCalledWith("test@example.com", "Test Person");
+  });
+
+  it("does not touch the newsletter without the opt-in", async () => {
+    const res = await post(valid);
+    expect(res.status).toBe(200);
+    expect(startMock).not.toHaveBeenCalled();
+  });
+
+  it("still delivers the download when the subscription attempt fails", async () => {
+    startMock.mockRejectedValue(new Error("newsletter down"));
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    const res = await post({ ...valid, subscribe: true });
+    expect(res.status).toBe(200);
+    expect((await res.json()).url).toBeTruthy();
+    error.mockRestore();
   });
 });

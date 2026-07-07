@@ -1,5 +1,6 @@
 import Link from "next/link";
 import CookieSettingsButton from "@/components/CookieSettingsButton";
+import NewsletterSignup from "@/components/NewsletterSignup";
 import { PRACTICE_GROUPS } from "@/content/practices";
 
 export default function Footer() {
@@ -82,6 +83,8 @@ export default function Footer() {
             </ul>
           </div>
         </div>
+        {/* Renders only when NEXT_PUBLIC_NEWSLETTER_ENABLED is set. */}
+        <NewsletterSignup />
         <div className="footer-bottom">
           <p className="footer-disclaimer">
             &copy; {new Date().getFullYear()} Kynigos Law Firm, PLLC. All rights

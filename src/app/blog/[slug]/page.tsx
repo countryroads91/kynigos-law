@@ -8,6 +8,7 @@ import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import { posts, getPost, formatDate, type Post } from "@/content/posts";
 import { getPaper } from "@/content/papers";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
 export function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }));
@@ -151,6 +152,9 @@ export default async function BlogPostPage({
           </Link>
         </p>
       )}
+
+      {/* Renders only when NEXT_PUBLIC_NEWSLETTER_ENABLED is set. */}
+      <NewsletterSignup />
 
       <p className="blog-disclaimer">
         Kynigos Law Firm, PLLC · Washington, DC · Licensed in the District of

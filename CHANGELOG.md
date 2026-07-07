@@ -3,6 +3,17 @@
 All notable changes to the Kynigos Law Firm site are documented here.
 Versions follow a 4-digit MAJOR.MINOR.PATCH.MICRO format.
 
+## [0.8.0.0] - 2026-07-07
+
+### Added
+- Visitors who accept analytics cookies are now measured with Google Analytics 4 through Consent Mode v2: nothing loads before consent, the ad-signal switches follow the marketing category, and key conversions (inquiries, white-paper downloads, consultation clicks) are reported as GA4 events. Ready for ad-campaign pixels later with no rework.
+- Readers can subscribe to the firm's research notes—signup forms in the footer, at the end of every article, and as an opt-in checkbox on the white-paper gates. Subscriptions are double opt-in: nothing is sent until the reader clicks a Confirm button on the emailed link's landing page (a deliberate click, so inbox security scanners can never fabricate consent), which also files them into the broadcast audience. Confirmation links expire after 7 days and are stored only as hashes. The whole feature stays hidden until it is switched on.
+- The signup endpoint carries the same protections as every other form: bot challenge, per-visitor rate limit, honeypot, and cross-site rejection—and nothing a subscriber types is ever echoed into email sent from the firm's domain.
+- A weekly digest email now summarizes the week's leads, downloads, and new subscribers every Monday—ambient visibility with no dashboard to check.
+
+### Changed
+- The privacy policy discloses the research-notes list and its double opt-in handling.
+
 ## [0.7.0.0] - 2026-07-07
 
 ### Added

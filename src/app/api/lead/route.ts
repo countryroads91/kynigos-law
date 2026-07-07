@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { getPaper } from "@/content/papers";
-import { crossSiteRequest } from "@/lib/http";
+import { crossSiteRequest, oversizedRequest } from "@/lib/http";
 import { clean, EMAIL_RE, persistLead, sendNotification } from "@/lib/leads";
+import { startSubscription } from "@/lib/newsletter";
 import { paperDownloadUrl } from "@/lib/paper-token";
 import { checkRateLimit, clientIp } from "@/lib/ratelimit";
 import { verifyTurnstile } from "@/lib/turnstile";
@@ -15,11 +16,14 @@ type LeadBody = {
   slug?: string;
   company?: string; // honeypot—real users never see or fill this field
   turnstileToken?: string;
+  // Research-notes opt-in checkbox on the gate. Handled here (not by a second
+  // client call to /api/subscribe) because this request's Turnstile token is
+  // already verified and tokens are single-use.
+  subscribe?: boolean;
 };
 
 export async function POST(req: Request) {
-  const contentLength = Number(req.headers.get("content-length") ?? 0);
-  if (contentLength > 32_768) {
+  if (oversizedRequest(req)) {
     return NextResponse.json(
       { ok: false, error: "Request too large." },
       { status: 413 },
@@ -127,6 +131,16 @@ export async function POST(req: Request) {
   } catch (err) {
     // Do not block the download; the lead is already persisted and logged.
     console.error("[lead] email send failed:", err);
+  }
+
+  if (body.subscribe === true) {
+    // Best-effort: a newsletter hiccup must never disturb the download the
+    // reader actually came for.
+    try {
+      await startSubscription(email.toLowerCase(), name);
+    } catch (err) {
+      console.error("[lead] subscription request failed:", err);
+    }
   }
 
   return NextResponse.json({ ok: true, url: paperDownloadUrl(known.slug) });

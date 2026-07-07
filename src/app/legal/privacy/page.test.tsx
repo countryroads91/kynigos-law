@@ -34,6 +34,9 @@ describe("Privacy Policy page", () => {
     expect(text).toContain("only with your consent");
     expect(text).toContain("Cookie Settings");
     expect(text).toContain("we do not sell personal");
+    // The research-notes list is disclosed: double opt-in and unsubscribe.
+    expect(text).toContain("Research-notes signup");
+    expect(text).toContain("one-click");
   });
 
   it("routes privacy requests to info@kynigos.law, never bayan@", () => {

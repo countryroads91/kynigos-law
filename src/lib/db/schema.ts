@@ -62,20 +62,27 @@ export const events = pgTable("events", {
 });
 
 // Newsletter list (Phase 5). Double opt-in: rows start `pending` and flip to
-// `confirmed` only via the emailed token link.
-export const subscribers = pgTable("subscribers", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
-  email: text("email").notNull().unique(),
-  name: text("name"),
-  status: text("status", { enum: ["pending", "confirmed", "unsubscribed"] })
-    .notNull()
-    .default("pending"),
-  token: text("token"),
-  confirmedAt: timestamp("confirmed_at", { withTimezone: true }),
-});
+// `confirmed` only when the emailed token is presented back. `token` holds a
+// SHA-256 HASH of the emailed token (a leaked table never yields usable
+// confirmation links); `tokenIssuedAt` bounds its lifetime.
+export const subscribers = pgTable(
+  "subscribers",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    email: text("email").notNull().unique(),
+    name: text("name"),
+    status: text("status", { enum: ["pending", "confirmed", "unsubscribed"] })
+      .notNull()
+      .default("pending"),
+    token: text("token"),
+    tokenIssuedAt: timestamp("token_issued_at", { withTimezone: true }),
+    confirmedAt: timestamp("confirmed_at", { withTimezone: true }),
+  },
+  (table) => [uniqueIndex("subscribers_token_idx").on(table.token)],
+);
 
 // Idempotency ledger for provider webhooks (Phase 3: Stripe). A duplicate
 // delivery fails the unique insert and is acknowledged as a no-op.

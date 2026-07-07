@@ -22,12 +22,20 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 ## Environment & database
 
-Third-party services are optional and env-gated—unset means off, no code changes needed. See [.env.example](.env.example) for the full list: Resend (lead email), Neon Postgres (lead/event persistence), Cloudflare Turnstile (bot protection), Upstash Redis (rate limiting), and `PAPER_TOKEN_SECRET` (signed white-paper downloads). Once `DATABASE_URL` is set, apply the Drizzle migrations in `drizzle/`:
+Third-party services are optional and env-gated—unset means off, no code changes needed. See [.env.example](.env.example) for the full list: Resend (lead email + newsletter), Neon Postgres (lead/event persistence), Cloudflare Turnstile (bot protection), Upstash Redis (rate limiting), `PAPER_TOKEN_SECRET` (signed white-paper downloads), GA4 (consent-gated analytics), `NEXT_PUBLIC_NEWSLETTER_ENABLED`/`RESEND_AUDIENCE_ID` (research-notes signup), and `CRON_SECRET` (weekly digest cron). Once `DATABASE_URL` is set, apply the Drizzle migrations in `drizzle/`:
 
 ```bash
 npm run db:migrate    # apply migrations
 npm run db:generate   # regenerate after editing src/lib/db/schema.ts
 ```
+
+## Automation ownership
+
+One rule prevents double-sending: each surface owns its lane and nothing else sends there.
+
+- **Site/Resend transactional**—immediate emails only: lead notifications to the attorney, white-paper delivery links, newsletter double-opt-in confirmations, and the Monday digest (`/api/digest`, Vercel Cron).
+- **Clio Grow** (Phase 2, once provisioned)—all 1:1 lifecycle email/SMS after a lead syncs: consult reminders, no-show follow-ups, engagement-letter nudges.
+- **Resend Broadcasts**—the opted-in research-notes newsletter, sent manually to the Resend Audience that the confirm flow maintains. Resend also owns unsubscribes and suppression for broadcasts; the site re-adds a contact to the Audience only when that person explicitly signs up again.
 
 ## Testing
 

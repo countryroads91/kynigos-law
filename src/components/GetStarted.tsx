@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
+import { track } from "@/lib/analytics";
 
 type Path = "document" | "situation";
 
@@ -310,7 +311,11 @@ export default function GetStarted() {
                 </span>
               </div>
             )}
-            <Link href="/contact" className="btn-primary fork-panel-cta">
+            <Link
+              href="/contact"
+              className="btn-primary fork-panel-cta"
+              onClick={() => track("book_consultation", { source: "get_started" })}
+            >
               Book A Free Consultation
             </Link>
             <p className="fork-note">
