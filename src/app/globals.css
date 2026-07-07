@@ -1051,6 +1051,8 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 16px;
 }
 .gate-form {
+  /* Containing block for the off-screen honeypot (matches .contact-form). */
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -1059,6 +1061,11 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+/* Turnstile mounts an iframe into this slot; until it does (or when the
+   challenge is unconfigured) the empty div must not add flex-gap space. */
+.turnstile-slot:empty {
+  display: none;
 }
 .gate-field label {
   font-family: var(--font-sans);
