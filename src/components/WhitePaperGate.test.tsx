@@ -9,7 +9,13 @@ import {
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import WhitePaperGate from "./WhitePaperGate";
 
+// track() is env- and consent-gated (no-op here), so the GA4 wiring is
+// asserted through a mock rather than the dataLayer.
+const { trackMock } = vi.hoisted(() => ({ trackMock: vi.fn() }));
+vi.mock("@/lib/analytics", () => ({ track: trackMock }));
+
 beforeEach(() => {
+  trackMock.mockClear();
   // The blob download clicks a synthetic <a href>; stop jsdom from attempting
   // (unimplemented) navigation, and polyfill the object-URL API it lacks.
   vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => {});
@@ -114,6 +120,12 @@ describe("WhitePaperGate", () => {
     expect(fetchMock.mock.calls[1][0]).toBe(signedUrl);
     expect(screen.queryByRole("alert")).toBeNull();
 
+    // The successful gate submit is a GA4 conversion.
+    expect(trackMock).toHaveBeenCalledWith("file_download", {
+      file_name: "a.pdf",
+      paper: "paper-a",
+    });
+
     // "Download again" re-fetches the same signed URL.
     fireEvent.click(screen.getByRole("button", { name: "Download again" }));
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(3));
@@ -187,5 +199,92 @@ describe("WhitePaperGate", () => {
     const alert = await screen.findByRole("alert");
     expect(alert.textContent).toContain("Unknown paper");
     expect(screen.queryByRole("status")).toBeNull();
+    // No download happened—no conversion event.
+    expect(trackMock).not.toHaveBeenCalled();
+  });
+});
+
+// NEWSLETTER_ENABLED is captured when NewsletterSignup loads, so the enabled
+// cases stub the env and import the gate fresh (same pattern as the
+// NewsletterSignup tests).
+describe("WhitePaperGate newsletter checkbox", () => {
+  async function loadGateWithNewsletter() {
+    vi.resetModules();
+    vi.stubEnv("NEXT_PUBLIC_NEWSLETTER_ENABLED", "1");
+    return (await import("./WhitePaperGate")).default;
+  }
+
+  function gateFetchMock() {
+    return vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: () =>
+          Promise.resolve({ ok: true, url: "/api/paper/paper-a?e=9&s=x" }),
+      })
+      .mockResolvedValue(pdfResponse());
+  }
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("renders no subscribe checkbox while the newsletter is disabled", () => {
+    render(<WhitePaperGate paper="A" slug="paper-a" fileName="a.pdf" />);
+    expect(screen.queryByRole("checkbox")).toBeNull();
+  });
+
+  it("sends subscribe:true inside the lead POST when opted in (piggybacks the verified request)", async () => {
+    const Gate = await loadGateWithNewsletter();
+    const fetchMock = gateFetchMock();
+    vi.stubGlobal("fetch", fetchMock);
+
+    const { container } = render(
+      <Gate paper="Paper A" slug="paper-a" fileName="a.pdf" />,
+    );
+    fillGate();
+    fireEvent.click(screen.getByRole("checkbox", { name: /research notes/i }));
+    fireEvent.submit(container.querySelector("form")!);
+
+    await screen.findByRole("status");
+    const [url, init] = fetchMock.mock.calls[0];
+    expect(url).toBe("/api/lead");
+    expect(JSON.parse((init as RequestInit).body as string)).toMatchObject({
+      email: "jordan@example.com",
+      name: "Jordan Reyes",
+      subscribe: true,
+    });
+    // No second client call—the server handles the subscription.
+    expect(
+      fetchMock.mock.calls.some((c) => c[0] === "/api/subscribe"),
+    ).toBe(false);
+    // The download the reader came for still happens.
+    await waitFor(() =>
+      expect(
+        fetchMock.mock.calls.some((c) => c[0] === "/api/paper/paper-a?e=9&s=x"),
+      ).toBe(true),
+    );
+  });
+
+  it("sends subscribe:false when the box is left unchecked", async () => {
+    const Gate = await loadGateWithNewsletter();
+    const fetchMock = gateFetchMock();
+    vi.stubGlobal("fetch", fetchMock);
+
+    const { container } = render(
+      <Gate paper="Paper A" slug="paper-a" fileName="a.pdf" />,
+    );
+    fillGate();
+    expect(screen.getByRole("checkbox")).toBeTruthy();
+    fireEvent.submit(container.querySelector("form")!);
+
+    await screen.findByRole("status");
+    const [, init] = fetchMock.mock.calls[0];
+    expect(JSON.parse((init as RequestInit).body as string)).toMatchObject({
+      subscribe: false,
+    });
+    expect(
+      fetchMock.mock.calls.some((c) => c[0] === "/api/subscribe"),
+    ).toBe(false);
   });
 });

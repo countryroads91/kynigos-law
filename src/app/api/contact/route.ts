@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { crossSiteRequest } from "@/lib/http";
+import { crossSiteRequest, oversizedRequest } from "@/lib/http";
 import { clean, EMAIL_RE, persistLead, sendNotification } from "@/lib/leads";
 import { checkRateLimit, clientIp } from "@/lib/ratelimit";
 import { verifyTurnstile } from "@/lib/turnstile";
@@ -22,8 +22,7 @@ const SEND_FAILED_ERROR =
 
 export async function POST(req: Request) {
   // Reject oversized payloads before parsing; the message cap is 5000 chars.
-  const contentLength = Number(req.headers.get("content-length") ?? 0);
-  if (contentLength > 32_768) {
+  if (oversizedRequest(req)) {
     return NextResponse.json(
       { ok: false, error: "Request too large." },
       { status: 413 },
