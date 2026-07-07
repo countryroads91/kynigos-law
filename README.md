@@ -20,13 +20,22 @@ You can start editing the page by modifying `src/app/page.tsx`. The page auto-up
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Environment & database
+
+Third-party services are optional and env-gated—unset means off, no code changes needed. See [.env.example](.env.example) for the full list: Resend (lead email), Neon Postgres (lead/event persistence), Cloudflare Turnstile (bot protection), Upstash Redis (rate limiting), and `PAPER_TOKEN_SECRET` (signed white-paper downloads). Once `DATABASE_URL` is set, apply the Drizzle migrations in `drizzle/`:
+
+```bash
+npm run db:migrate    # apply migrations
+npm run db:generate   # regenerate after editing src/lib/db/schema.ts
+```
+
 ## Testing
 
 ```bash
 npm test
 ```
 
-Vitest tests—API routes, components, and the homepage—live next to the code they cover (`src/**/*.test.{ts,tsx}`). CI runs a typecheck and the test suite on every pull request. See [TESTING.md](TESTING.md) for conventions.
+Vitest tests—API routes, shared libraries (`src/lib`), components, and pages—live next to the code they cover (`src/**/*.test.{ts,tsx}`). CI runs a typecheck and the test suite on every pull request. See [TESTING.md](TESTING.md) for conventions.
 
 ## Project docs
 

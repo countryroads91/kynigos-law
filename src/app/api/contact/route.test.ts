@@ -1,7 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { POST } from "./route";
 
-const { sendMock } = vi.hoisted(() => ({ sendMock: vi.fn() }));
+const { sendMock, limitMock } = vi.hoisted(() => ({
+  sendMock: vi.fn(),
+  limitMock: vi.fn(),
+}));
 
 vi.mock("resend", () => ({
   Resend: class {
@@ -9,12 +12,28 @@ vi.mock("resend", () => ({
   },
 }));
 
+// Inert unless a test stubs the Upstash env vars—checkRateLimit returns early
+// without them.
+vi.mock("@upstash/ratelimit", () => ({
+  Ratelimit: class {
+    static slidingWindow = vi.fn(() => "sliding-window");
+    limit = limitMock;
+  },
+}));
+vi.mock("@upstash/redis", () => ({ Redis: class {} }));
+
 // Default: email env is configured and the send succeeds. Individual tests
 // override. vi.stubEnv keeps mutations restorable; no real email can be sent
 // because the resend module is mocked above.
 beforeEach(() => {
   vi.stubEnv("RESEND_API_KEY", "test-key");
   vi.stubEnv("LEAD_NOTIFY_EMAIL", "notify@example.com");
+  // Persistence, Turnstile, and rate limiting are env-gated—leave them off
+  // for the base cases and enable per test.
+  vi.stubEnv("DATABASE_URL", "");
+  vi.stubEnv("TURNSTILE_SECRET_KEY", "");
+  vi.stubEnv("UPSTASH_REDIS_REST_URL", "");
+  vi.stubEnv("UPSTASH_REDIS_REST_TOKEN", "");
   sendMock.mockReset();
   sendMock.mockResolvedValue({ data: { id: "test" } });
 });
@@ -167,5 +186,34 @@ describe("POST /api/contact", () => {
       }),
     );
     expect(res.status).toBe(400);
+  });
+
+  it("returns 429 when the rate limit is exceeded", async () => {
+    vi.stubEnv("UPSTASH_REDIS_REST_URL", "https://example.upstash.io");
+    vi.stubEnv("UPSTASH_REDIS_REST_TOKEN", "test-token");
+    limitMock.mockResolvedValue({ success: false });
+    const res = await post(valid);
+    expect(res.status).toBe(429);
+    expect((await res.json()).error).toMatch(/too many requests/i);
+    expect(sendMock).not.toHaveBeenCalled();
+  });
+
+  it("fails closed with 403 when Turnstile is enabled and the token is missing", async () => {
+    vi.stubEnv("TURNSTILE_SECRET_KEY", "test-secret");
+    const res = await post(valid);
+    expect(res.status).toBe(403);
+    expect(sendMock).not.toHaveBeenCalled();
+  });
+
+  it("labels FirstMove submissions in the notification email", async () => {
+    const res = await post({ ...valid, source: "first_move" });
+    expect(res.status).toBe(200);
+    expect(sendMock.mock.calls[0][0].text).toContain("First Move");
+  });
+
+  it("treats an unknown source as the contact form", async () => {
+    const res = await post({ ...valid, source: "evil" });
+    expect(res.status).toBe(200);
+    expect(sendMock.mock.calls[0][0].text).toContain("/contact");
   });
 });

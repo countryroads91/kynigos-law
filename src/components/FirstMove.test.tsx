@@ -68,6 +68,11 @@ describe("FirstMove", () => {
     );
     expect(body.jurisdiction).toBe("dc");
     expect(body.message).toContain("employment contract");
+    // The API labels FirstMove leads by this source tag.
+    expect(body.source).toBe("first_move");
+    expect(body.company).toBe(""); // honeypot untouched by a real user
+    // Without a Turnstile site key the token is sent blank (server skips it).
+    expect(body.turnstileToken).toBe("");
   });
 
   it("surfaces a server rejection instead of pretending success", async () => {

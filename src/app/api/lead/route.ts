@@ -1,19 +1,45 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
+import { getPaper } from "@/content/papers";
+import { crossSiteRequest } from "@/lib/http";
+import { clean, EMAIL_RE, persistLead, sendNotification } from "@/lib/leads";
+import { paperDownloadUrl } from "@/lib/paper-token";
+import { checkRateLimit, clientIp } from "@/lib/ratelimit";
+import { verifyTurnstile } from "@/lib/turnstile";
 
 export const runtime = "nodejs";
 
-type LeadBody = { name?: string; email?: string; paper?: string };
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-// Strip control characters so user input cannot forge log lines or reach the
-// email subject header un-neutralized.
-function clean(value: string): string {
-  return value.replace(/[\r\n\t\x00-\x1f]+/g, " ").trim();
-}
+type LeadBody = {
+  name?: string;
+  email?: string;
+  paper?: string; // accepted but ignored—the slug-resolved title is canonical
+  slug?: string;
+  company?: string; // honeypot—real users never see or fill this field
+  turnstileToken?: string;
+};
 
 export async function POST(req: Request) {
+  const contentLength = Number(req.headers.get("content-length") ?? 0);
+  if (contentLength > 32_768) {
+    return NextResponse.json(
+      { ok: false, error: "Request too large." },
+      { status: 413 },
+    );
+  }
+
+  if (crossSiteRequest(req)) {
+    return NextResponse.json(
+      { ok: false, error: "Invalid request origin." },
+      { status: 403 },
+    );
+  }
+
+  if (!(await checkRateLimit(req, "lead"))) {
+    return NextResponse.json(
+      { ok: false, error: "Too many requests. Please try again in a minute." },
+      { status: 429 },
+    );
+  }
+
   let body: LeadBody;
   try {
     body = (await req.json()) as LeadBody;
@@ -26,52 +52,82 @@ export async function POST(req: Request) {
 
   const name = clean(body.name ?? "");
   const email = (body.email ?? "").trim();
-  const paper = clean(body.paper ?? "white paper").slice(0, 120);
+  const slug = clean(body.slug ?? "").slice(0, 120);
+  const honeypot = (body.company ?? "").trim();
 
-  if (name.length < 2 || name.length > 120 || !EMAIL_RE.test(email)) {
+  // Bots fill every field; pretend success and hand out nothing.
+  if (honeypot) {
+    return NextResponse.json({ ok: true });
+  }
+
+  if (name.length < 2 || name.length > 120 || !EMAIL_RE.test(email) || email.length > 254) {
     return NextResponse.json(
       { ok: false, error: "Please enter your name and a valid email address." },
       { status: 422 },
     );
   }
 
-  const stamp = new Date().toISOString();
-  // Always log so a lead is recoverable from Vercel logs even if email fails.
-  console.log(
-    `[lead] ${stamp} paper="${paper}" name="${name}" email="${email}"`,
-  );
-
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.LEAD_NOTIFY_EMAIL;
-  const from =
-    process.env.LEAD_FROM_EMAIL || "Kynigos Law Firm <onboarding@resend.dev>";
-
-  if (apiKey && to) {
-    try {
-      const resend = new Resend(apiKey);
-      await resend.emails.send({
-        from,
-        to,
-        replyTo: email,
-        subject: `White paper download — ${name}`,
-        text: [
-          "New white paper lead from kynigos.law.",
-          "",
-          `Name:  ${name}`,
-          `Email: ${email}`,
-          `Paper: ${paper}`,
-          `Time:  ${stamp}`,
-        ].join("\n"),
-      });
-    } catch (err) {
-      // Do not block the download; the lead is already logged above.
-      console.error("[lead] email send failed:", err);
-    }
-  } else {
-    console.warn(
-      "[lead] RESEND_API_KEY or LEAD_NOTIFY_EMAIL not set — lead logged only.",
+  // The download URL is minted per known paper—an unknown slug gets nothing.
+  const known = getPaper(slug);
+  if (!known) {
+    return NextResponse.json(
+      { ok: false, error: "Unknown paper. Please refresh the page and try again." },
+      { status: 422 },
     );
   }
 
-  return NextResponse.json({ ok: true });
+  // Turnstile LAST among the checks: tokens are single-use, so verifying
+  // before validation would burn the token on a 422 and doom the user's
+  // corrected resubmission to a 403.
+  if (!(await verifyTurnstile(body.turnstileToken, clientIp(req)))) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error:
+          "We could not verify you are human. Please refresh the page and try again.",
+      },
+      { status: 403 },
+    );
+  }
+
+  const stamp = new Date().toISOString();
+  // Log as well as persist so a lead is visible in Vercel logs during triage.
+  console.log(
+    `[lead] ${stamp} paper="${known.slug}" name="${name}" email="${email}"`,
+  );
+
+  // Persist FIRST—email is best-effort on this route.
+  const leadId = await persistLead({
+    name,
+    email,
+    source: "white_paper",
+    paperSlug: known.slug,
+  });
+
+  try {
+    const sent = await sendNotification({
+      subject: `White paper download — ${name}`,
+      replyTo: email,
+      text: [
+        "New white paper lead from kynigos.law.",
+        "",
+        `Name:  ${name}`,
+        `Email: ${email}`,
+        // Server-resolved title, never the client-supplied display string.
+        `Paper: ${known.title}`,
+        `Time:  ${stamp}`,
+        `Lead:  ${leadId ?? "(not persisted)"}`,
+      ].join("\n"),
+    });
+    if (!sent) {
+      console.warn(
+        "[lead] RESEND_API_KEY or LEAD_NOTIFY_EMAIL not set — lead logged only.",
+      );
+    }
+  } catch (err) {
+    // Do not block the download; the lead is already persisted and logged.
+    console.error("[lead] email send failed:", err);
+  }
+
+  return NextResponse.json({ ok: true, url: paperDownloadUrl(known.slug) });
 }

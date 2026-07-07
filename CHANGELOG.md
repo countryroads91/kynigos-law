@@ -3,6 +3,20 @@
 All notable changes to the Kynigos Law Firm site are documented here.
 Versions follow a 4-digit MAJOR.MINOR.PATCH.MICRO format.
 
+## [0.7.0.0] - 2026-07-07
+
+### Added
+- Every inquiry, white-paper request, and download is now stored in the firm's own database the moment it arrives—before any email is sent—so a delivery outage can never lose a lead. The store also records conversion events (downloads, future bookings and payments), laying the data foundation for CRM sync and analytics.
+- All three forms (contact, homepage First Move, white-paper gates) now carry Cloudflare Turnstile bot protection: the challenge appears once configured, and the server rejects submissions that fail it.
+- Form endpoints are rate-limited per visitor (5 requests per minute) to shut down abuse of the public email triggers.
+- White papers are now genuinely gated: the PDFs left the public folder and are served only through expiring signed download links minted when a reader submits the form. Every download is recorded.
+- The site now sends security headers on every response (HSTS, frame/content-type protections, a Content-Security-Policy in report-only mode) as a first hardening pass.
+
+### Changed
+- The white-paper lead endpoint gained the same protections the contact endpoint already had: a honeypot field, a payload size cap, and validation that the requested paper actually exists.
+- Shared validation, sanitization, and email plumbing for the two lead endpoints moved into one library, ending the copy-paste drift between them.
+- The privacy policy now names the firm's full processor list (Vercel, Resend, Neon, Cloudflare, Upstash) and discloses database storage of inquiries.
+
 ## [0.6.0.0] - 2026-07-06
 
 ### Added

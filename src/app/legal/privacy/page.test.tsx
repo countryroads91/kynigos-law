@@ -28,6 +28,9 @@ describe("Privacy Policy page", () => {
     const text = document.body.textContent ?? "";
     expect(text).toContain("Vercel");
     expect(text).toContain("Resend");
+    expect(text).toContain("Neon");
+    expect(text).toContain("Cloudflare");
+    expect(text).toContain("Upstash");
     expect(text).toContain("only with your consent");
     expect(text).toContain("Cookie Settings");
     expect(text).toContain("we do not sell personal");
@@ -47,7 +50,7 @@ describe("Privacy Policy page", () => {
   it("shows the last-updated line and the no-relationship warning", () => {
     render(<PrivacyPage />);
 
-    expect(screen.getByText("Last updated July 6, 2026")).toBeTruthy();
+    expect(screen.getByText("Last updated July 7, 2026")).toBeTruthy();
     expect(
       screen.getByText(/does not create an attorney-client relationship/),
     ).toBeTruthy();
