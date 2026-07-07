@@ -2,17 +2,15 @@
 
 ## Contact & Lead Capture
 
-### Add Turnstile (or equivalent) bot protection to /api/contact and /api/lead
-**Priority:** P1
-CEO-PLAN specifies Resend + Turnstile for the contact form. The honeypot shipped in v0.2.0.0 stops naive bots, but both endpoints remain unauthenticated public email triggers with no rate limiting. Needs Cloudflare Turnstile keys (user must provision) or a per-IP rate limit (Upstash/Vercel WAF). Flagged by /ship security review 2026-07-01.
-
 ### Verify Resend env vars in Vercel production for /api/contact
 **Priority:** P1
 The contact route now returns 502 when RESEND_API_KEY/LEAD_NOTIFY_EMAIL are missing. Confirm all three vars (including LEAD_FROM_EMAIL with a verified domain sender—the onboarding@resend.dev fallback only delivers to the Resend account owner) are set in production, then submit a live test inquiry.
 
-### Extract shared email/validation helpers for the two API routes
-**Priority:** P2
-/api/contact and /api/lead duplicate EMAIL_RE, control-char sanitization, env reads, and the Resend send/catch structure; the DC referral copy is duplicated between ContactForm and the route. Extract src/lib helpers (flagged by /ship maintainability review 2026-07-01).
+### Provision Phase 1 services and set env vars in Vercel
+**Priority:** P1
+The code shipped in v0.7.0.0 is env-gated and inert until configured: Neon Postgres (`DATABASE_URL`, then `npm run db:migrate`), Cloudflare Turnstile (`NEXT_PUBLIC_TURNSTILE_SITE_KEY` + `TURNSTILE_SECRET_KEY`), Upstash Redis (`UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN`), and a random `PAPER_TOKEN_SECRET` (e.g. `openssl rand -hex 32`). Until then: leads are email-only (not persisted), forms have honeypot-only protection, and white-paper links are unsigned.
+
+Turnstile ops notes (from adversarial review): set BOTH keys, then **redeploy**—the site key is inlined at build time, so setting keys without a redeploy makes the server fail closed (403) while no widget renders. Decide the preview-deployment policy in the Turnstile dashboard (add `*.vercel.app` to the allowed hostnames or accept that previews show a widget error). Once `DATABASE_URL` is live, downgrade the success-path PII logging in the routes to lead id + source only.
 
 ## Mobile & Accessibility
 
@@ -31,6 +29,12 @@ The ISSUE-001 stacking-context fix (menu could not be closed) was verified in Ch
 Untracked draft mockup sitting in public/. If ever committed it deploys as a live URL on the production domain. Move to Website Source/Mockups/ or delete. (May belong to a concurrent working session—check before removing.)
 
 ## Completed
+
+### Turnstile + rate limiting on /api/contact and /api/lead
+**Completed:** v0.7.0.0 (2026-07-07)—env-gated Cloudflare Turnstile (fails closed once configured) plus Upstash per-IP sliding-window rate limiting (fails open on infra errors). Honeypot and content-length cap added to /api/lead.
+
+### Extract shared email/validation helpers for the two API routes
+**Completed:** v0.7.0.0 (2026-07-07)—src/lib/leads.ts holds EMAIL_RE, clean(), Resend glue, and persist-first Postgres writes (leads + events via Drizzle/Neon). White-paper PDFs moved out of public/ and served by /api/paper/[slug] behind short-lived HMAC tokens.
 
 ### Focus trap for the mobile nav overlay
 **Completed:** v0.2.1.0 (2026-07-01)
