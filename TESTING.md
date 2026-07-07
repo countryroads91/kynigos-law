@@ -17,13 +17,13 @@ CI runs a typecheck (`npx tsc --noEmit`) and `npm test` on every push to main an
 
 ## Test layers
 
-- **Unit/API tests** (`src/**/*.test.{ts,tsx}`)—colocated next to the code they cover. Currently 40 tests in 6 files: the `/api/contact` and `/api/lead` route handlers (validation, jurisdiction gate, malformed input), the `Nav`, `ContactForm`, and `WhitePaperGate` components, and the homepage (`src/app/page.test.tsx`—hero anchor, `#how-it-works` section, services ticker band).
+- **Unit/API tests** (`src/**/*.test.{ts,tsx}`)—colocated next to the code they cover. Currently 200 tests in 39 files: the `/api/contact`, `/api/lead`, and `/api/paper/[slug]` route handlers (validation, jurisdiction gate, Turnstile verification, rate limiting, persist-first ordering, signed downloads), the shared libraries in `src/lib` (`leads`, `turnstile`, `ratelimit`, `paper-token`, `db`), the security headers and CSP config (`src/next.config.test.ts`), components (including `TurnstileWidget` and cross-form Turnstile gating), and every page.
 - **Integration/E2E**—not yet configured. Browser-level verification happens via gstack `/qa` at mobile and desktop viewports.
 
 ## Conventions
 
 - Test files are colocated: `route.ts` → `route.test.ts`.
 - Import the handler directly and call it with a real `Request`—no server needed for App Router route handlers.
-- Tests must never send real email: delete `RESEND_API_KEY`/`LEAD_NOTIFY_EMAIL` in `beforeEach`.
+- Tests must never touch real services: `vi.mock` the SDK modules (`resend`, `@upstash/ratelimit`, `@upstash/redis`) and manage env with `vi.stubEnv` in `beforeEach` plus `vi.unstubAllEnvs()` in `afterEach`. Route tests stub the env-gated vars (`DATABASE_URL`, `TURNSTILE_SECRET_KEY`, `UPSTASH_REDIS_REST_URL`/`TOKEN`) to `""` so persistence, Turnstile, and rate limiting stay off in base cases and are enabled per test.
 - Assert behavior (status codes, response bodies, error copy), not existence.
 - When fixing a bug, add a regression test. When adding a conditional, test both paths.
