@@ -35,6 +35,13 @@ export default function PrivacyPage() {
             by email.
           </li>
           <li>
+            <strong>Research-notes signup.</strong> If you subscribe to the
+            firm&rsquo;s research notes, we store your email address (and name,
+            if given) and send you nothing until you confirm by clicking the
+            link in the confirmation email. Every issue includes a one-click
+            unsubscribe.
+          </li>
+          <li>
             <strong>Inquiry records.</strong> Form submissions are stored in a
             database operated for the firm and recorded in our server logs
             (hosted on Vercel), including when email delivery fails, so that
