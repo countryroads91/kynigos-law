@@ -14,9 +14,9 @@ const pillars = [
   {
     num: "02",
     name: "Zealous",
-    promise: "The fee structure is the proof.",
+    promise: "Zeal is claimed in every retainer letter. Ours is priced into it.",
     proof:
-      "Every lawyer promises zeal. We build it into the engagement: a defined objective, a price stated in advance, and a next stage we have to earn. Advocacy you can verify in the engagement letter, not the brochure.",
+      "A defined objective, a price stated in advance, and a next stage we have to earn—advocacy you can verify in the engagement letter, not the brochure.",
   },
   {
     num: "03",

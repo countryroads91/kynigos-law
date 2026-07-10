@@ -66,9 +66,9 @@ export default function HowItWorksPage() {
           The fee is matched to the work.
         </h2>
         <p className="section-sub">
-          Every engagement falls into one of three shapes. We define the work
-          first, then structure the fee so the firm carries real stakes in the
-          outcome. Open any shape to see it on a matter.
+          Zeal is claimed in every retainer letter. Ours is priced into it:
+          we define the work first, then structure the fee so the firm carries
+          real stakes in the outcome. Open any shape to see it on a matter.
         </p>
         <EngagementShapes />
         <p className="process-note">
@@ -99,7 +99,7 @@ export default function HowItWorksPage() {
             <Link href="/philosophy" className="btn-secondary">
               Read The Philosophy
             </Link>
-            <Link href="/#get-started" className="btn-primary">
+            <Link href="/#first-move" className="btn-primary">
               Get Started
             </Link>
           </div>

@@ -64,7 +64,7 @@ export const AUDIENCES: Audience[] = [
       "Estate Planning",
     ],
     headline: "Counsel for the decisions closest to home.",
-    lede: "Built for professionals, executives, physicians, and households with real assets and real decisions at stake—people who want strategic representation without surrendering control of the legal budget.",
+    lede: "Built for professionals, executives, physicians, and households whose income is real and whose wealth is unstaffed. You have a financial advisor and an accountant—this is the third seat: strategic representation without surrendering control of the legal budget.",
     whoFor: [
       "A professional or business owner navigating divorce who wants the economics mapped before the fight is chosen.",
       "A physician, dentist, or executive with an employment agreement, a buy-in, or a severance package on the table.",
@@ -132,7 +132,7 @@ export const AUDIENCES: Audience[] = [
     doorLabel: "Business Owners & Professionals",
     navLabel: "Businesses",
     doorBlurb:
-      "Contracts, people, partnerships, and practices—for companies substantial enough to need recurring legal judgment, without a legal department's overhead.",
+      "Contracts, people, partnerships, and practices—for companies with real volume: too big for ad-hoc lawyering, too disciplined to fund a general counsel's office.",
     doorMatters: [
       "Business Counsel",
       "Commercial Contracts",
@@ -140,10 +140,11 @@ export const AUDIENCES: Audience[] = [
       "Partner Exits",
     ],
     headline: "Outside counsel that runs on your economics.",
-    lede: "For owner-led companies and professional practices: enough legal surface to need real judgment, too much discipline to pre-fund a billing black box. Scoped work, stated prices, and counsel that answers.",
+    lede: "For companies with real volume—from the owner-led practice to the five-hundred-employee operation—and no appetite for a billing black box. Real transactions, recurring legal questions, scoped work, stated prices, and counsel that answers.",
     whoFor: [
-      "An owner-led company that needs contracts, employment documents, and deal support—without hiring a general counsel.",
+      "A company of fifty—or five hundred—employees with contract and transaction volume that deserves better than ad-hoc lawyering, and no general counsel's office to absorb it.",
       "A physician or dentist group admitting a partner, buying out a founder, or selling the practice.",
+      "A personal-services business—salons, spas, clinics, studios—signing leases, hiring, and growing with real money at stake.",
       "Partners or shareholders working through an admission, an exit, or a dispute.",
       "A landlord with a portfolio and a recurring need for enforcement that does not reward delay.",
     ],
@@ -195,7 +196,7 @@ export const AUDIENCES: Audience[] = [
       id: "practice-lifecycle",
       kicker: "Professional Practices",
       heading: "The whole lifecycle of a professional practice.",
-      body: "Physicians, dentists, and professional groups live through the same sequence: join, negotiate the agreement, buy in, admit a partner, work through an exit, buy or sell the practice, sign the lease, answer the board. Kynigos is built for the sequence, not just the transaction in front of you.",
+      body: "Physicians, dentists, and the businesses built on personal service—salons, spas, clinics, studios—live through the same sequence: join, negotiate the agreement, buy in, admit a partner, work through an exit, buy or sell the practice, sign the lease, answer the board. Kynigos is built for the sequence, not just the transaction in front of you.",
       bullets: [
         "Employment agreements & compensation",
         "Buy-ins & buyouts",

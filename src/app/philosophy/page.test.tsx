@@ -32,12 +32,12 @@ describe("Philosophy page", () => {
     expect(document.body.textContent).not.toContain("Maryland");
   });
 
-  it("routes the closing CTAs to the homepage fork and the contact page", () => {
+  it("routes the closing CTAs to the homepage intake and the contact page", () => {
     render(<PhilosophyPage />);
 
     expect(
       screen.getByRole("link", { name: "Get Started" }).getAttribute("href"),
-    ).toBe("/#get-started");
+    ).toBe("/#first-move");
     expect(
       screen
         .getByRole("link", { name: "Book A Free Consultation" })
