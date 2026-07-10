@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { cleanup, render, screen } from "@testing-library/react";
-import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("next/link", () => ({
   default: ({
@@ -15,102 +15,116 @@ vi.mock("next/link", () => ({
 }));
 
 import Home from "./page";
-
-beforeAll(() => {
-  // jsdom has no matchMedia; HeadlineReel uses it for prefers-reduced-motion.
-  window.matchMedia = vi.fn().mockImplementation((query: string) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  }));
-});
+import { AUDIENCES } from "@/content/audiences";
 
 afterEach(cleanup);
 
 describe("Home page", () => {
-  it("anchors the hero Get Started button to the fork section", () => {
+  it("anchors the hero CTA to the three doors", () => {
     render(<Home />);
 
-    const anchor = screen.getByRole("link", { name: "Get Started" });
-    expect(anchor.getAttribute("href")).toBe("#get-started");
-    expect(document.getElementById("get-started")).toBeTruthy();
+    const anchor = screen.getByRole("link", { name: "Find Your Path" });
+    expect(anchor.getAttribute("href")).toBe("#doors");
+    expect(document.getElementById("doors")).toBeTruthy();
 
-    // The consultation button is gone from the hero; every How It Works
-    // link goes to the full page, not an in-page anchor.
-    const hiw = screen.getAllByRole("link", { name: "How It Works" });
-    expect(hiw.length).toBeGreaterThan(0);
-    for (const link of hiw) {
+    const fees = screen.getAllByRole("link", { name: "How Our Fees Work" });
+    expect(fees.length).toBeGreaterThan(0);
+    for (const link of fees) {
       expect(link.getAttribute("href")).toBe("/how-it-works");
     }
   });
 
-  it("chains the homepage sections with scroll cues", () => {
+  it("keeps the hero headline static—no rotating reel", () => {
     render(<Home />);
 
-    // hero → #get-started → #skin-in-the-game → #first-move
-    expect(document.getElementById("skin-in-the-game")).toBeTruthy();
-    expect(document.getElementById("first-move")).toBeTruthy();
-    const cues = Array.from(document.querySelectorAll("a.scroll-cue")).map(
-      (a) => a.getAttribute("href"),
-    );
-    expect(cues).toContain("#skin-in-the-game");
-    expect(cues).toContain("#first-move");
+    expect(document.querySelector(".reel-track")).toBeNull();
+    const headline = document.getElementById("hero-headline")!;
+    expect(headline.textContent).toContain("Your attorney");
+    expect(headline.textContent).toContain("skin in the game.");
   });
 
-  it("renders the in-flow ticker spanning all five practice groups", () => {
+  it("renders a door card for each audience, linking to its landing page", () => {
+    render(<Home />);
+
+    const doors = document.querySelectorAll("#doors a.door-card");
+    expect(doors.length).toBe(AUDIENCES.length);
+    const hrefs = Array.from(doors).map((d) => d.getAttribute("href"));
+    for (const a of AUDIENCES) {
+      expect(hrefs).toContain(`/${a.slug}`);
+    }
+  });
+
+  it("features six flagship engagements with fee shapes and the posted price", () => {
+    render(<Home />);
+
+    const cards = document.querySelectorAll("#engagements a.flagship-card");
+    expect(cards.length).toBe(6);
+    const section = document.getElementById("engagements")!;
+    expect(section.textContent).toContain("Staged-Fee Divorce");
+    expect(section.textContent).toContain("DC Legal Opinion Letters");
+    expect(section.textContent).toContain("From $444");
+
+    const review = Array.from(cards).find((c) =>
+      c.textContent?.includes("Professional Contract Review"),
+    )!;
+    expect(review.getAttribute("href")).toBe("/practice-areas/contract-review");
+  });
+
+  it("renders the product ticker sweeping all three doors", () => {
     render(<Home />);
 
     const ticker = document.querySelector(".ticker");
     expect(ticker).toBeTruthy();
     const text = ticker!.textContent ?? "";
-    // At least one item per practice group, plus the brand accent.
     for (const item of [
-      "Divorce & Separation",
-      "Executive Contract Review",
-      "Mergers & Acquisitions",
-      "Eviction Defense",
-      "Structured Finance",
+      "Staged-Fee Divorce",
+      "Professional Contract Review",
+      "Practice Buy-Ins & Buyouts",
+      "DC Legal Opinion Letters",
       "Not for Feeding the Clock",
     ]) {
       expect(text).toContain(item);
     }
-    // The old contract-review-heavy "Flat Fee X" framing is gone.
-    expect(text).not.toContain("Flat Fee");
   });
 
-  it("rotates the hero reel through matters across the practice groups", () => {
+  it("proves the three pillars and keeps the rule line", () => {
     render(<Home />);
 
-    const reel = document.querySelector(".reel-track")!;
-    const words = new Set(
-      Array.from(reel.querySelectorAll(".reel-item")).map(
-        (el) => el.textContent,
-      ),
-    );
-    for (const word of ["divorce", "deal", "estate", "M&A", "real estate"]) {
-      expect(words.has(word)).toBe(true);
+    const section = document.getElementById("pillars")!;
+    expect(section.querySelectorAll(".pillar").length).toBe(3);
+    for (const name of ["Calculated", "Zealous", "Invested"]) {
+      expect(section.textContent).toContain(name);
     }
+    expect(section.textContent).toContain("Play to Win. Win to Play.");
+
+    const phil = screen.getByRole("link", { name: "Read The Philosophy" });
+    expect(phil.getAttribute("href")).toBe("/philosophy");
   });
 
-  it("shows the practice-group index and typed featured insights", () => {
+  it("presents the attorney without naming him—credentials carry the trust", () => {
     render(<Home />);
 
-    // Practice index: five group rows linking into the directory anchors.
-    const rows = document.querySelectorAll("#practice-areas a.practice-row");
-    expect(rows.length).toBe(5);
-    for (const row of rows) {
-      expect(row.getAttribute("href")).toMatch(/^\/practice-areas#/);
-    }
-    const all = screen.getByRole("link", { name: "All Practice Areas" });
-    expect(all.getAttribute("href")).toBe("/practice-areas");
+    const section = document.getElementById("attorney")!;
+    expect(section.textContent).toContain("I have been the client.");
+    expect(section.textContent).toContain("Goldman Sachs");
+    expect(section.textContent).toContain("District of Columbia");
+    expect(document.body.textContent).not.toContain("Bayan");
 
-    // Featured insights: three content types, visibly distinct, with the
-    // essay personally attributed and the publication attributed to the firm.
+    const essay = screen.getByRole("link", { name: "Read the Essay" });
+    expect(essay.getAttribute("href")).toBe("/blog/i-have-been-the-client");
+  });
+
+  it("walks the engagement loop in four steps", () => {
+    render(<Home />);
+
+    const section = document.getElementById("how")!;
+    expect(section.querySelectorAll(".loop-steps .process-step").length).toBe(4);
+    expect(section.textContent).toContain("Approve a defined scope and price");
+  });
+
+  it("shows typed featured insights with correct attribution", () => {
+    render(<Home />);
+
     const insights = document.getElementById("insights")!;
     expect(insights.querySelector(".insight-card--essay")).toBeTruthy();
     expect(insights.querySelector(".insight-card--publication")).toBeTruthy();
@@ -118,9 +132,6 @@ describe("Home page", () => {
     expect(
       insights.querySelector(".insight-card--publication")!.textContent,
     ).toContain("Kynigos Law Firm");
-    expect(
-      insights.querySelector(".insight-card--publication")!.textContent,
-    ).not.toContain("Bayan");
     expect(
       insights.querySelector(".insight-card--essay")!.textContent,
     ).toContain("The Managing Partner");
@@ -133,6 +144,11 @@ describe("Home page", () => {
     ).toBe("Personal Essay · Why Kynigos Exists");
   });
 
+  it("contains no placeholder integrations", () => {
+    render(<Home />);
+    expect(document.body.textContent).not.toContain("integration pending");
+  });
+
   it("renders no mojibake anywhere on the page", () => {
     render(<Home />);
     // Double-encoded UTF-8 artifacts (Â, â€) must never reach the DOM.
@@ -142,18 +158,22 @@ describe("Home page", () => {
   it("keeps the DC-only jurisdiction note on the page", () => {
     render(<Home />);
 
-    const note = screen.getByText(/licensed in the District of Columbia\./);
-    expect(note.textContent).toContain("outside DC may require referral");
+    const notes = screen.getAllByText(
+      /licensed in the District of Columbia\./,
+    );
+    expect(notes.length).toBeGreaterThan(0);
+    expect(
+      notes.some((n) => n.textContent?.includes("outside DC may require")),
+    ).toBe(true);
   });
 
-  it("explains the skin-in-the-game model with three arenas and a philosophy link", () => {
+  it("ends with the working intake form, not a scheduler placeholder", () => {
     render(<Home />);
 
-    const section = document.getElementById("skin-in-the-game")!;
-    expect(section.querySelectorAll(".skin-card").length).toBe(3);
-    expect(section.textContent).toContain("Play to Win. Win to Play.");
-
-    const phil = screen.getByRole("link", { name: "Read The Philosophy" });
-    expect(phil.getAttribute("href")).toBe("/philosophy");
+    expect(document.getElementById("first-move")).toBeTruthy();
+    expect(
+      screen.getByRole("button", { name: "Make The First Move" }),
+    ).toBeTruthy();
+    expect(document.querySelector(".calendly-placeholder")).toBeNull();
   });
 });

@@ -3,41 +3,67 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { PRACTICE_NAV } from "@/content/practice-nav";
 
 type MenuItem = { label: string; href: string };
 type Menu = {
   label: string;
   /** Every primary label is a real one-tap destination. */
   href: string;
+  /** Label for the dropdown's lead "all of this section" link. */
+  allLabel: string;
   items: MenuItem[];
 };
 
 // Primary labels link to landing pages; the chevron (desktop) or the grouped
 // list (mobile overlay) exposes children. No label is only a submenu toggle.
+// The IA is the three client doors—People, Businesses, Capital—plus the firm
+// itself. The full practice directory stays one tap away under each door.
 const MENUS: Menu[] = [
   {
-    label: "Practice Areas",
-    href: "/practice-areas",
-    // The five practice groups, anchored into the directory. Deep pages are
-    // reached from each group's section—the nav stays one level deep.
-    items: PRACTICE_NAV.map((group) => ({
-      label: group.name,
-      href: `/practice-areas#${group.slug}`,
-    })),
+    label: "People",
+    href: "/people",
+    allLabel: "For Individuals & Families",
+    items: [
+      { label: "Divorce & Family Law", href: "/practice-areas/family-law" },
+      { label: "Contract Review", href: "/practice-areas/contract-review" },
+      { label: "Employment & Severance", href: "/practice-areas#work-employment" },
+      { label: "Estate Planning", href: "/practice-areas#family-personal" },
+    ],
+  },
+  {
+    label: "Businesses",
+    href: "/businesses",
+    allLabel: "For Businesses & Professionals",
+    items: [
+      { label: "Business & Corporate", href: "/practice-areas#business-corporate" },
+      { label: "Practice Transactions", href: "/businesses#practice-lifecycle" },
+      { label: "Landlord Representation", href: "/practice-areas/landlord-tenant" },
+    ],
+  },
+  {
+    label: "Capital",
+    href: "/capital",
+    allLabel: "For Lenders & Investors",
+    items: [
+      { label: "Legal Opinion Letters", href: "/practice-areas/capital-markets" },
+      { label: "Lender & Deal Counsel", href: "/practice-areas#capital-finance" },
+    ],
   },
   {
     label: "About",
     href: "/about",
+    allLabel: "About the Firm",
     items: [
       { label: "How It Works", href: "/how-it-works" },
       { label: "Philosophy", href: "/philosophy" },
+      { label: "All Practice Areas", href: "/practice-areas" },
       { label: "Contact", href: "/contact" },
     ],
   },
   {
     label: "Insights",
     href: "/insights",
+    allLabel: "All Insights",
     items: [
       { label: "Personal Essays", href: "/insights#essays" },
       { label: "Kynigos Publications", href: "/insights#publications" },
@@ -231,7 +257,7 @@ export default function Nav() {
                 role="menuitem"
                 onClick={closeAll}
               >
-                All {menu.label === "About" ? "About the Firm" : menu.label}
+                {menu.allLabel}
               </Link>
               {menu.items.map((item) => (
                 <Link
@@ -248,7 +274,7 @@ export default function Nav() {
           </div>
         ))}
         <Link href="/contact" className="nav-cta" onClick={closeAll}>
-          Book A Free Consultation
+          Start Your Matter
         </Link>
       </div>
 
@@ -325,7 +351,7 @@ export default function Nav() {
               className="nav-cta menu-cta"
               onClick={closeAll}
             >
-              Book A Free Consultation
+              Start Your Matter
             </Link>
             <div className="menu-legal">
               {LEGAL_LINKS.map((l) => (

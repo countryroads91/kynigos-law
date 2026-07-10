@@ -80,15 +80,22 @@ describe("Nav mobile menu", () => {
     // One tap on the burger, and each of these is one more tap away.
     for (const label of [
       "Home",
-      "Practice Areas",
-      "Family & Personal",
-      "Work & Employment",
+      "People",
+      "Divorce & Family Law",
+      "Contract Review",
+      "Employment & Severance",
+      "Estate Planning",
+      "Businesses",
       "Business & Corporate",
-      "Real Estate & Housing",
-      "Capital Markets & Finance",
+      "Practice Transactions",
+      "Landlord Representation",
+      "Capital",
+      "Legal Opinion Letters",
+      "Lender & Deal Counsel",
       "About",
       "How It Works",
       "Philosophy",
+      "All Practice Areas",
       "Contact",
       "Insights",
       "Personal Essays",
@@ -131,17 +138,15 @@ describe("Nav mobile menu", () => {
     expect(document.body.style.overflow).toBe("");
   });
 
-  it("routes each practice group to its directory anchor", () => {
+  it("routes each client door to its landing page", () => {
     mockPathname = "/";
     render(<Nav />);
     openMenu();
 
-    for (const [label, slug] of [
-      ["Family & Personal", "family-personal"],
-      ["Work & Employment", "work-employment"],
-      ["Business & Corporate", "business-corporate"],
-      ["Real Estate & Housing", "real-estate-housing"],
-      ["Capital Markets & Finance", "capital-finance"],
+    for (const [label, href] of [
+      ["People", "/people"],
+      ["Businesses", "/businesses"],
+      ["Capital", "/capital"],
     ]) {
       const links = screen
         .getAllByText(label)
@@ -149,8 +154,17 @@ describe("Nav mobile menu", () => {
         .filter(Boolean) as HTMLAnchorElement[];
       expect(links.length).toBeGreaterThan(0);
       for (const link of links) {
-        expect(link.getAttribute("href")).toBe(`/practice-areas#${slug}`);
+        expect(link.getAttribute("href")).toBe(href);
       }
+    }
+    // The full directory stays one tap away under About.
+    const all = screen
+      .getAllByText("All Practice Areas")
+      .map((el) => el.closest("a"))
+      .filter(Boolean) as HTMLAnchorElement[];
+    expect(all.length).toBeGreaterThan(0);
+    for (const link of all) {
+      expect(link.getAttribute("href")).toBe("/practice-areas");
     }
   });
 

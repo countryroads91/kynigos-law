@@ -9,6 +9,9 @@ export const BUILD_DATE = new Date();
 /** Static routes, ordered roughly by importance. */
 export const STATIC_ROUTES = [
   "/",
+  "/people",
+  "/businesses",
+  "/capital",
   "/practice-areas",
   "/practice-areas/family-law",
   "/practice-areas/landlord-tenant",

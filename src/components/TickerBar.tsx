@@ -1,28 +1,25 @@
-// Curated marquee copy spanning all five practice groups—inspired by, not
-// bound to, src/content/practices.ts (marquee labels are shortened for
-// rhythm). The brand accent recurs at each loop third; fee framing lives in
-// the sections below. The marquee's job is breadth.
+// Curated marquee of named engagements—products a visitor could actually
+// buy, not a directory of every conceivable matter. Ordered to sweep the
+// three client doors (people → businesses → capital); the brand accent
+// recurs at each loop third.
 const items = [
-  "Divorce & Separation",
-  "Custody & Support",
+  "Staged-Fee Divorce",
+  "Professional Contract Review",
   "Prenuptial Agreements",
-  "Wills, Trusts & Estates",
-  "Executive Contract Review",
-  "Employment Agreements",
-  "Not for Feeding the Clock",
+  "Estate Planning",
   "Severance Negotiation",
-  "Business Formation",
-  "Commercial Contracts",
-  "Mergers & Acquisitions",
-  "Commercial Disputes",
-  "Negotiation Counsel",
   "Not for Feeding the Clock",
-  "Real Estate & Leasing",
-  "Eviction Defense",
-  "Legal Opinion Letters",
+  "Business Counsel",
+  "Commercial Contracts",
+  "Practice Buy-Ins & Buyouts",
+  "Partner Exits",
+  "Commercial Lease Review",
+  "Not for Feeding the Clock",
+  "DC Legal Opinion Letters",
+  "Private Lender Counsel",
   "Real Estate Finance",
-  "Structured Finance",
-  "Private Funds",
+  "Landlord Representation",
+  "Mergers & Acquisitions",
   "Not for Feeding the Clock",
 ];
 
