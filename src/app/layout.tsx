@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Source_Serif_4, DM_Sans } from "next/font/google";
-import "./globals.css";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
+import "../app/globals.css";
+import "../app/redesign.css";
+import "../app/redesign-fixes.css";
+import PrimaryNav from "@/components/PrimaryNav";
+import PrimaryFooter from "@/components/PrimaryFooter";
 import CookieConsent from "@/components/CookieConsent";
 import AnalyticsGate from "@/components/AnalyticsGate";
 import ConsentModeBridge from "@/components/ConsentModeBridge";
@@ -38,7 +40,7 @@ export const metadata: Metadata = {
     template: "%s · Kynigos Law Firm",
   },
   description:
-    "Flat-fee and contingency representation from a finance-trained attorney in Washington, DC. Family, employment, business, real estate, and capital markets matters—priced by outcome, not hours.",
+    "Clearly scoped counsel for sophisticated individuals, owner-led businesses, and private-capital participants in Washington, DC.",
   applicationName: "Kynigos Law Firm",
   authors: [{ name: "Kynigos Law Firm, PLLC" }],
   keywords: [
@@ -56,16 +58,12 @@ export const metadata: Metadata = {
     siteName: "Kynigos Law Firm",
     locale: "en_US",
     title: "Kynigos Law Firm",
-    description: "Flat-fee and contingency representation. Washington, DC.",
+    description: "Sophisticated counsel without the billing black box. Washington, DC.",
     images: [{ url: "/og-image.png", width: 2400, height: 1260 }],
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
 };
 
-// Organization structured data—only claims supported by page content.
 const legalServiceJsonLd = {
   "@context": "https://schema.org",
   "@type": "LegalService",
@@ -86,48 +84,26 @@ const legalServiceJsonLd = {
   knowsAbout: PRACTICE_GROUPS.map((group) => group.name),
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    // Next 16: data-scroll-behavior lets the router snap scroll-to-top during
-    // SPA navigation while CSS scroll-behavior:smooth animates in-page anchors.
-    // suppressHydrationWarning: the inline script below adds the `js` class to
-    // <html> before hydration (by design—it gates scroll-reveal hiding), so
-    // the server markup and hydrated class list intentionally differ here.
     <html
       lang="en"
       data-scroll-behavior="smooth"
       className={`${playfair.variable} ${sourceSerif.variable} ${dmSans.variable}`}
       suppressHydrationWarning
     >
-      {/* suppressHydrationWarning: browser extensions (password managers,
-          shopping assistants) stamp attributes onto <body> before React
-          hydrates; that mismatch is theirs, not ours. Applies one level
-          deep only—real child mismatches still surface. */}
       <body suppressHydrationWarning>
-        {/* Runs synchronously before any content paints: the `js` class gates
-            the scroll-reveal hidden state so content is never invisible when
-            JavaScript is off (see [data-reveal] in globals.css). */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: "document.documentElement.classList.add('js')",
-          }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(legalServiceJsonLd),
-          }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(legalServiceJsonLd) }}
         />
-        <Nav />
+        <PrimaryNav />
         <main>{children}</main>
-        <Footer />
+        <PrimaryFooter />
         <CookieConsent />
         <ScrollReveal />
-        {/* Loads only after analytics consent—see AnalyticsGate. */}
         <AnalyticsGate />
-        {/* GA4 via Consent Mode v2—also gated on analytics consent. */}
         <ConsentModeBridge />
       </body>
     </html>
