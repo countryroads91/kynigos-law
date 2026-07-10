@@ -42,7 +42,7 @@ describe("How it Works page", () => {
     ).toBeTruthy();
     expect(document.body.textContent).not.toContain("Maryland");
 
-    // Closing CTAs route to the philosophy page and the homepage fork.
+    // Closing CTAs route to the philosophy page and the homepage intake.
     expect(
       screen
         .getByRole("link", { name: "Read The Philosophy" })
@@ -50,7 +50,7 @@ describe("How it Works page", () => {
     ).toBe("/philosophy");
     expect(
       screen.getByRole("link", { name: "Get Started" }).getAttribute("href"),
-    ).toBe("/#get-started");
+    ).toBe("/#first-move");
   });
 
   it("reveals an illustrative matter when a fee shape is expanded", () => {

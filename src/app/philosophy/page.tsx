@@ -99,7 +99,7 @@ export default function PhilosophyPage() {
             Bar. Licensed in DC only—matters elsewhere get a prompt referral.
           </p>
           <div className="cta-row">
-            <Link href="/#get-started" className="btn-primary">
+            <Link href="/#first-move" className="btn-primary">
               Get Started
             </Link>
             <Link href="/contact" className="btn-secondary">

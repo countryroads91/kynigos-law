@@ -12,13 +12,27 @@ export default function Footer() {
             <div className="footer-brand">Kynigos</div>
             <div className="footer-tag">Calculated. Zealous. Invested.</div>
             <p className="footer-desc">
-              Flat-fee and contingency representation, priced before the work
-              begins. Washington, DC.
+              Serious legal work, clearly scoped and priced before it begins.
+              Washington, DC.
             </p>
             <Link href="/contact" className="footer-cta">
-              Book A Free Consultation
+              Start Your Matter
             </Link>
           </div>
+          <nav aria-label="Who we serve">
+            <h4>Who We Serve</h4>
+            <ul className="footer-links">
+              <li>
+                <Link href="/people">Individuals &amp; Families</Link>
+              </li>
+              <li>
+                <Link href="/businesses">Businesses &amp; Professionals</Link>
+              </li>
+              <li>
+                <Link href="/capital">Lenders &amp; Investors</Link>
+              </li>
+            </ul>
+          </nav>
           <nav aria-label="Practice areas">
             <h4>Practice Areas</h4>
             <ul className="footer-links">

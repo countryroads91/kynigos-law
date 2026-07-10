@@ -7,8 +7,9 @@ import TurnstileWidget, { TURNSTILE_SITE_KEY } from "./TurnstileWidget";
 type Status = "idle" | "submitting" | "done" | "error";
 
 // Lightweight opener—one big prompt, three small fields, same /api/contact
-// backend (Resend) as the full contact form.
-export default function FirstMove() {
+// backend (Resend) as the full contact form. The placeholder can be tuned to
+// the page's audience via the prompt prop.
+export default function FirstMove({ prompt }: { prompt?: string }) {
   const uid = useId();
   const [message, setMessage] = useState("");
   const [name, setName] = useState("");
@@ -72,14 +73,15 @@ export default function FirstMove() {
   return (
     <section className="first-move" id="first-move" aria-labelledby="fm-heading">
       <div className="first-move-inner">
-        <div className="kicker">Make Contact</div>
+        <div className="kicker">Start Here</div>
         <h2 className="section-heading" id="fm-heading">
-          The first move is yours.
+          Tell us what you are trying to accomplish.
         </h2>
         <p className="section-sub">
-          Describe the document or the situation in a few sentences. We reply
-          within one business day with a straight answer—including
-          &ldquo;you don&rsquo;t need a lawyer for this.&rdquo;
+          Describe the document, the dispute, or the deal in a few sentences.
+          We reply within one business day with a recommended next step and
+          how it would be priced—including &ldquo;you don&rsquo;t need a
+          lawyer for this.&rdquo;
         </p>
 
         {status === "done" ? (
@@ -101,7 +103,10 @@ export default function FirstMove() {
               required
               rows={4}
               maxLength={5000}
-              placeholder="I was just served an eviction notice… / I have an employment contract to review… / My lender needs a DC opinion letter…"
+              placeholder={
+                prompt ||
+                "I was just served an eviction notice… / I have an employment contract to review… / My lender needs a DC opinion letter…"
+              }
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
