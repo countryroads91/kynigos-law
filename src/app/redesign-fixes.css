@@ -1,0 +1,10 @@
+.hero--redesign {
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .hero--redesign .hero-spear {
+    right: -20%;
+    max-width: 70%;
+  }
+}
