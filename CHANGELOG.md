@@ -3,6 +3,23 @@
 All notable changes to the Kynigos Law Firm site are documented here.
 Versions follow a 4-digit MAJOR.MINOR.PATCH.MICRO format.
 
+## [0.9.0.0] - 2026-07-09
+
+### Added
+- The site now has three front doors. Visitors identify themselves before decoding the firm: Individuals & Families (/people), Business Owners & Professionals (/businesses), and Lenders & Investors (/capital)—each a full landing page with who it is for, the matters that audience actually buys (with fee-shape badges), an audience-specific story band (staged-fee divorce, the professional-practice lifecycle, the Private Capital Desk), related reading, and an intake form whose prompt speaks that audience's language.
+- Six flagship engagements are now named products on the homepage—Staged-Fee Divorce, Professional Contract Review (from $444), Business Counsel, Practice & Partner Transactions, Private Lender & Deal Counsel, and DC Legal Opinion Letters—so a visitor sees what the firm is hired for, not a directory of 26 equal services.
+- A founder trust band ("Built by someone who has been the client") puts the attorney's specific credentials—DC Bar, Scalia Law, a decade at Goldman Sachs/Invictus/LendingOne, litigation finance at Rocade—and the direct-access promise on the homepage, while preserving the site's name-minimization convention.
+- The brand framework is now proved, not printed: each pillar of "Calculated. Zealous. Invested." states the promise and the mechanism that makes it true, alongside a four-step engagement loop that ends where the model lives—"re-engagement is earned, never assumed."
+
+### Changed
+- The hero stands still: the rotating practice-area reel is gone, the tagline carries the page, and a three-line triptych (Your family. Your business. Your capital.) previews the doors. The inaccurate "your attorney only wins when you do" lede became "you never pay more because your matter took longer."
+- Navigation follows the three doors—People, Businesses, Capital, About, Insights—with the full practice directory one tap away under every door, and the header call to action is now "Start Your Matter."
+- The services ticker cycles through named, buyable engagements instead of every conceivable matter.
+- The homepage intake asks "Tell us what you are trying to accomplish" and promises a recommended next step with its price—replacing the generic contact framing.
+
+### Removed
+- The two "integration pending" placeholders (document upload/checkout and the scheduler) no longer appear anywhere a prospective client can see; every path on the homepage now ends in something that actually works.
+
 ## [0.8.0.0] - 2026-07-07
 
 ### Added
