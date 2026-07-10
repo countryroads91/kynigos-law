@@ -149,6 +149,22 @@ h1, h2, h3, h4, h5, h6 {
   height: clamp(260px, 46vh, 460px);
   width: auto;
 }
+/* WebGL spearhead—same footprint as the SVG mark, with room for the
+   perspective sweep as it turns. Fades in while the shader settles. */
+.spear-canvas {
+  display: block;
+  height: clamp(280px, 48vh, 480px);
+  aspect-ratio: 5 / 9;
+  width: auto;
+  opacity: 0;
+  animation: fadeUp 900ms cubic-bezier(0.2, 0.8, 0.2, 1) 150ms forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .spear-canvas {
+    animation: none;
+    opacity: 1;
+  }
+}
 .spear-draw {
   fill: none;
   stroke: var(--color-oxblood);
@@ -2989,7 +3005,15 @@ a.menu-child-link.is-active {
 
 /* ─── Responsive ─── */
 @media (max-width: 1024px) {
-  .hero-spear { display: none; }
+  /* The 3D mark stays on mobile—smaller, tucked beside the short headline
+     lines. The static SVG fallback still hides below desktop. */
+  .hero-spear {
+    top: 148px;
+    right: 14px;
+    transform: none;
+  }
+  .hero-spear svg { display: none; }
+  .spear-canvas { height: 150px; }
 }
 @media (max-width: 900px) {
   .hero { padding: 96px 24px 72px; }
